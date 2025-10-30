@@ -1,0 +1,138 @@
+# -----------------------------
+# 🧩 Node / Dependencias
+# -----------------------------
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# -----------------------------
+# 🧠 Compilación de TypeScript
+# -----------------------------
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# -----------------------------
+# ⚙ Configuración local / entornos
+# -----------------------------
+.env
+.env.local
+.env.*.local
+.env.backup
+.envrc
+
+# Evita subir archivos de configuración personales
+.vscode/
+.idea/
+*.sublime-workspace
+*.sublime-project
+
+# -----------------------------
+# 🧰 Logs y reportes
+# -----------------------------
+logs/
+*.log
+*.csv
+*.pid
+*.seed
+*.pid.lock
+npm-debug.log*
+debug.log
+error.log
+
+# -----------------------------
+# 🧾 Archivos temporales o del sistema
+# -----------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.tmp
+*.bak
+*.old
+*.orig
+*.rej
+~$*
+
+# -----------------------------
+# 🧪 Pruebas
+# -----------------------------
+coverage/
+.nyc_output/
+jest-html-reporters-*.html
+test-results/
+*.test.js
+*.spec.js
+
+# -----------------------------
+# 🧱 Migraciones y ORM
+# -----------------------------
+# Puedes mantener las migraciones SQL o Sequelize JS si las necesitas versionar
+# Si prefieres que solo el equipo de desarrollo local las tenga, descomenta:
+# migraciones/
+migrations-lock.json
+
+# -----------------------------
+# 🧮 Base de datos local / dumps
+# -----------------------------
+*.sqlite
+*.db
+*.sql
+*.dump
+pgdata/
+docker-data/
+db_backups/
+
+# -----------------------------
+# 🧰 Cache y archivos temporales del entorno
+# -----------------------------
+.cache/
+.tmp/
+.temp/
+.temporary/
+coverage-final.json
+
+# -----------------------------
+# 🧑‍💻 Herramientas de testing (Bruno, Postman, etc.)
+# -----------------------------
+bruno/.cache/
+bruno/.history/
+# Nota: si tu colección de Bruno es parte del proyecto (documentación de API), mantenla visible:
+# /bruno/Restaurante API/ (NO ignorar)
+
+# -----------------------------
+# 🐳 Docker / contenedores
+# -----------------------------
+.dockerignore
+docker-compose.override.yml
+docker-compose.local.yml
+*.env.docker
+
+# -----------------------------
+# 🗃 Archivos del sistema operativo
+# -----------------------------
+ehthumbs.db
+Icon?
+Desktop.ini
+
+# -----------------------------
+# 🧩 Otros entornos o herramientas
+# -----------------------------
+*.tgz
+*.zip
+*.tar
+*.gz
+
+# -----------------------------
+# 🧪 Cobertura y reportes de tests
+# -----------------------------
+coverage/
+lcov-report/
+
+# -----------------------------
+# 🚫 Archivos sensibles o secretos adicionales
+# -----------------------------
+secrets/
+private_keys/
