@@ -1,0 +1,29 @@
+meta {
+  name: Crear Proyecto
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/api/proyectos
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "nombre": "Sistema de ventas",
+    "descripcion": "Gestión de facturación e inventario",
+    "estado": "Creado",
+    "estatus": "Activo",
+    "id_cliente": 1,
+    "fecha_inicio": "2025-11-01",
+    "fecha_entrega": "2026-02-01"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

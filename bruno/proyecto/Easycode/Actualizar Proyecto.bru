@@ -1,0 +1,30 @@
+meta {
+  name: Actualizar Proyecto
+  type: http
+  seq: 4
+}
+
+put {
+  url: http://localhost:3000/api/proyectos/1
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "nombre": "Sistema de ventas actualizado",
+    "descripcion": "Sistema con módulo de reportes",
+    "estado": "En proceso",
+    "estatus": "Activo",
+    "id_cliente": 1,
+    "fecha_inicio": "2025-11-01",
+    "fecha_entrega": "2026-03-01",
+    "fecha_creacion": "2025-10-30T02:15:00.000Z"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
