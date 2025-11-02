@@ -1,0 +1,21 @@
+meta {
+  name: Actualizar Consultor
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://127.0.0.1:3000/api/consultor/1
+  body: json
+}
+
+body:json {
+  {
+    "nombre": "Juan Pérez",
+    "correo": "juan.perez@example.com",
+    "telefono": "3009876543",
+    "nivelexperiencia": "Senior",
+    "disponibilidad": "Disponible",
+    "contrasena": "nueva_contra123"
+  }
+}
