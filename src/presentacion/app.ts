@@ -1,19 +1,21 @@
 import Fastify from 'fastify';
-import { ProyectoEnrutador } from './rutas/ProyectoEnrutador';
+import { ProyectoControlador } from './controladores/ProyectoControlador';
+import { probarConexion } from '../../src/core/infraestructura/postgres/clientePostgres';
+import { configuration } from '../common/configuracion';
+
+const app = Fastify({ logger: true });
 
 async function iniciarServidor() {
-  const app = Fastify({ logger: true });
+  await probarConexion();
 
-  // Registrar el enrutador de proyectos
-  await ProyectoEnrutador(app);
+  // Registra el controlador con el prefijo '/api'
+  app.register(ProyectoControlador, { prefix: '/api' });
 
-  // Ruta base
-  app.get('/', async () => {
-    return { mensaje: 'API CODEASY funcionando correctamente' };
+  const puerto = configuration.httpPuerto;
+  app.listen({ port: puerto }, (err, address) => {
+    if (err) throw err;
+    console.log(`🚀 Servidor corriendo en ${address}`);
   });
-
-  await app.listen({ port: 3000 });
-  console.log('Servidor corriendo en http://localhost:3000');
 }
 
 iniciarServidor();

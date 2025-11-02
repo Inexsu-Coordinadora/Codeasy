@@ -1,9 +1,9 @@
 import type { IProyecto } from '../IProyecto';
 
-export interface IProyectosRepositorio {
+export interface IProyectoRepositorio {
   crear(proyecto: IProyecto): Promise<IProyecto>;
-  listar(): Promise<IProyecto[]>;
-  buscarPorId(id: number): Promise<IProyecto | null>;
-  actualizar(id: number, datos: Partial<IProyecto>): Promise<IProyecto | null>;
-  eliminar(id: number): Promise<void>;
+  obtenerTodos(): Promise<IProyecto[]>;
+  obtenerPorId(id: number): Promise<IProyecto | null>;
+  actualizar(id: number, cambios: Partial<IProyecto>): Promise<IProyecto | null>;
+  eliminarLogico(id: number): Promise<IProyecto | null>;
 }

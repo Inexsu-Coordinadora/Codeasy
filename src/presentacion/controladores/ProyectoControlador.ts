@@ -1,51 +1,44 @@
 import { FastifyInstance } from 'fastify';
-import { Proyecto } from '../../core/dominio/proyecto/Proyecto';
+import { ProyectoRepositorioPostgres } from '../../core/infraestructura/postgres/ProyectoRepositorioPostgres';
+import { validarProyecto } from '../../presentacion/validaciones/ValidarProyecto';
 import type { IProyecto } from '../../core/dominio/proyecto/IProyecto';
-import { validarProyecto } from '../validaciones/validarProyecto';
 
-
+/**
+ * Controlador de Proyectos
+ * Encapsula las rutas y operaciones CRUD.
+ * Utiliza la implementación del repositorio PostgreSQL.
+ */
 export async function ProyectoControlador(app: FastifyInstance) {
-  // Simulación de base de datos temporal
-  const proyectos: IProyecto[] = [];
+  const repositorio = new ProyectoRepositorioPostgres();
 
-  // Crear un nuevo proyecto
-  app.post('/proyectos', async (req, res) => {
-    const body = req.body as Partial<IProyecto>;
-
-    // Validar datos (el validador detecta si hay campos no permitidos)
+  // 🟢 CREAR PROYECTO
+  app.post<{ Body: Partial<IProyecto> }>('/proyectos', async (req, res) => {
+    const body = req.body;
     const errores = validarProyecto(body, true);
     if (errores.length > 0) {
       return res.status(400).send({ errores });
     }
 
-    // Asignar campos controlados por el sistema
-    const nuevoProyecto = new Proyecto(
-      proyectos.length + 1, // ID simulado (en PostgreSQL será autoincremental)
-      body.nombre!,
-      body.descripcion!,
-      'Creado', // estado inicial automático
-      'Activo', // estatus inicial automático
-      body.id_cliente!,
-      new Date(body.fecha_inicio!),
-      new Date(body.fecha_entrega!),
-      new Date() // fecha_creacion automática
-    );
+    const nuevoProyecto = await repositorio.crear({
+      ...body,
+      estado: 'Creado',
+      estatus: 'Activo',
+      fecha_creacion: new Date(),
+    } as IProyecto);
 
-    // En BD: await repositorio.crearProyecto(nuevoProyecto)
-    proyectos.push(nuevoProyecto);
     res.status(201).send(nuevoProyecto);
   });
 
-  // Obtener todos los proyectos
+  // 🟡 LISTAR TODOS LOS PROYECTOS
   app.get('/proyectos', async (_, res) => {
-    // 🚧 En BD: const proyectos = await repositorio.obtenerTodos()
+    const proyectos = await repositorio.obtenerTodos();
     res.send(proyectos);
   });
 
-  // Obtener un proyecto por ID
-  app.get('/proyectos/:id', async (req, res) => {
-    const { id } = req.params as { id: string };
-    const proyecto = proyectos.find((p) => p.id === Number(id));
+  // 🟣 OBTENER PROYECTO POR ID
+  app.get<{ Params: { id: string } }>('/proyectos/:id', async (req, res) => {
+    const { id } = req.params;
+    const proyecto = await repositorio.obtenerPorId(Number(id));
 
     if (!proyecto) {
       return res.status(404).send({ mensaje: 'Proyecto no encontrado' });
@@ -54,45 +47,36 @@ export async function ProyectoControlador(app: FastifyInstance) {
     res.send(proyecto);
   });
 
-  // Actualizar un proyecto
-  app.put('/proyectos/:id', async (req, res) => {
-    const { id } = req.params as { id: string };
-    const cambios = req.body as Partial<IProyecto>;
+  // 🟠 ACTUALIZAR PROYECTO
+  app.put<{ Params: { id: string }; Body: Partial<IProyecto> }>('/proyectos/:id', async (req, res) => {
+    const { id } = req.params;
+    const cambios = req.body;
 
-    const index = proyectos.findIndex((p) => p.id === Number(id));
-    if (index === -1) {
-      return res.status(404).send({ mensaje: 'Proyecto no encontrado' });
-    }
-
-    // Validar cambios (se ignoran campos no permitidos)
     const errores = validarProyecto(cambios, false);
     if (errores.length > 0) {
       return res.status(400).send({ errores });
     }
 
-    const actual = proyectos[index]!;
-    proyectos[index] = { ...actual, ...cambios } as IProyecto;
-
-    // En BD: await repositorio.actualizarProyecto(id, cambios)
-    res.send(proyectos[index]);
-  });
-
-  // Eliminar (lógicamente) un proyecto
-  app.delete('/proyectos/:id', async (req, res) => {
-    const { id } = req.params as { id: string };
-    const proyecto = proyectos.find((p) => p.id === Number(id));
-
-    if (!proyecto) {
+    const actualizado = await repositorio.actualizar(Number(id), cambios);
+    if (!actualizado) {
       return res.status(404).send({ mensaje: 'Proyecto no encontrado' });
     }
 
-    // 🔹 Cambiar el estatus del proyecto (eliminación lógica)
-    proyecto.estatus = 'Eliminado';
+    res.send(actualizado);
+  });
 
-    // En BD: await repositorio.marcarEliminado(id)
+  // 🔴 ELIMINAR LÓGICAMENTE UN PROYECTO
+  app.delete<{ Params: { id: string } }>('/proyectos/:id', async (req, res) => {
+    const { id } = req.params;
+
+    const eliminado = await repositorio.eliminarLogico(Number(id));
+    if (!eliminado) {
+      return res.status(404).send({ mensaje: 'Proyecto no encontrado' });
+    }
+
     res.send({
       mensaje: 'Proyecto marcado como eliminado',
-      proyecto
+      proyecto: eliminado,
     });
   });
 }

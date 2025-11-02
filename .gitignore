@@ -136,3 +136,5 @@ lcov-report/
 # -----------------------------
 secrets/
 private_keys/
+
+.env
