@@ -5,19 +5,9 @@ meta {
 }
 
 delete {
-  url: http://localhost:3000/api/proyectos/1
-  body: json
+  url: http://localhost:3000/api/proyectos/2
+  body: none
   auth: inherit
-}
-
-body:json {
-  {
-    "mensaje": "Proyecto marcado como eliminado",
-    "proyecto": {
-      "estatus": "Eliminado"
-    }
-  }
-  
 }
 
 settings {
