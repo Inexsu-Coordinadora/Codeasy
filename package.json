@@ -2,10 +2,13 @@
   "name": "codeasy",
   "version": "1.0.0",
   "description": "",
-  "main": "index.js",
-  "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
-  },
+  "main": "index.ts",
+  "type": "commonjs",
+"scripts": {
+  "build": "tsc",
+  "start": "node /dist/index.js",
+  "dev": "ts-node-dev --respawn --transpile-only index.ts"
+},
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Inexsu-Coordinadora/Codeasy.git"
@@ -13,7 +16,6 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
   "bugs": {
     "url": "https://github.com/Inexsu-Coordinadora/Codeasy/issues"
   },
@@ -23,8 +25,17 @@
   },
   "devDependencies": {
     "@types/node": "^24.9.2",
+    "@types/pg": "^8.15.6",
+    "dotenv": "^17.2.3",
+    "fastify": "^5.6.1",
     "nodemon": "^3.1.10",
+    "pg": "^8.16.3",
     "ts-node": "^10.9.2",
-    "typescript": "^5.9.3"
+    "ts-node-dev": "^2.0.0",
+    "typescript": "^5.9.3",
+    "uuid": "^13.0.0",
+    "zod": "^4.1.12"
   }
+  
+
 }
