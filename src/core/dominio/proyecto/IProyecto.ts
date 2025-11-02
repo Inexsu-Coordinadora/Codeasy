@@ -9,3 +9,4 @@ export interface IProyecto {
   fecha_entrega: Date;
   fecha_creacion: Date;
 }
+

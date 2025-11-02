@@ -14,7 +14,7 @@ async function iniciarServidor() {
   const puerto = configuration.httpPuerto;
   app.listen({ port: puerto }, (err, address) => {
     if (err) throw err;
-    console.log(`🚀 Servidor corriendo en ${address}`);
+    console.log(`Servidor corriendo en ${address}`);
   });
 }
 

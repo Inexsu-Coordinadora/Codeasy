@@ -2,6 +2,7 @@ import { ejecutarConsulta } from '../postgres/clientePostgres';
 import type { IProyecto } from '../../../core/dominio/proyecto/IProyecto';
 import type { IProyectoRepositorio } from '../../../core/dominio/proyecto/repositorio/IProyectoRepositorio';
 
+
 export class ProyectoRepositorioPostgres implements IProyectoRepositorio {
   async crear(proyecto: IProyecto): Promise<IProyecto> {
     const query = `
@@ -23,9 +24,16 @@ export class ProyectoRepositorioPostgres implements IProyectoRepositorio {
   }
 
   async obtenerTodos(): Promise<IProyecto[]> {
-    const resultado = await ejecutarConsulta('SELECT * FROM proyectos ORDER BY id ASC;');
+    const query = `
+      SELECT *
+      FROM proyectos
+      WHERE estatus = 'Activo'
+      ORDER BY id ASC;
+    `;
+    const resultado = await ejecutarConsulta(query);
     return resultado.rows;
   }
+
 
   async obtenerPorId(id: number): Promise<IProyecto | null> {
     const resultado = await ejecutarConsulta('SELECT * FROM proyectos WHERE id = $1;', [id]);
