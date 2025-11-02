@@ -9,7 +9,7 @@ import type { IProyecto } from "../../core/dominio/proyecto/IProyecto";
 export async function ProyectoControlador(app: FastifyInstance) {
   const repositorio = new ProyectoRepositorioPostgres();
 
-  // 🟢 CREAR PROYECTO
+  // Crear proyecto
   app.post<{ Body: unknown }>("/proyectos", async (req, res) => {
     const parse = CrearProyectoEsquema.safeParse(req.body);
     if (!parse.success)
@@ -28,7 +28,7 @@ export async function ProyectoControlador(app: FastifyInstance) {
     res.status(201).send(nuevoProyecto);
   });
 
-  // 🟠 ACTUALIZAR PROYECTO
+  // Actualizar proyecto
   app.put<{ Params: { id: string }; Body: unknown }>("/proyectos/:id", async (req, res) => {
     const { id } = req.params;
     const parse = ActualizarProyectoEsquema.safeParse(req.body);
@@ -47,7 +47,7 @@ export async function ProyectoControlador(app: FastifyInstance) {
     res.send(actualizado);
   });
 
-  // 🟣 OBTENER POR ID
+  // Obtener por id
   app.get<{ Params: { id: string } }>("/proyectos/:id", async (req, res) => {
     const proyecto = await repositorio.obtenerPorId(Number(req.params.id));
     if (!proyecto)
@@ -55,13 +55,13 @@ export async function ProyectoControlador(app: FastifyInstance) {
     res.send(proyecto);
   });
 
-  // 🟡 OBTENER TODOS
+  // Obtener todos
   app.get("/proyectos", async (_, res) => {
     const proyectos = await repositorio.obtenerTodos();
     res.send(proyectos);
   });
 
-  // 🔴 ELIMINAR (LÓGICO)
+  // Eliminar (Lógico)
   app.delete<{ Params: { id: string } }>("/proyectos/:id", async (req, res) => {
     const eliminado = await repositorio.eliminarLogico(Number(req.params.id));
     if (!eliminado)

@@ -1,13 +1,11 @@
 import { z } from "zod";
 
-/**
- * 🧱 Esquema base del proyecto con validaciones completas y detección de campos no permitidos
- * Compatible con todas las versiones de Zod
- */
+// Esquema base del proyecto con validaciones completas y detección de campos no permitidos 
+
 const hoy = new Date();
 hoy.setHours(0, 0, 0, 0);
 
-// 🔹 Campos válidos esperados para un proyecto
+// Campos válidos esperados para un proyecto
 const camposValidos = ["nombre", "descripcion", "id_cliente", "fecha_inicio", "fecha_entrega", "estado"];
 
 export const ProyectoBaseEsquema = z
@@ -37,9 +35,9 @@ export const ProyectoBaseEsquema = z
       z.date("La fecha de entrega no es válida")
     ),
   })
-  .strict() // ⛔ Zod rechazará automáticamente campos no definidos en el esquema
+  .strict() // Zod rechazará automáticamente campos no definidos en el esquema
   .superRefine((data, ctx) => {
-    // --- 1️⃣ Detectar campos faltantes ---
+    // Detectar campos faltantes
     const requeridos = ["nombre", "descripcion", "id_cliente", "fecha_inicio", "fecha_entrega"];
     const faltantes = requeridos.filter((campo) => !(campo in data));
     if (faltantes.length > 0) {
@@ -49,7 +47,7 @@ export const ProyectoBaseEsquema = z
       });
     }
 
-    // --- 2️⃣ Detectar campos adicionales no permitidos ---
+    // Detectar campos adicionales no permitidos
     const recibidos = Object.keys(data);
     const adicionales = recibidos.filter((campo) => !camposValidos.includes(campo));
     if (adicionales.length > 0) {
@@ -59,7 +57,7 @@ export const ProyectoBaseEsquema = z
       });
     }
 
-    // --- 3️⃣ Validar fechas ---
+    // Validar fechas
     const inicio = data.fecha_inicio;
     const entrega = data.fecha_entrega;
 
@@ -80,14 +78,10 @@ export const ProyectoBaseEsquema = z
     }
   });
 
-/**
- * 🔹 Esquema para creación de proyectos
- */
+// Esquema para creación de proyectos
 export const CrearProyectoEsquema = ProyectoBaseEsquema;
 
-/**
- * 🔹 Esquema para actualización (campos opcionales pero valida coherencia y campos extra)
- */
+// Esquema para actualización (campos opcionales pero valida coherencia y campos extra)
 export const ActualizarProyectoEsquema = ProyectoBaseEsquema
   .partial()
   .extend({

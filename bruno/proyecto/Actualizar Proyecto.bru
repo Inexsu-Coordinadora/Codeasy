@@ -5,15 +5,17 @@ meta {
 }
 
 put {
-  url: http://localhost:3000/api/proyectos/2
+  url: http://localhost:3000/api/proyectos/11
   body: json
   auth: inherit
 }
 
 body:json {
   {
-    "estado": "En proceso",
-    "descripcion": "Probando fechas"
+    "nombre": "Sistema de envios",
+    "descripcion": "Sistema de envios de coordinadora",
+    "id_cliente": 666,
+    "estado": "Finalizado"
   }
   
 }
