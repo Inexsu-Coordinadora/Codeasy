@@ -2,10 +2,10 @@ export interface ITarea {
   idTarea?: number;
   titulo: string;
   descripcion: string;
-  stateTask: 'Create' | 'Proceso' | 'Finalizado';
+  estadoTarea: 'Creada' | 'En Proceso' | 'Finalizada';
   fechaCreacion?: Date;
   fechaFinalizacion: Date;
   prioridad: 'Baja' | 'Media' | 'Alta';
   asignadoA: string;
-  status: 'eliminado' | 'Activo';
+  estatus: 'Eliminado' | 'Activo';
 }

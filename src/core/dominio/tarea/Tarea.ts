@@ -5,12 +5,9 @@ export class Tarea implements ITarea {
   idTarea?: number;
   titulo!: string;
   descripcion!: string;
-  stateTask!: 'Create' | 'Proceso' | 'Finalizado';
-  status!: 'eliminado' | 'Activo';
-
-  // Optional / domain-specific
+  estadoTarea!: 'Creada' | 'En Proceso' | 'Finalizada';
+  estatus!: 'Eliminado' | 'Activo';
   fechaCreacion?: Date;
-  // Required by ITarea
   fechaFinalizacion!: Date;
   prioridad!: 'Baja' | 'Media' | 'Alta';
   asignadoA!: string;

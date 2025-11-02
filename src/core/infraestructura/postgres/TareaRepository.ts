@@ -26,7 +26,7 @@ async registrarTarea(tarea: ITarea): Promise<ITarea> {
 
 
   async listarTodasTareas(): Promise<ITarea[]> {
-    const query = `SELECT * FROM Tareas WHERE status != 'eliminado';`;
+    const query = `SELECT * FROM Tareas WHERE estatus != 'Eliminado';`;
     const result = await ejecutarConsulta(query, []);
     return result.rows;
   }

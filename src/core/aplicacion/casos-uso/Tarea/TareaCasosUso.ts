@@ -13,8 +13,8 @@ export class TareaCasosUso {
     const fechaActual = new Date();
     const nuevaTarea = new Tarea({
       ...datos,
-      status: "Activo",
-      stateTask: "Create",
+      estatus: "Activo",
+      estadoTarea: "Creada",
       fechaCreacion: fechaActual,
       // If fechaFinalizacion wasn't provided, set it to 1 day after creation
       fechaFinalizacion: datos.fechaFinalizacion || new Date(fechaActual.getTime() + 24 * 60 * 60 * 1000),
@@ -70,12 +70,12 @@ export class TareaCasosUso {
       throw new Error(`No se encontró la tarea con ID ${idTarea}`);
     }
 
-    if (tareaExistente.status === "eliminado") {
+    if (tareaExistente.estatus === "Eliminado") {
       throw new Error(`La tarea con ID ${idTarea} ya está eliminada.`);
     }
 
 
-    tareaExistente.status = "eliminado";
+    tareaExistente.estatus = "Eliminado";
 
     await this.tareaRepositorio.actualizarTarea(idTarea, tareaExistente);
   }

@@ -3,7 +3,7 @@ import { z } from "zod";
 export const TareaCrearEsquema = z.object({
   titulo: z.string().nonempty("El título es obligatorio").min(3).max(100),
   descripcion: z.string().nonempty("La descripción es obligatoria").min(5).max(255),
-  stateTask: z.enum(["Create", "Proceso", "Finalizado"]).default("Create"),
+  estadoTarea: z.enum(["Creada", "En Proceso", "Finalizada"]).default("Creada"),
   prioridad: z.enum(["Baja", "Media", "Alta"]).default("Media"),
   fechaCreacion: z.date().optional(),
   fechaFinalizacion: z.date().optional(),
@@ -13,7 +13,7 @@ export const TareaCrearEsquema = z.object({
 export const TareaActualizarEsquema = z.object({
   titulo: z.string().optional(),
   descripcion: z.string().optional(),
-  stateTask: z.enum(["Create", "Proceso", "Finalizado"]).optional(),
+  estadoTarea: z.enum(["Creada", "En Proceso", "Finalizada"]).optional(),
   prioridad: z.enum(["Baja", "Media", "Alta"]).default("Media").optional(),
   fechaCreacion: z.date().optional(),
   fechaFinalizacion: z.date().optional(),

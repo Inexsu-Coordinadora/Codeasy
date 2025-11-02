@@ -1,6 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { TareaCasosUso } from "../../core/aplicacion/casos-uso/Tarea/TareaCasosUso";
-import  { ITarea } from "../../core/dominio/tarea/ITarea"; 
 import { TareaActualizarEsquema } from "../esquemas/EsquemaTareas";
 import { TareaCrearEsquema } from "../esquemas/EsquemaTareas";
 
