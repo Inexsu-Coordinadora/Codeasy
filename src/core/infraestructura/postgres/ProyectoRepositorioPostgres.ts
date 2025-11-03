@@ -1,4 +1,4 @@
-import { ejecutarConsulta } from '../postgres/clientePostgres';
+import { ejecutarConsulta } from './clientepostgres';
 import type { IProyecto } from '../../../core/dominio/proyecto/IProyecto';
 import type { IProyectoRepositorio } from '../../../core/dominio/proyecto/repositorio/IProyectoRepositorio';
 

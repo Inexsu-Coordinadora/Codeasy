@@ -10,7 +10,6 @@
     "module": "nodenext",
     "target": "esnext",
     "esModuleInterop": true,
-    "moduleResolution": "node",
 
     
     // For nodejs:

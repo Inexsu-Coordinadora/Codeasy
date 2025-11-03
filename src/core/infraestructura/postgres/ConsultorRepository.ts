@@ -1,6 +1,6 @@
-import { IConsultorRepositorio } from "../../dominio/consultor/repositorio/IConsultorRepositorio.js";
-import { IConsultor } from "../../dominio/consultor/IConsultor.js";
-import { ejecutarConsulta } from "./clientepostgres.js";
+import { IConsultorRepositorio } from "../../dominio/consultor/repositorio/IConsultorRepositorio";
+import { IConsultor } from "../../dominio/consultor/IConsultor";
+import { ejecutarConsulta } from "./clientepostgres";
 
 export class ConsultorRepositorio implements IConsultorRepositorio {
 
