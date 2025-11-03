@@ -21,7 +21,7 @@ export const TareaActualizarEsquema = z.object({
   titulo: z.string().optional(),
   descripcion: z.string().optional(),
   estadoTarea: z.enum(["Creada", "En Proceso", "Finalizada"]).optional(),
-  prioridad: z.enum(["Baja", "Media", "Alta"]).default("Media").optional(),
+  prioridad: z.enum(["Baja", "Media", "Alta"]).optional(),
   fechaFinalizacion: z.string()
   .regex(/^\d{1,2}\/\d{1,2}\/\d{4}$/, "Formato debe ser DD/MM/YYYY")
   .transform((val) => {

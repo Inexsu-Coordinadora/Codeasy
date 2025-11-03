@@ -2,10 +2,49 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { TareaCasosUso } from "../../core/aplicacion/casos-uso/Tarea/TareaCasosUso";
 import { TareaActualizarEsquema } from "../esquemas/EsquemaTareas";
 import { TareaCrearEsquema } from "../esquemas/EsquemaTareas";
+//Para los mensajes de error
+import { ZodError } from "zod";
 
 
 export class TareaControlador {
   constructor(private casosUso: TareaCasosUso) {}
+
+
+   private manejarError(reply: FastifyReply, error: any) {
+    console.error(error);
+    let statusCode = 500; 
+    let mensajeErrorLimpio: string;
+    if (error instanceof ZodError) {
+      const flattenedErrors = error.flatten();
+      statusCode = 400; 
+      const fieldErrors = flattenedErrors.fieldErrors as Record<string, string[] | undefined>;
+      
+      if (Object.keys(fieldErrors).length > 0) {
+        const firstFieldName = Object.keys(fieldErrors)[0];
+        const firstErrorMessage = firstFieldName ? fieldErrors[firstFieldName]?.[0] : undefined;
+        
+        if (firstErrorMessage) {
+          mensajeErrorLimpio = `${firstFieldName}: ${firstErrorMessage}`;
+        } else {
+          mensajeErrorLimpio = "Error de validación de datos en un campo específico.";
+        }
+      } else {
+        mensajeErrorLimpio = flattenedErrors.formErrors?.[0] ?? "Error de validación de datos.";
+      }
+    } else {
+      mensajeErrorLimpio = error.message ?? "Error interno del servidor.";
+      
+      if (mensajeErrorLimpio.includes("no encontrado")) {
+      statusCode = 404;
+      } else if (mensajeErrorLimpio.includes("Ya existe") || mensajeErrorLimpio.includes("en uso")) {
+      statusCode = 409; 
+      } else {
+      statusCode = 500; 
+      mensajeErrorLimpio = "Error interno del servidor.";
+      }
+    }
+    return reply.code(statusCode).send({ error: mensajeErrorLimpio });
+}
 
   async registrarTarea(req: FastifyRequest, reply: FastifyReply) {
     try {
@@ -13,7 +52,7 @@ export class TareaControlador {
       const nuevo = await this.casosUso.registrar(datos);
       return reply.code(201).send({ mensaje: "Tarea creada", data: nuevo });
     } catch (error: any) {
-      return reply.code(400).send({ error: error.message });
+      return this.manejarError(reply, error); 
     }
   }
 
@@ -23,7 +62,7 @@ export class TareaControlador {
       const tareas = await this.casosUso.listarTodasTareas();
       return reply.code(200).send(tareas);
     } catch (error: any) {
-      return reply.code(500).send({ error: error.message });
+      return this.manejarError(reply, error);
     }
   }
 
@@ -36,7 +75,7 @@ export class TareaControlador {
         return reply.code(404).send({ mensaje: "Tarea no encontrada" });
       return reply.code(200).send(tarea);
     } catch (error: any) {
-      return reply.code(400).send({ error: error.message });
+      return this.manejarError(reply, error);
     }
   }
 
@@ -48,7 +87,7 @@ export class TareaControlador {
       const actualizado = await this.casosUso.actualizarTarea(idTarea, datos);
       return reply.code(200).send({ mensaje: "Tarea actualizada", data: actualizado });
     } catch (error: any) {
-      return reply.code(400).send({ error: error.message });
+      return this.manejarError(reply, error);
     }
   }
 
@@ -59,7 +98,7 @@ export class TareaControlador {
       await this.casosUso.eliminarTarea(idTarea);
       return reply.code(200).send({ mensaje: "Tarea eliminada correctamente" });
     } catch (error: any) {
-      return reply.code(400).send({ error: error.message });
+      return this.manejarError(reply, error);
     }
   }
  }
