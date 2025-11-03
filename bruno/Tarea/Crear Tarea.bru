@@ -1,0 +1,28 @@
+meta {
+  name: Crear Tarea
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://127.0.0.1:3000/api/tarea
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "titulo": "API REST endpoints",
+    "descripcion": "Crear documentación completa   para todos los endpoints del microservicio de usuarios",
+    "estadoTarea": "En Proceso",
+    "fechaFinalizacion": "4/11/2025",
+    "prioridad": "Media",
+    "asignadoA": "Edwin Martínez"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
