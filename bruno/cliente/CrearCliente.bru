@@ -1,0 +1,28 @@
+meta {
+  name: CrearCliente
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/api/cliente
+  body: json
+  auth: inherit
+}
+
+body:json {
+  
+  {
+    "nombre": "Alanaa ",
+    "identificacion": "102030",
+    "email": "alfe@gmail.com",
+    "telefono": "31000444114",
+    "estatus": "Activo"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

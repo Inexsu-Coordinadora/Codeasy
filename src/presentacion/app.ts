@@ -2,6 +2,8 @@ import Fastify from "fastify";
 import { FastifyError } from "fastify";
 import { construirConsultorEnrutador } from "./rutas/consultorEnrutador";
 import { construirTareaEnrutador } from "./rutas/enrutadorTarea";
+import { construirClienteEnrutador } from "./rutas/ClienteEnrutador";
+import { ProyectoEnrutador} from "./rutas/ProyectoEnrutador";
 
 const app = Fastify({ logger: true });
 
@@ -9,6 +11,8 @@ app.register(
   async (appInstance) => {
     construirConsultorEnrutador(appInstance);
     construirTareaEnrutador(appInstance);
+    construirClienteEnrutador(appInstance);
+    ProyectoEnrutador(appInstance);
   },
   { prefix: "/api" }
 );
