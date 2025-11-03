@@ -1,11 +1,11 @@
-import { ZodSchema, ZodError } from "zod";
+import {  ZodError, ZodType } from "zod";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 type TipoValidacion = "body" | "params" | "query";
 
 
 export function validarZod<T>(
-  esquema: ZodSchema<T>,
+  esquema: ZodType<T>,
   tipo: TipoValidacion = "body"
 ) {
   return async (req: FastifyRequest, reply: FastifyReply) => {
