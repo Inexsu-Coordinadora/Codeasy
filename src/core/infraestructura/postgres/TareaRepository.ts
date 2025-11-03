@@ -1,6 +1,6 @@
 import { ITareaRepositorio } from "../../dominio/tarea/repositorio/ITareaRepositorio";
 import { ITarea } from "../../dominio/tarea/ITarea";
-import { ejecutarConsulta } from "./clientePostgres";
+import { ejecutarConsulta } from "./clientepostgres";
 
 export class TareaRepositorio implements ITareaRepositorio {
 
