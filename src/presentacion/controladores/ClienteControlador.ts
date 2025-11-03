@@ -52,15 +52,10 @@ export class ClienteControlador {
      mensajeErrorLimpio = "Error interno del servidor.";
     }
   }
-
-
   return reply.code(statusCode).send({ error: mensajeErrorLimpio });
  }
 
-
-
 /* ENDPOINTS*/
-
 
 /**
    * Registra un nuevo cliente.
@@ -91,7 +86,6 @@ export class ClienteControlador {
   {   return this.manejarError(reply, error); // Uso del manejador unificado
   }
  }
-
  /**
    * Obtiener un cliente por su ID numérico.
    */
@@ -143,7 +137,6 @@ export class ClienteControlador {
    return this.manejarError(reply, error); 
    }
  }
-
 
 /**
    * Eliminar un cliente por su ID.
