@@ -1,13 +1,13 @@
-import dotenv from 'dotenv';
+import dotenv from "dotenv";
 dotenv.config();
 
 export const configuration = {
-  httpPuerto: Number(process.env.PUERTO) || 3000,
+  httpPuerto: Number(process.env.PUERTO),
   baseDatos: {
-    host: process.env.PGHOST || 'localhost',
-    puerto: Number(process.env.PGPORT) || 5432,
-    usuario: process.env.PGUSER || 'postgres',
-    contrasena: process.env.PGPASSWORD || '',
-    nombreDb: process.env.PGDBNAME || 'codeasy_db',
+    host: process.env.PGHOST,
+    puerto: Number(process.env.PGPORT),
+    usuario: process.env.PGUSER,
+    contrasena: process.env.PGPASSWORD,
+    nombreDb: process.env.PGDBNAME,
   },
 };

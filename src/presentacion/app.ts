@@ -1,21 +1,30 @@
-import Fastify from 'fastify';
-import { ProyectoControlador } from './controladores/ProyectoControlador';
-import { probarConexion } from '../../src/core/infraestructura/postgres/clientePostgres';
-import { configuration } from '../common/configuracion';
+import Fastify from "fastify";
+import { FastifyError } from "fastify";
+import { construirConsultorEnrutador } from "./rutas/consultorEnrutador";
 
 const app = Fastify({ logger: true });
 
-export async function startServer() {
-  await probarConexion();
+app.register(
+  async (appInstance) => {
+    construirConsultorEnrutador(appInstance);
+  },
+  { prefix: "/api" }
+);
 
-  // Registra el controlador con el prefijo '/api'
-  app.register(ProyectoControlador, { prefix: '/api' });
+export const startServer = async (): Promise<void> => {
+  try {
+    await app.listen({ port: Number(process.env.PUERTO) });
+    app.log.info("El servidor esta corriendo...");
+  } catch (err) {
+    app.log.error(`Error al ejecutar el servidor\n ${err}`);
 
-  const puerto = configuration.httpPuerto;
-  app.listen({ port: puerto }, (err, address) => {
-    if (err) throw err;
-    console.log(`Servidor corriendo en ${address}`);
-  });
-}
+    const serverError: FastifyError = {
+      code: "FST_ERR_INIT_SERVER",
+      name: "ServidorError",
+      statusCode: 500,
+      message: `El servidor no se pudo iniciar: ${(err as Error).message}`,
+    };
 
-startServer();
+    throw serverError;
+  }
+};
