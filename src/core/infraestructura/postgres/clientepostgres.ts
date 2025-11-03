@@ -1,5 +1,5 @@
 import { Pool } from "pg";
-import { configuration } from "../../../common/configuraciones.js";
+import { configuration } from "../../../common/configuracion.js";
 
 const pool = new Pool({
   host: configuration.baseDatos.host,
