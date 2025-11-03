@@ -79,7 +79,6 @@ migrations-lock.json
 # -----------------------------
 *.sqlite
 *.db
-*.sql
 *.dump
 pgdata/
 docker-data/

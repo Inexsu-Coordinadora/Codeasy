@@ -5,9 +5,21 @@ meta {
 }
 
 put {
-  url: 
-  body: none
+  url: http://localhost:3000/api/cliente/13
+  body: json
   auth: inherit
+}
+
+body:json {
+   {
+     
+      "nombre": "Alvaro Perez",
+      "identificacion": "3636154",
+      "email": "alavam@gmail.com",
+      "telefono": "320154256",
+      "estatus": "Activo"
+   }
+  
 }
 
 settings {
