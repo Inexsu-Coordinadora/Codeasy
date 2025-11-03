@@ -11,7 +11,7 @@ const pool = new Pool({
 
 export async function ejecutarConsulta(
   consulta: string,
-  parametros?: Array<number | string>
+  parametros?: Array<number | string | Date>
 ) {
   return await pool.query(consulta, parametros);
 }
