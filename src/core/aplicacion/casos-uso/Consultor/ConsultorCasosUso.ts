@@ -1,8 +1,8 @@
-import  {IConsultor} from "../../../dominio/consultor/IConsultor.js";
-import  {Consultor} from "../../../dominio/consultor/Consultor.js";
-import  { IConsultorRepositorio } from "./IConsultorCasosUso.js";
-import  { ConsultorCrearDTO } from "../../../../presentacion/esquemas/consultorCrearEsquema.js";
-import  { ConsultorActualizarDTO } from "../../../../presentacion/esquemas/consultorActualizarEsquema.js";
+import  {IConsultor} from "../../../dominio/consultor/IConsultor";
+import  {Consultor} from "../../../dominio/consultor/Consultor";
+import  { IConsultorRepositorio } from "./IConsultorCasosUso";
+import  { ConsultorCrearDTO } from "../../../../presentacion/esquemas/consultorCrearEsquema";
+import  { ConsultorActualizarDTO } from "../../../../presentacion/esquemas/consultorActualizarEsquema";
 
 export class ConsultorCasosUso {
   constructor(private consultorRepositorio: IConsultorRepositorio) {}
@@ -40,6 +40,9 @@ export class ConsultorCasosUso {
  
   async obtenerConsultorPorId(idConsultor: number): Promise<IConsultor | null> {
     const consultor = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
+    if (!consultor) {
+    throw new Error(`No se encontró un consultor con el ID ${idConsultor}`);
+  }
     return consultor;
   }
 
@@ -71,14 +74,9 @@ export class ConsultorCasosUso {
   async eliminarConsultor(idConsultor: number): Promise<void> {
     const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
 
-    if (!consultorExistente) {
-      throw new Error(`No se encontró el consultor con ID ${idConsultor}`);
-    }
-
-    if (consultorExistente.estado === "Eliminado") {
-      throw new Error(`El consultor con ID ${idConsultor} ya está eliminado.`);
-    }
-
+     if (!consultorExistente || consultorExistente.estado === "Eliminado") {
+    throw new Error(`No se encontró el consultor con ID ${idConsultor}`);
+  }
 
     consultorExistente.estado = "Eliminado";
 

@@ -1,6 +1,6 @@
 import Fastify from "fastify";
 import { FastifyError } from "fastify";
-import { construirConsultorEnrutador } from "./rutas/consultorEnrutador.js";
+import { construirConsultorEnrutador } from "./rutas/consultorEnrutador";
 
 const app = Fastify({ logger: true });
 

@@ -36,14 +36,13 @@ async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
 
 
   async obtenerConsultorPorId(idConsultor: number): Promise<IConsultor | null> {
-    const query = `SELECT * FROM consultores WHERE idconsultor = $1;`;
+    const query = `SELECT * FROM consultores WHERE idconsultor = $1 AND estado != 'Eliminado'`;
     const result = await ejecutarConsulta(query, [idConsultor]);
     return result.rows[0] || null;
   }
 
   
   async actualizarConsultor(idConsultor: number, datos: IConsultor): Promise<IConsultor> {
-  // Filtramos datos nulos o indefinidos para no romper la query
   const datosLimpios = Object.fromEntries(
     Object.entries(datos).filter(([_, v]) => v !== null && v !== undefined)
   );
@@ -51,8 +50,6 @@ async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
   const columnas = Object.keys(datosLimpios).map((key) => key.toLowerCase());
   const parametros = Object.values(datosLimpios);
   const setClause = columnas.map((col, i) => `${col}=$${i + 1}`).join(", ");
-
-  // Agregar el ID al final
   parametros.push(idConsultor);
 
   const query = `

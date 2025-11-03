@@ -1,2 +1,2 @@
-import { startServer } from "./presentacion/app.js";
+import { startServer } from "./presentacion/app";
 startServer();

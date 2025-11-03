@@ -8,5 +8,4 @@ export interface IConsultor {
   nivelexperiencia: "Junior" | "Semi-Senior" | "Senior" | "Experto";
   disponibilidad: "Disponible" | "No disponible";
   estado?: "Activo" | "Eliminado";
-  contrasena: string;
 }
