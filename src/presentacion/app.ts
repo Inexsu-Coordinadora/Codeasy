@@ -5,7 +5,7 @@ import { configuration } from '../common/configuracion';
 
 const app = Fastify({ logger: true });
 
-async function iniciarServidor() {
+export async function startServer() {
   await probarConexion();
 
   // Registra el controlador con el prefijo '/api'
@@ -18,4 +18,4 @@ async function iniciarServidor() {
   });
 }
 
-iniciarServidor();
+startServer();
