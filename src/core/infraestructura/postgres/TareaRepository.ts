@@ -39,23 +39,21 @@ async registrarTarea(tarea: ITarea): Promise<ITarea> {
   }
 
 
-  async actualizarTarea(idTarea: number, datos: ITarea): Promise<ITarea> {
-  // Filtramos datos nulos o indefinidos para no romper la query
+ async actualizarTarea(idTarea: number, datos: Partial<ITarea>): Promise<ITarea> {
   const datosLimpios = Object.fromEntries(
     Object.entries(datos).filter(([_, v]) => v !== null && v !== undefined)
   );
 
-  const columnas = Object.keys(datosLimpios).map((key) => key.toLowerCase());
+  const columnas = Object.keys(datosLimpios); 
   const parametros = Object.values(datosLimpios);
   const setClause = columnas.map((col, i) => `${col}=$${i + 1}`).join(", ");
 
-  // Agregar el ID al final
   parametros.push(idTarea);
 
   const query = `
-    UPDATE Tareas
+    UPDATE tareas
     SET ${setClause}
-    WHERE idTarea=$${parametros.length}
+    WHERE idtarea=$${parametros.length}
     RETURNING *;
   `;
 
@@ -67,9 +65,13 @@ async registrarTarea(tarea: ITarea): Promise<ITarea> {
   async eliminarTarea(idTarea: number): Promise<void> {
     const query = `
       UPDATE Tareas
-      SET status='eliminado'
-      WHERE idTarea=$1;
+      SET estatus='Eliminado'
+      WHERE idTarea=$1
+      AND estatus != 'Eliminado';
     `;
-    await ejecutarConsulta(query, [idTarea]);
+    const result = await ejecutarConsulta(query, [idTarea]);
+    if (result.rowCount === 0) {
+      throw new Error(`No se encontró la tarea con ID ${idTarea} para eliminar`);
+    }
   }
 }
