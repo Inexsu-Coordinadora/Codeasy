@@ -33,7 +33,7 @@ async registrarTarea(tarea: ITarea): Promise<ITarea> {
 
 
   async obtenerTareaPorId(idTarea: number): Promise<ITarea | null> {
-    const query = `SELECT * FROM Tareas WHERE idTarea = $1;`;
+    const query = `SELECT * FROM Tareas WHERE idTarea = $1 AND estatus != 'Eliminado';`;
     const result = await ejecutarConsulta(query, [idTarea]);
     return result.rows[0] || null;
   }

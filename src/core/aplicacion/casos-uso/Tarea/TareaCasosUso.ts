@@ -16,10 +16,10 @@ export class TareaCasosUso {
       estatus: "Activo",
       estadoTarea: "Creada",
       fechaCreacion: fechaActual,
-      // If fechaFinalizacion wasn't provided, set it to 1 day after creation
-      fechaFinalizacion: datos.fechaFinalizacion || new Date(fechaActual.getTime() + 24 * 60 * 60 * 1000),
-      prioridad: datos.prioridad || "Media", // Ensure required field has a default
-      asignadoA: datos.asignadoA || "Sin asignar" // Ensure required field has a default
+      // En caso de no proporcionar fechaFinalizacion, se establece a 1 semana después de la creación
+      fechaFinalizacion: datos.fechaFinalizacion || new Date(fechaActual.getTime() + 7 * 24 * 60 * 60 * 1000),
+      prioridad: datos.prioridad || "Media",
+      asignadoA: datos.asignadoA || "Sin asignar"
     });
 
     const tareaCreada = await this.tareaRepositorio.registrarTarea(nuevaTarea);
