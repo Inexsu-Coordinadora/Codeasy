@@ -21,6 +21,9 @@ export class TareaCasosUso {
       prioridad: datos.prioridad || "Media",
       asignadoA: datos.asignadoA || "Sin asignar"
     });
+    if (nuevaTarea.fechaFinalizacion <= fechaActual) {
+      throw new Error("La fecha de finalización debe ser posterior a la fecha de creación");
+    }
 
     const tareaCreada = await this.tareaRepositorio.registrarTarea(nuevaTarea);
 
