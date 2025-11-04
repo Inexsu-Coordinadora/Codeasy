@@ -3,7 +3,7 @@ import { FastifyError } from "fastify";
 import { construirConsultorEnrutador } from "./rutas/consultorEnrutador";
 import { construirTareaEnrutador } from "./rutas/enrutadorTarea";
 import { construirClienteEnrutador } from "./rutas/ClienteEnrutador";
-import { ProyectoEnrutador} from "./rutas/ProyectoEnrutador";
+import { construirProyectoEnrutador } from "./rutas/ProyectoEnrutador";
 
 const app = Fastify({ logger: true });
 
@@ -12,7 +12,7 @@ app.register(
     construirConsultorEnrutador(appInstance);
     construirTareaEnrutador(appInstance);
     construirClienteEnrutador(appInstance);
-    ProyectoEnrutador(appInstance);
+    construirProyectoEnrutador(appInstance);
   },
   { prefix: "/api" }
 );

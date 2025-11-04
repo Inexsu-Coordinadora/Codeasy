@@ -1,4 +1,4 @@
-import type { IProyecto } from '../IProyecto';
+import type { IProyecto } from "../IProyecto";
 
 export interface IProyectoRepositorio {
   crear(proyecto: IProyecto): Promise<IProyecto>;
