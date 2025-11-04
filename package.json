@@ -1,14 +1,14 @@
 {
   "name": "codeasy",
   "version": "1.0.0",
-  "description": "",
-  "main": "index.ts",
-  "type": "commonjs",
-"scripts": {
-  "build": "tsc",
-  "start": "node /dist/index.js",
-  "dev": "ts-node-dev --respawn --transpile-only index.ts"
-},
+  "description": "*Sistema de gestión de proyectos colaborativo desarrollado con Fastify, TypeScript y PostgreSQL.*",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "build": "tsc",
+    "start": "node ./dist/index.js",
+    "dev": "tsx src/index.ts"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Inexsu-Coordinadora/Codeasy.git"
@@ -21,7 +21,11 @@
   },
   "homepage": "https://github.com/Inexsu-Coordinadora/Codeasy#readme",
   "dependencies": {
-    "fastify": "^5.6.1"
+    "dotenv": "^17.2.3",
+    "fastify": "^5.6.1",
+    "pg": "^8.16.3",
+    "tsx": "^4.20.6",
+    "zod": "^4.1.12"
   },
   "devDependencies": {
     "@types/node": "^24.9.2",
@@ -30,12 +34,9 @@
     "fastify": "^5.6.1",
     "nodemon": "^3.1.10",
     "pg": "^8.16.3",
-    "ts-node": "^10.9.2",
     "ts-node-dev": "^2.0.0",
     "typescript": "^5.9.3",
     "uuid": "^13.0.0",
     "zod": "^4.1.12"
   }
-  
-
 }
