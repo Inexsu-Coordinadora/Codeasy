@@ -1,0 +1,16 @@
+meta {
+  name: Eliminar Proyecto
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:3000/api/proyecto/eliminar/7
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

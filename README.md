@@ -45,7 +45,4 @@ git clone https://github.com/Inexsu-Coordinadora/Codeasy.git
 
 ## 🧑🏼‍💻 Integrantes
 
-**Dina Martinez**     
-**Edwin Martinez**     
-**Andres Elias Arroyo**
-**Jose Alvarez**       
+**Dina Martinez** - **Edwin Martinez** - **Andres Elias Arroyo** - **Jose Alvarez**       

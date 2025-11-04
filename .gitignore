@@ -79,7 +79,6 @@ migrations-lock.json
 # -----------------------------
 *.sqlite
 *.db
-*.sql
 *.dump
 pgdata/
 docker-data/
@@ -136,3 +135,5 @@ lcov-report/
 # -----------------------------
 secrets/
 private_keys/
+
+.env
