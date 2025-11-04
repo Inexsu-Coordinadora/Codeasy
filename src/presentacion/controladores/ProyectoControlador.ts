@@ -6,7 +6,7 @@ import type { ProyectoActualizarDTO } from "../esquemas/ProyectoActualizarEsquem
 export class ProyectoControlador {
   constructor(private casosUso: ProyectoCasosUso) {}
 
-  // 🟢 Registrar un nuevo proyecto
+  // Registrar un nuevo proyecto
   async registrarProyecto(req: FastifyRequest, reply: FastifyReply) {
     try {
       const datos = req.body as ProyectoCrearDTO;
@@ -23,7 +23,7 @@ export class ProyectoControlador {
     }
   }
 
-  // 🟡 Listar todos los proyectos activos
+  // Listar todos los proyectos activos
   async listarTodosProyectos(_req: FastifyRequest, reply: FastifyReply) {
     try {
       const proyectos = await this.casosUso.listarTodosProyectos();
@@ -39,7 +39,7 @@ export class ProyectoControlador {
     }
   }
 
-  // 🔵 Obtener un proyecto por ID
+  // Obtener un proyecto por ID
   async obtenerProyectoPorId(req: FastifyRequest, reply: FastifyReply) {
     try {
       const { idProyecto } = req.params as { idProyecto: number };
@@ -61,7 +61,7 @@ export class ProyectoControlador {
     }
   }
 
-  // 🟣 Actualizar un proyecto existente
+  // Actualizar un proyecto existente
   async actualizarProyecto(req: FastifyRequest, reply: FastifyReply) {
     try {
       const { idProyecto } = req.params as { idProyecto: number };
@@ -81,7 +81,7 @@ export class ProyectoControlador {
     }
   }
 
-  // 🔴 Eliminar (lógicamente) un proyecto
+  // Eliminar (lógicamente) un proyecto
   async eliminarProyecto(req: FastifyRequest, reply: FastifyReply) {
     try {
       const { idProyecto } = req.params as { idProyecto: number };

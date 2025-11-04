@@ -5,7 +5,7 @@ import type { IProyectoRepositorio } from '../../dominio/proyecto/repositorio/IP
 
 export class ProyectoRepositorio implements IProyectoRepositorio {
 
-  // 🟡 Crear un nuevo proyecto
+  // Crear un nuevo proyecto
   async registrarProyecto(proyecto: IProyecto): Promise<IProyecto> {
     const proyectoSinId = { ...proyecto };
     delete (proyectoSinId as any).id;
@@ -24,21 +24,21 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     return resultado.rows[0];
   }
 
-  // 🟢 Listar todos los proyectos activos
+  // Listar todos los proyectos activos
   async listarTodosProyectos(): Promise<IProyecto[]> {
     const query = `SELECT * FROM proyectos WHERE estatus = 'Activo' ORDER BY id ASC;`;
     const resultado = await ejecutarConsulta(query, []);
     return resultado.rows;
   }
 
-  // 🔵 Obtener un proyecto por su ID
+  // Obtener un proyecto por su ID
   async obtenerProyectoPorId(id: number): Promise<IProyecto | null> {
     const query = `SELECT * FROM proyectos WHERE id = $1 AND estatus = 'Activo';`;
     const resultado = await ejecutarConsulta(query, [id]);
     return resultado.rows[0] || null;
   }
 
-  // 🟣 Actualizar un proyecto
+  // Actualizar un proyecto
   async actualizarProyecto(id: number, datos: Partial<IProyecto>): Promise<IProyecto> {
     const datosLimpios = Object.fromEntries(
       Object.entries(datos).filter(([_, v]) => v !== null && v !== undefined)
@@ -60,7 +60,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     return resultado.rows[0];
   }
 
-  // 🔴 Eliminación lógica del proyecto
+  // Eliminación lógica del proyecto
   async eliminarProyecto(id: number): Promise<void> {
     const query = `UPDATE proyectos SET estatus='Eliminado' WHERE id=$1;`;
     await ejecutarConsulta(query, [id]);

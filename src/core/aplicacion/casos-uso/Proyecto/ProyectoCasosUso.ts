@@ -7,7 +7,7 @@ import { ProyectoActualizarDTO } from "../../../../presentacion/esquemas/Proyect
 export class ProyectoCasosUso {
   constructor(private proyectoRepositorio: IProyectoRepositorio) {}
 
-  // 🟢 Registrar un nuevo proyecto
+  // Registrar un nuevo proyecto
   async registrarProyecto(datos: ProyectoCrearDTO): Promise<IProyecto> {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
@@ -16,7 +16,7 @@ export class ProyectoCasosUso {
     fechaInicio.setHours(0, 0, 0, 0);
     fechaEntrega.setHours(0, 0, 0, 0);
 
-    // 🧩 Validaciones de negocio
+    // Validaciones de negocio
     if (isNaN(fechaInicio.getTime()) || isNaN(fechaEntrega.getTime())) {
       throw new Error("Las fechas proporcionadas no son válidas.");
     }
@@ -46,12 +46,12 @@ export class ProyectoCasosUso {
     return proyectoCreado;
   }
 
-  // 🟡 Listar todos los proyectos activos
+  // Listar todos los proyectos activos
   async listarTodosProyectos(): Promise<IProyecto[]> {
     return await this.proyectoRepositorio.listarTodosProyectos();
   }
 
-  // 🔵 Obtener un proyecto por ID
+  // Obtener un proyecto por ID
   async obtenerProyectoPorId(idProyecto: number): Promise<IProyecto | null> {
     const proyecto = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
     if (!proyecto) {
@@ -60,7 +60,7 @@ export class ProyectoCasosUso {
     return proyecto;
   }
 
-  // 🟣 Actualizar un proyecto existente
+  // Actualizar un proyecto existente
   async actualizarProyecto(idProyecto: number, datos: ProyectoActualizarDTO): Promise<IProyecto> {
     const proyectoExistente = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
     if (!proyectoExistente) {
@@ -102,7 +102,7 @@ export class ProyectoCasosUso {
     return resultado;
   }
 
-  // 🔴 Eliminar (lógicamente) un proyecto
+  // Eliminar (lógicamente) un proyecto
   async eliminarProyecto(idProyecto: number): Promise<void> {
     const proyectoExistente = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
     if (!proyectoExistente || proyectoExistente.estatus === "Eliminado") {
