@@ -77,7 +77,12 @@ migrations-lock.json
 # -----------------------------
 # 🧮 Base de datos local / dumps
 # -----------------------------
-
+*.sqlite
+*.db
+*.dump
+pgdata/
+docker-data/
+db_backups/
 
 # -----------------------------
 # 🧰 Cache y archivos temporales del entorno
@@ -130,3 +135,5 @@ lcov-report/
 # -----------------------------
 secrets/
 private_keys/
+
+.env

@@ -6,7 +6,7 @@ export const configuration = {
   baseDatos: {
     host: process.env.PGHOST,
     puerto: Number(process.env.PGPORT),
-    usuario: process.env.PGUSER ,
+    usuario: process.env.PGUSER,
     contrasena: process.env.PGPASSWORD,
     nombreDb: process.env.PGDBNAME,
   },
