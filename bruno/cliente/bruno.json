@@ -1,9 +1,0 @@
-{
-  "version": "1",
-  "name": "cliente",
-  "type": "collection",
-  "ignore": [
-    "node_modules",
-    ".git"
-  ]
-}
