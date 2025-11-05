@@ -136,4 +136,8 @@ lcov-report/
 secrets/
 private_keys/
 
+<<<<<<< HEAD
 .env
+=======
+.env
+>>>>>>> feature/CRUD-Tareas
