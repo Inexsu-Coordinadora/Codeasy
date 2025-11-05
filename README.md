@@ -52,7 +52,4 @@ https://www.youtube.com/watch?v=AmeaxzkaRTs&feature=youtu.be
 
 ## 🧑🏼‍💻 Integrantes
 
-**Dina Martinez**     
-**Edwin Martinez**     
-**Andres Elias Arroyo**
-**Jose Alvarez**       
+**Dina Martinez** - **Edwin Martinez** - **Andres Elias Arroyo** - **Jose Alvarez**       
