@@ -23,7 +23,7 @@ function clienteEnrutador(
   app.put("/cliente/:idCliente", ClienteController.actualizarCliente.bind(ClienteController));
   
   //Eliminar un cliente por su ID
-  app.delete("/cliente/:idCliente", ClienteController.eliminarCliente.bind(ClienteController));
+  app.put("/cliente/eliminar/:idCliente", ClienteController.eliminarCliente.bind(ClienteController));
 }
 
 

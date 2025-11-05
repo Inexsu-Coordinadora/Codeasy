@@ -43,6 +43,10 @@ git clone https://github.com/Inexsu-Coordinadora/Codeasy.git
 
 ---
 
+
+# Video demostrativo 
+https://www.youtube.com/watch?v=AmeaxzkaRTs
+
 ## 🧑🏼‍💻 Integrantes
 
 **Dina Martinez** - **Edwin Martinez** - **Andres Elias Arroyo** - **Jose Alvarez**       
