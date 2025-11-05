@@ -1,3 +1,6 @@
+CREATE TYPE nivel_experiencia AS ENUM ('Junior', 'Semi-Senior', 'Senior', 'Experto');
+CREATE TYPE disponibilidad_tipo AS ENUM ('Disponible', 'No disponible');
+CREATE TYPE estado_tipo AS ENUM ('Activo', 'Eliminado');
 
 CREATE TABLE IF NOT EXISTS consultores (
     idconsultor SERIAL PRIMARY KEY,
@@ -6,9 +9,7 @@ CREATE TABLE IF NOT EXISTS consultores (
     correo VARCHAR(100) UNIQUE NOT NULL,
     telefono VARCHAR(55),
     especialidad VARCHAR(100),
-    nivelexperiencia VARCHAR(20) DEFAULT 'Junior',
-    disponibilidad VARCHAR(20) DEFAULT 'disponible',
-    estado VARCHAR(20) DEFAULT 'Activo',
-    contrasena VARCHAR(255) NOT NULL
+    nivelexperiencia nivel_experiencia DEFAULT 'Junior',
+    disponibilidad disponibilidad_tipo DEFAULT 'Disponible',
+    estado estado_tipo DEFAULT 'Activo',
 );
-// migraciones/001-tabla-Consultores.sql
