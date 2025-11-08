@@ -9,7 +9,7 @@
     "module": "nodenext",
     "target": "esnext",
     "esModuleInterop": true,
-
+    
     
     // For nodejs:
     //"lib": ["esnext"],
