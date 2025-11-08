@@ -1,0 +1,28 @@
+meta {
+  name: Crear consultor
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://127.0.0.1:3000/api/consultor
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "nombre": "dinamartinez Pérez",
+    "identificacion": "225555555",
+    "correo": "dina@email.com",
+    "telefono": "3001234567",
+    "especialidad": "Frontend",
+    "nivelexperiencia": "Senior"
+    
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

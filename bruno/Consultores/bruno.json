@@ -1,0 +1,9 @@
+{
+  "version": "1",
+  "name": "Gestor de Proyectos",
+  "type": "collection",
+  "ignore": [
+    "node_modules",
+    ".git"
+  ]
+}
