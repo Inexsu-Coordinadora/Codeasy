@@ -1,8 +1,11 @@
 import { FastifyInstance } from "fastify";
 import { ClienteControlador } from "../controladores/ClienteControlador";
 import { IClienteRepositorio } from "../../core/dominio/cliente/repositorio/IClienteRepositorio";
-import { ClienteCasosUso } from "../../core/aplicacion/casos-uso/ClienteCasosUso";
+import { ClienteCasosUso } from "../../core/aplicacion/casos-uso/Cliente/ClienteCasosUso";
 import { ClienteRepositorio } from "../../core/infraestructura/postgres/ClienteRepositorio";
+import { validarZod } from "../esquemas/middlewares/validarZod.js";
+import { ClienteCrearEsquema } from "../esquemas/Cliente/clienteCrearEsquema";
+import { ClienteActualizarEsquema } from "../esquemas/Cliente/clienteActualizarEsquema";
 
 function clienteEnrutador(
   app: FastifyInstance,
@@ -17,10 +20,10 @@ function clienteEnrutador(
   app.get("/cliente/:idCliente", ClienteController.obtenerClientePorId.bind(ClienteController));
   
   //Registrar un nuevo cliente
-  app.post("/cliente", ClienteController.registrarCliente.bind(ClienteController));
+  app.post("/cliente", { preHandler: validarZod(ClienteCrearEsquema, "body") }, ClienteController.registrarCliente.bind(ClienteController));
   
   //Actualizar un cliente por su ID
-  app.put("/cliente/:idCliente", ClienteController.actualizarCliente.bind(ClienteController));
+  app.put("/cliente/:idCliente", { preHandler: validarZod(ClienteActualizarEsquema, "body") },ClienteController.actualizarCliente.bind(ClienteController));
   
   //Eliminar un cliente por su ID
   app.put("/cliente/eliminar/:idCliente", ClienteController.eliminarCliente.bind(ClienteController));

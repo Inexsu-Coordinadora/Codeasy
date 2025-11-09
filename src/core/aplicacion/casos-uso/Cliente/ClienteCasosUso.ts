@@ -1,8 +1,10 @@
-import { ICliente } from "../../dominio/cliente/ICliente";
-import { Cliente } from "../../dominio/cliente/Cliente";
-import { IClienteRepositorio } from "../../dominio/cliente/repositorio/IClienteRepositorio";
+import { ICliente } from "../../../dominio/cliente/ICliente.js";
+import { Cliente } from "../../../dominio/cliente/Cliente.js";
+import { IClienteRepositorio } from "../../../dominio/cliente/repositorio/IClienteRepositorio.js";
 import { ClienteCrearDTO } from "../../../presentacion/esquemas/clienteCrearEsquema";
 import { ClienteActualizarDTO} from "../../../presentacion/esquemas/clienteActualizarEsquema";
+import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError.js";
+
 
 
 //Logica de negocio para gestionar los clientes
@@ -19,7 +21,7 @@ export class ClienteCasosUso {
     );
 
     if (existentePorIdentificacion) {
-      throw new Error(`Ya existe un cliente con la identificación ${datos.identificacion}.`);
+      throw new AppError(`Ya existe un cliente con la identificación ${datos.identificacion}.`);
     }
 
     const nuevoCliente = new Cliente({
@@ -52,14 +54,14 @@ export class ClienteCasosUso {
     const clienteExistente = await this.clienteRepositorio.buscarPorIdCliente(idCliente);
 
     if (!clienteExistente) {
-      throw new Error(`No se encontró el cliente con ID ${idCliente} para actualizar.`);
+      throw new AppError(`No se encontró el cliente con ID ${idCliente} para actualizar.`);
     }
 
     if (datos.identificacion && datos.identificacion !== clienteExistente.identificacion) {
         const existentePorNuevaIdentificacion = await this.clienteRepositorio.buscarPorIdentificacionCliente(datos.identificacion);
         
         if (existentePorNuevaIdentificacion && existentePorNuevaIdentificacion.idCliente !== idCliente) {
-            throw new Error(`La identificación ${datos.identificacion} ya está en uso por otro cliente.`);
+            throw new AppError(`La identificación ${datos.identificacion} ya está en uso por otro cliente.`);
         }
     }
 
@@ -75,7 +77,7 @@ export class ClienteCasosUso {
     
     
     if (!resultado) {
-       throw new Error(`Error al guardar la actualización del cliente con ID ${idCliente}.`);
+       throw new AppError(`AppError al guardar la actualización del cliente con ID ${idCliente}.`);
     }
 
     return resultado;
@@ -84,7 +86,7 @@ export class ClienteCasosUso {
   async eliminarCliente(idCliente: number): Promise<void> {
     const clienteExistente = await this.clienteRepositorio.buscarPorIdCliente(idCliente);
     if (!clienteExistente) {
-      throw new Error(`No se encontró el cliente con ID ${idCliente} para eliminar.`);
+      throw new AppError(`No se encontró el cliente con ID ${idCliente} para eliminar.`);
     }
 
     await this.clienteRepositorio.EliminarCliente(idCliente);

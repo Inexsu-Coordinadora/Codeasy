@@ -4,8 +4,8 @@ import { IProyectoRepositorio } from "../../core/dominio/proyecto/repositorio/IP
 import { ProyectoRepositorio } from "../../core/infraestructura/postgres/ProyectoRepositorio";
 import { ProyectoCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ProyectoCasosUso";
 import { validarZod } from "../esquemas/middlewares/validarZod";
-import { ProyectoCrearEsquema } from "../esquemas/ProyectoCrearEsquema";
-import { ProyectoActualizarEsquema } from "../esquemas/proyectoActualizarEsquema";
+import { ProyectoCrearEsquema } from "../esquemas/Proyectos/proyectoCrearEsquema";
+import { ProyectoActualizarEsquema } from "../esquemas/Proyectos/proyectoActualizarEsquema";
 
 function proyectoEnrutador(app: FastifyInstance, proyectoController: ProyectoControlador) {
   app.get("/proyecto", proyectoController.listarTodosProyectos.bind(proyectoController));

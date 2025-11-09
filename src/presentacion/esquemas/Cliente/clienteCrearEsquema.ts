@@ -15,7 +15,7 @@ export const ClienteCrearEsquema = z.object({
     .min(5, "La identificación debe tener al menos 5 caracteres")
     .max(20, "La identificación no puede exceder los 20 caracteres"),
 
-  email: z.string().email({ message: "Formato de email inválido" }),
+  email: z.email({ message: "Formato de email inválido" }),
   
   telefono: z
     .string()

@@ -8,4 +8,5 @@ export interface IConsultorRepositorio {
   actualizarConsultor(idConsultor: number, datosConsultor: IConsultor): Promise<IConsultor>; 
   eliminarConsultor(idConsultor: number): Promise<void>; 
  buscarPorCorreoOIdentificacion(correo: string, identificacion: string): Promise<IConsultor | null>;
+ 
 }
