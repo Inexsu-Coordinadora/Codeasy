@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ClienteCasosUso} from "../../core/aplicacion/casos-uso/ClienteCasosUso";
+import { ClienteCasosUso } from "../../core/aplicacion/casos-uso/Cliente/ClienteCasosUso.js";
 import { ClienteActualizarEsquema } from "../esquemas/clienteActualizarEsquema";
 import { ClienteCrearEsquema} from "../esquemas/clienteCrearEsquema";
 // para la lógica del error.

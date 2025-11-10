@@ -1,8 +1,8 @@
-import { ICliente } from "../../dominio/cliente/ICliente";
-import { Cliente } from "../../dominio/cliente/Cliente";
-import { IClienteRepositorio } from "../../dominio/cliente/repositorio/IClienteRepositorio";
-import { ClienteCrearDTO } from "../../../presentacion/esquemas/clienteCrearEsquema";
-import { ClienteActualizarDTO} from "../../../presentacion/esquemas/clienteActualizarEsquema";
+import { ICliente } from "../../../dominio/cliente/ICliente.js";
+import { Cliente } from "../../../dominio/cliente/Cliente.js";
+import { IClienteRepositorio } from "../../../dominio/cliente/repositorio/IClienteRepositorio.js";
+import { ClienteCrearDTO } from "../../../../presentacion/esquemas/clienteCrearEsquema.js";
+import { ClienteActualizarDTO} from "../../../../presentacion/esquemas/clienteActualizarEsquema.js";
 
 
 //Logica de negocio para gestionar los clientes

@@ -1,4 +1,4 @@
-import { ICliente } from '../../dominio/cliente/ICliente';
+import { ICliente } from '../../../dominio/cliente/ICliente.js';
 export interface IClientesCasosUso {
     obtenerClientes(limite?: number): Promise<ICliente[]>;
     obtenerClientePorId(idCliente: number): Promise<ICliente | null>;

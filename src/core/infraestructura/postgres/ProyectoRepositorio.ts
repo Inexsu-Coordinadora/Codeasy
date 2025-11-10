@@ -32,7 +32,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
   }
 
   // Obtener un proyecto por su ID
-  async obtenerProyectoPorId(id: number): Promise<IProyecto | null> {
+  async obtenerProyectoPorId(id: string): Promise<IProyecto | null> {
     const query = `SELECT * FROM proyectos WHERE id = $1 AND estatus = 'Activo';`;
     const resultado = await ejecutarConsulta(query, [id]);
     return resultado.rows[0] || null;

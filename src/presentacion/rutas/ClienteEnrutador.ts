@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { ClienteControlador } from "../controladores/ClienteControlador";
 import { IClienteRepositorio } from "../../core/dominio/cliente/repositorio/IClienteRepositorio";
-import { ClienteCasosUso } from "../../core/aplicacion/casos-uso/ClienteCasosUso";
+import { ClienteCasosUso } from "../../core/aplicacion/casos-uso/Cliente/ClienteCasosUso.js";
 import { ClienteRepositorio } from "../../core/infraestructura/postgres/ClienteRepositorio";
 
 function clienteEnrutador(
