@@ -1,10 +1,10 @@
 // src/infraestructura/configuracion/dependencias.ts (ejemplo)
 import { Pool } from "pg";
-import { ParteHoraRepositorio} from "./ParteHoraRepositorio";
-import { ParteHoraCasosUso } from "../../aplicacion/casos-uso/ParteHora/ParteHoraCasosUso";
-import { ParteHoraControlador } from "../../../presentacion/controladores/ParteHoraControlador";
+import { ParteHoraRepositorio} from "./ParteHoraRepositorio.js";
+import { ParteHoraCasosUso } from "../../aplicacion/casos-uso/ParteHora/ParteHoraCasosUso.js";
+import { ParteHoraControlador } from "../../../presentacion/controladores/ParteHoraControlador.js";
 import { IProyectoRepositorio } from "../../dominio/proyecto/repositorio/IProyectoRepositorio.js";
-import { IConsultorRepositorio } from "../../dominio/consultor/repositorio/IConsultorRepositorio.js";
+import { IConsultorRepositorio } from "../../dominio/consultor/repositorio/IConsultorRepositorio";
 import { IStaffProyectoRepositorio } from "../../dominio/staff-proyecto/IStaffProyecto";
 
 export function configurarDependenciasParteHora(

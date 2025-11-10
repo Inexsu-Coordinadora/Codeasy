@@ -73,7 +73,8 @@ export class ClienteRepositorio implements IClienteRepositorio {
 
   async EliminarCliente(idCliente: number): Promise<void> {
     const query = `
-      DELETE FROM clientes
+      UPDATE clientes
+      SET estatus = 'Eliminado'
       WHERE idcliente=$1;
     `;
     await ejecutarConsulta(query, [idCliente]);

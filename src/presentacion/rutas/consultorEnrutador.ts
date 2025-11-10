@@ -4,8 +4,8 @@ import { IConsultorRepositorio } from "../../core/dominio/consultor/repositorio/
 import { ConsultorCasosUso } from "../../core/aplicacion/casos-uso/Consultor/ConsultorCasosUso.js";
 import { ConsultorRepositorio } from "../../core/infraestructura/postgres/ConsultorRepository.js";
 import { validarZod } from "../esquemas/middlewares/validarZod.js";
-import { ConsultorCrearEsquema } from "../esquemas/consultorCrearEsquema.js";
-import { ConsultorActualizarEsquema } from "../esquemas/consultorActualizarEsquema.js";
+import { ConsultorCrearEsquema } from "../esquemas/Consultor/consultorCrearEsquema.js";
+import { ConsultorActualizarEsquema } from "../esquemas/Consultor/consultorActualizarEsquema.js";
 
 function consultorEnrutador(
   app: FastifyInstance,
@@ -17,7 +17,7 @@ function consultorEnrutador(
 
   app.post("/consultor", { preHandler: validarZod(ConsultorCrearEsquema, "body") },ConsultorController.registrarConsultor.bind(ConsultorController));
   app.put("/consultor/:idConsultor", { preHandler: validarZod(ConsultorActualizarEsquema, "body") },ConsultorController.actualizarConsultor.bind(ConsultorController));
-  app.put("/consultor/eliminar/:idConsultjor", ConsultorController.eliminarConsultor.bind(ConsultorController));
+  app.put("/consultor/eliminar/:idConsultor", ConsultorController.eliminarConsultor.bind(ConsultorController));
 }
 
 export async function construirConsultorEnrutador(app: FastifyInstance) {

@@ -1,4 +1,3 @@
-// src/dominio/parteHora/repositorio/IParteHoraRepositorio.ts
 import { IParteHora } from "../IParteHora";
 
 export interface IParteHoraRepositorio {

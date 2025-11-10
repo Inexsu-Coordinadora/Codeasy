@@ -5,7 +5,7 @@ import { StaffProyectoRepositorio } from "../../core/infraestructura/postgres/St
 import { ProyectoRepositorio } from "../../core/infraestructura/postgres/ProyectoRepositorio";
 import { ConsultorRepositorio } from "../../core/infraestructura/postgres/ConsultorRepository";
 import { validarZod } from "../esquemas/middlewares/validarZod";
-import { StaffProyectoCrearEsquema } from "../esquemas/staffProyectoCrearEsquema";
+import { StaffProyectoCrearEsquema } from "../esquemas/StaffProyecto/staffProyectoCrearEsquema";
 
 // Rutas del módulo StaffProyecto
 function staffProyectoEnrutador(app: FastifyInstance, controlador: StaffProyectoControlador) {
