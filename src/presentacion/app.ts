@@ -43,7 +43,7 @@ app.setErrorHandler(ManejadorErrores);
 export const startServer = async (): Promise<void> => {
   try {
     await app.listen({ port: Number(process.env.PUERTO) || 3000 });
-    app.log.info(`El servidor está corriendo en el puerto ${process.env.PUERTO || 3000}...`);
+    app.log.info(`El servidor esta corriendo en el puerto ${process.env.PUERTO || 3000}...`);
   } catch (err) {
     app.log.error(`Error al ejecutar el servidor\n ${err}`);
     throw err;

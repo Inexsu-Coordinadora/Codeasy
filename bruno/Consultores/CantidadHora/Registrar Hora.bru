@@ -1,0 +1,27 @@
+meta {
+  name: Registrar Hora
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/api/partes-hora
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id_proyecto": "0100f477-df35-426d-9257-9cd3fdf17db0",
+    "id_consultor": "fff8263a-f452-49d5-9fb9-0e8e9d18897a",
+    "fecha": "2025-11-12",
+    "cantidad_horas": 100.5,
+    "descripcion": "Inicio de desarrollo"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

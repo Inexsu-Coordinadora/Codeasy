@@ -18,7 +18,7 @@ export class ParteHoraControlador {
 
     reply.status(201).send({
       exito: true,
-      mensaje: "Parte de horas registrado exitosamente",
+      mensaje: "Horas registradas exitosamente",
       data: parteRegistrado,
     });
   }
@@ -35,8 +35,8 @@ export class ParteHoraControlador {
     reply.status(200).send({
       exito: true,
       mensaje: partes.length > 0
-        ? "Partes de horas consultados exitosamente"
-        : "No se encontraron partes de horas para este proyecto",
+        ? "Horas consultadas exitosamente"
+        : "No se encontraron horas registradas para este proyecto",
       data: partes,
       total: partes.length,
     });
@@ -54,8 +54,8 @@ export class ParteHoraControlador {
     reply.status(200).send({
       exito: true,
       mensaje: partes.length > 0
-        ? "Partes de horas consultados exitosamente"
-        : "No se encontraron partes de horas para este consultor",
+        ? "Horas consultadas exitosamente"
+        : "No se encontraron horas registradas para este consultor",
       data: partes,
       total: partes.length,
     });

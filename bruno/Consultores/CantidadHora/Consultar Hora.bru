@@ -1,0 +1,16 @@
+meta {
+  name: Consultar Hora
+  type: http
+  seq: 2
+}
+
+get {
+  url: http://localhost:3000/api/partes-hora/proyecto/0100f477-df35-426d-9257-9cd3fdf17db0
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

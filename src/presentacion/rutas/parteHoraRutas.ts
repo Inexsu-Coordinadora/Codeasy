@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { ParteHoraControlador } from "../controladores/ParteHoraControlador";
 import { validarZod } from "../esquemas/middlewares/validarZod";
-import { ParteHoraCrearEsquema } from "../esquemas/ParteHoraEsquema";
+import { ParteHoraCrearEsquema } from "../esquemas/ParteHora/ParteHoraEsquema";
 import { z } from "zod";
 
 export async function registrarRutasParteHora(
