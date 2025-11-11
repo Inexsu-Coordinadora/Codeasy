@@ -35,14 +35,14 @@ async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
   }
 
 
-  async obtenerConsultorPorId(idConsultor: number): Promise<IConsultor | null> {
+  async obtenerConsultorPorId(idConsultor: string): Promise<IConsultor | null> {
     const query = `SELECT * FROM consultores WHERE idconsultor = $1 AND estado != 'Eliminado'`;
     const result = await ejecutarConsulta(query, [idConsultor]);
     return result.rows[0] || null;
   }
 
   
-  async actualizarConsultor(idConsultor: number, datos: IConsultor): Promise<IConsultor> {
+  async actualizarConsultor(idConsultor: string, datos: IConsultor): Promise<IConsultor> {
   const datosLimpios = Object.fromEntries(
     Object.entries(datos).filter(([_, v]) => v !== null && v !== undefined)
   );
@@ -64,7 +64,7 @@ async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
 }
 
   
-  async eliminarConsultor(idConsultor: number): Promise<void> {
+  async eliminarConsultor(idConsultor: string): Promise<void> {
     const query = `
       UPDATE consultores
       SET estado='Eliminado'

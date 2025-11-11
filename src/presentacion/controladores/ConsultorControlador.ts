@@ -1,5 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { ConsultorCasosUso } from "../../core/aplicacion/casos-uso/Consultor/ConsultorCasosUso";
+import { ConsultorCasosUso } from "../../core/aplicacion/casos-uso/Consultor/ConsultorCasosUso.js";
 import type { ConsultorCrearDTO } from "../esquemas/consultorCrearEsquema";
 import type { ConsultorActualizarDTO } from "../esquemas/consultorActualizarEsquema";
 
@@ -28,7 +28,7 @@ export class ConsultorControlador {
   }
 
   async obtenerConsultorPorId(req: FastifyRequest, reply: FastifyReply) {
-    const { idConsultor } = req.params as { idConsultor: number };
+    const { idConsultor } = req.params as { idConsultor: string };
     const consultor = await this.casosUso.obtenerConsultorPorId(idConsultor);
 
     return reply.code(200).send({
@@ -39,7 +39,7 @@ export class ConsultorControlador {
   }
 
   async actualizarConsultor(req: FastifyRequest, reply: FastifyReply) {
-    const { idConsultor } = req.params as { idConsultor: number };
+    const { idConsultor } = req.params as { idConsultor: string };
     const datos = req.body as ConsultorActualizarDTO;
 
     const consultorActualizado = await this.casosUso.actualizarConsultor(
@@ -55,7 +55,7 @@ export class ConsultorControlador {
   }
 
   async eliminarConsultor(req: FastifyRequest, reply: FastifyReply) {
-    const { idConsultor } = req.params as { idConsultor: number };
+    const { idConsultor } = req.params as { idConsultor: string };
     await this.casosUso.eliminarConsultor(idConsultor);
 
     return reply.code(200).send({

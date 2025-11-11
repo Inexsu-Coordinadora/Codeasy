@@ -2,9 +2,10 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { ProyectoCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ProyectoCasosUso";
 import type { ProyectoCrearDTO } from "../esquemas/proyectoCrearEsquema";
 import type { ProyectoActualizarDTO } from "../esquemas/proyectoActualizarEsquema";
+import { ConsultarProyectosPorClienteCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ConsultarProyectosPorClienteCasosUso";
 
 export class ProyectoControlador {
-  constructor(private casosUso: ProyectoCasosUso) {}
+  constructor(private casosUso: ProyectoCasosUso, private  consultarProyectosPorClienteCasosUso: ConsultarProyectosPorClienteCasosUso) {}
 
   async registrarProyecto(req: FastifyRequest, reply: FastifyReply) {
     const datos = req.body as ProyectoCrearDTO;
@@ -63,4 +64,35 @@ export class ProyectoControlador {
       mensaje: "Proyecto eliminado correctamente",
     });
   }
+
+// Nuevo método para consultar proyectos por cliente
+  async consultarProyectosPorCliente(req: FastifyRequest, reply: FastifyReply) {
+    const { idCliente } = req.params as { idCliente: string };
+    const { estado, fecha_inicio, fecha_fin } = req.query as {
+      estado?: string;
+      fecha_inicio?: string;
+      fecha_fin?: string;
+    };
+
+    const filtros = {
+      estado,
+      fecha_inicio: fecha_inicio ? new Date(fecha_inicio) : undefined,
+    };
+
+    const resultado = await this.consultarProyectosPorClienteCasosUso.ejecutar(idCliente, filtros);
+
+     if (resultado.mensaje) {
+    return reply.code(200).send({
+      exito: true,
+      mensaje: resultado.mensaje,
+      data: resultado.proyectos,
+    });
+  }
+
+  return reply.code(200).send({
+    exito: true,
+    data: resultado.proyectos,
+  });
+  }
+  
 }

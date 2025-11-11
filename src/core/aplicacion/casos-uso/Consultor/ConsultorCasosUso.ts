@@ -39,7 +39,7 @@ export class ConsultorCasosUso {
   }
 
  
-  async obtenerConsultorPorId(idConsultor: number): Promise<IConsultor | null> {
+  async obtenerConsultorPorId(idConsultor: string): Promise<IConsultor | null> {
     const consultor = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
     if (!consultor) {
     throw new AppError(`No se encontró un consultor con el ID ${idConsultor}`);
@@ -48,7 +48,7 @@ export class ConsultorCasosUso {
   }
 
 
-  async actualizarConsultor(idConsultor: number, datos: ConsultorActualizarDTO): Promise<IConsultor> {
+  async actualizarConsultor(idConsultor: string, datos: ConsultorActualizarDTO): Promise<IConsultor> {
   const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
 
   if (!consultorExistente) {
@@ -72,7 +72,7 @@ export class ConsultorCasosUso {
 
 
 
-  async eliminarConsultor(idConsultor: number): Promise<void> {
+  async eliminarConsultor(idConsultor: string): Promise<void> {
     const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
 
      if (!consultorExistente || consultorExistente.estado === "Eliminado") {
@@ -83,4 +83,6 @@ export class ConsultorCasosUso {
 
     await this.consultorRepositorio.actualizarConsultor(idConsultor, consultorExistente);
   }
+
+  
 }

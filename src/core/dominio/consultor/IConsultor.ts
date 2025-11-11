@@ -1,5 +1,5 @@
 export interface IConsultor {
-  idConsultor?: number;
+  idConsultor?: string;
   nombre: string;
   identificacion: string;
   correo: string;

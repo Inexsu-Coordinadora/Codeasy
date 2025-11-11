@@ -1,4 +1,4 @@
-import { ICliente, EstatusCliente } from './ICliente';
+import { ICliente, EstadoCliente } from './ICliente';
 
 export class Cliente implements ICliente {
     idCliente?: number;
@@ -6,7 +6,7 @@ export class Cliente implements ICliente {
     identificacion!: string;
     email!: string;
     telefono!: string | null; 
-    estatus: EstatusCliente = 'Activo'; 
+    estado: EstadoCliente = 'Activo'; 
 
     constructor(props: Partial<ICliente>)
     {

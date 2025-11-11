@@ -1,7 +1,7 @@
 import { IConsultor } from "./IConsultor";
 
 export class Consultor implements IConsultor {
-  idConsultor?: number;
+  idConsultor?: string;
   nombre!: string;
   identificacion!: string;
   correo!: string;

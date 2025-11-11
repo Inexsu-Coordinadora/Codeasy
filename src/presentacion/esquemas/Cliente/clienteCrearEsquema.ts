@@ -24,7 +24,7 @@ export const ClienteCrearEsquema = z.object({
     .optional() 
     .transform((val) => val ?? null),
 
-    estatus: z.literal("Activo").or(z.literal("Eliminado")),
+    estado: z.literal("Activo").or(z.literal("Eliminado")),
 
 });
 

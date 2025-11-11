@@ -1,5 +1,5 @@
 export interface IProyecto {
-  id?: number; 
+  idProyecto?: number; 
   nombre: string;
   descripcion: string;
   estado?: 'Creado' | 'En proceso' | 'Finalizado'; 

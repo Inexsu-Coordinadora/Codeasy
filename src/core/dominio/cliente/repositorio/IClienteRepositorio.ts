@@ -10,6 +10,8 @@ export interface IClienteRepositorio {
     ActualizarCliente(idCliente: number, datosCliente: ICliente): Promise<ICliente | null>;
     buscarPorIdentificacionCliente(idCliente: string): Promise<ICliente | null>;
     EliminarCliente(idCliente: number): Promise<void>;
+    obtenerClientePorId(idCliente: number): Promise<ICliente | null>;
 
 }
+
 

@@ -4,9 +4,10 @@ import { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IPro
 import { ProyectoCrearDTO } from "../../../../presentacion/esquemas/";
 import { ProyectoActualizarDTO } from "../../../../presentacion/esquemas/ProyectoActualizarEsquema";
 import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
+import { IClienteRepositorio } from "../../../dominio/cliente/repositorio/IClienteRepositorio";
 
 export class ProyectoCasosUso {
-  constructor(private proyectoRepositorio: IProyectoRepositorio) {}
+  constructor(private proyectoRepositorio: IProyectoRepositorio, private clienteRepositorio: IClienteRepositorio) {}
 
   // Registrar un nuevo proyecto
   async registrarProyecto(datos: ProyectoCrearDTO): Promise<IProyecto> {
@@ -112,4 +113,8 @@ export class ProyectoCasosUso {
     proyectoExistente.estatus = "Eliminado";
     await this.proyectoRepositorio.actualizarProyecto(idProyecto, proyectoExistente);
   }
+
+
+
+ 
 }
