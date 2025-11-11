@@ -5,9 +5,11 @@ import { construirClienteEnrutador } from "./rutas/ClienteEnrutador";
 import { construirConsultorEnrutador } from "./rutas/ConsultorEnrutador";
 import { construirTareaEnrutador } from "./rutas/enrutadorTarea";
 import { construirStaffProyectoEnrutador } from "./rutas/StaffProyectoEnrutador";
-
+import { ManejadorErrores } from "./esquemas/middlewares/ManejadorErrores";
 
 const app = Fastify({ logger: true });
+
+app.setErrorHandler(ManejadorErrores);
 
 app.register(
   async (appInstance) => {

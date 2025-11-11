@@ -1,6 +1,6 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { StaffProyectoCasosUso } from "../../core/aplicacion/casos-uso/staff-proyecto/StaffProyectoCasosUso";
-import type { StaffProyectoCrearDTO } from "../esquemas/staffProyectoCrearEsquema";
+import type { StaffProyectoCrearDTO } from "../esquemas/Staff-Proyecto/staffProyectoCrearEsquema";
 
 export class StaffProyectoControlador {
   constructor(private casosUso: StaffProyectoCasosUso) {}

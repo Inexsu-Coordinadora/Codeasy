@@ -5,11 +5,23 @@ meta {
 }
 
 post {
-  url: http://localhost:3000/api/proyecto/<idProyecto>/asignar-consultor
-  body: none
+  url: http://localhost:3000/api/proyecto/7ce68260-b84e-47e0-9c01-78e831e3562c/asignar-consultor
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "id_consultor": "f0da01d7-7e6a-496c-9516-6f7787d7d641",
+    "id_rol": "uuid-rol-backend",
+    "porcentaje_dedicacion": 60,
+    "fecha_inicio": "2025-11-10",
+    "fecha_fin": "2025-12-10"
+  }
+  
 }
 
 settings {
   encodeUrl: true
+  timeout: 0
 }
