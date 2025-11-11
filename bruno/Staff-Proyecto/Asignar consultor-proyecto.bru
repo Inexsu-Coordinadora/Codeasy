@@ -1,0 +1,26 @@
+meta {
+  name: Asignar consultor-proyecto
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/api/proyecto/3e270dc4-87aa-41cf-9f7f-de75ab9fbe53/asignar-consultor
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id_consultor": "d95a60de-405f-4889-857b-a0bdfbc9e630",
+    "id_rol": "5",
+    "porcentaje_dedicacion": 11,
+    "fecha_inicio": "2025-12-01",
+    "fecha_fin": "2026-03-01"
+  }
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

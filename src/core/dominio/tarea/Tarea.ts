@@ -2,7 +2,7 @@ import { ITarea } from "./ITarea";
 
 export class Tarea implements ITarea {
   // Required by ITarea
-  idTarea?: number;
+  idTarea?: string;
   titulo!: string;
   descripcion!: string;
   estadoTarea!: 'Creada' | 'En Proceso' | 'Finalizada';

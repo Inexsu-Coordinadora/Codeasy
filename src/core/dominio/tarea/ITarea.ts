@@ -1,5 +1,5 @@
 export interface ITarea {
-  idTarea?: number;
+  idTarea?: string;
   titulo: string;
   descripcion: string;
   estadoTarea: 'Creada' | 'En Proceso' | 'Finalizada';
