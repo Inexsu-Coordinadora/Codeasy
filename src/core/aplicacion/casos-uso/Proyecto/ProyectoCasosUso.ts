@@ -1,8 +1,8 @@
 import { IProyecto } from "../../../dominio/proyecto/IProyecto";
 import { Proyecto } from "../../../dominio/proyecto/Proyecto";
 import { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IProyectoRepositorio";
-import { ProyectoCrearDTO } from "../../../../presentacion/esquemas/";
-import { ProyectoActualizarDTO } from "../../../../presentacion/esquemas/ProyectoActualizarEsquema";
+import { ProyectoCrearDTO } from "../../../../presentacion/esquemas/Proyectos/proyectoCrearEsquema";
+import { ProyectoActualizarDTO } from "../../../../presentacion/esquemas/Proyectos/ProyectoActualizarEsquema";
 import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
 
 export class ProyectoCasosUso {
@@ -29,6 +29,19 @@ export class ProyectoCasosUso {
     }
     if (fechaEntrega <= fechaInicio) {
       throw new AppError("La fecha de entrega debe ser posterior a la fecha de inicio.");
+    }
+
+    // Validar que el cliente no tenga un proyecto con el mismo nombre
+    const proyectosCliente: IProyecto[] = await this.proyectoRepositorio.listarTodosProyectos();
+    const existeDuplicado = proyectosCliente.some(
+      (p: IProyecto) =>
+        p.id_cliente === datos.id_cliente &&
+        p.nombre.trim().toLowerCase() === datos.nombre.trim().toLowerCase() &&
+        p.estatus === "Activo"
+    );
+
+    if (existeDuplicado) {
+      throw new AppError("El cliente ya tiene un proyecto con ese nombre.");
     }
 
     const nuevoProyecto = new Proyecto(
