@@ -4,7 +4,6 @@ import { ParteHora } from "../../../dominio/parteHora/ParteHora";
 import { IParteHoraRepositorio } from "../../../dominio/parteHora/repositorio/IParteHoraRepositorio";
 import { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IProyectoRepositorio";
 import { IConsultorRepositorio } from "../../../dominio/consultor/repositorio/IConsultorRepositorio";
-import { IStaffProyectoRepositorio } from "../../../dominio/staffProyecto/repositorio/IStaffProyectoRepositorio";
 
 interface RegistrarParteHoraDTO {
   id_proyecto: string;

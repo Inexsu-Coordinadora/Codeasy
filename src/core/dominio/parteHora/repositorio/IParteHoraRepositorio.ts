@@ -1,4 +1,4 @@
-import { IParteHora } from "../IParteHora.js";
+import { IParteHora } from "../IParteHora";
 
 export interface IParteHoraRepositorio {
   registrarParteHora(parteHora: IParteHora): Promise<IParteHora>;
