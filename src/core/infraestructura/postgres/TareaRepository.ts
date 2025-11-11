@@ -43,7 +43,7 @@ async registrarTarea(tarea: ITarea): Promise<ITarea> {
   if (tarea.fechaFinalizacion && fechaFinStaff && tarea.fechaFinalizacion > fechaFinStaff) {
     throw new Error(`La fecha de finalización de la tarea no puede superar la fecha fin de la asignación del staff.`);
   }
-  
+
   // Mapear ITarea (camelCase) a columnas de BD (snake_case)
   const insertQuery = `
     INSERT INTO tareas (
@@ -55,7 +55,7 @@ async registrarTarea(tarea: ITarea): Promise<ITarea> {
   const insertParams = [
     tarea.titulo,
     tarea.descripcion,
-    tarea.estadoTarea ?? 'Creada',
+    tarea.estadoTarea ?? 'pendiente',
     tarea.prioridad ?? 'Media',
     tarea.fechaCreacion ?? new Date(),
     tarea.fechaFinalizacion ?? null,
@@ -80,66 +80,88 @@ async registrarTarea(tarea: ITarea): Promise<ITarea> {
   };
 
   return tareaCreada;
-  const tareaData = { ...tarea };
 
-  const columnas = Object.keys(tareaData);
-  const valores = Object.values(tareaData).filter(v => v !== undefined && v !== null);
-  const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
-
-  const query = `
-    INSERT INTO tareas (${columnas.join(", ")})
-    VALUES (${placeholders})
-    RETURNING *;
-  `;
-
-  const resultado = await ejecutarConsulta(query, valores);
-  return resultado.rows[0];
 }
 
 
-  async listarTodasTareas(): Promise<ITarea[]> {
-    const query = `SELECT * FROM Tareas WHERE estatus != 'Eliminado';`;
-    const result = await ejecutarConsulta(query, []);
-    return result.rows;
-  }
+async listarTodasTareas(): Promise<ITarea[]> {
+  const query = `SELECT * FROM tareas WHERE estado != 'Eliminado';`;
+  const result = await ejecutarConsulta(query, []);
+  return result.rows;
+}
 
 
-  async obtenerTareaPorId(idTarea: number): Promise<ITarea | null> {
-    const query = `SELECT * FROM Tareas WHERE idTarea = $1 AND estatus != 'Eliminado';`;
+  async obtenerTareaPorId(idTarea: string): Promise<ITarea | null> {
+    const query = `SELECT * FROM tareas WHERE id_tarea = $1 AND estado != 'Eliminado';`;
     const result = await ejecutarConsulta(query, [idTarea]);
     return result.rows[0] || null;
   }
 
 
- async actualizarTarea(idTarea: number, datos: Partial<ITarea>): Promise<ITarea> {
-  const datosLimpios = Object.fromEntries(
-    Object.entries(datos).filter(([_, v]) => v !== null && v !== undefined)
-  );
+  async actualizarTarea(idTarea: string, datos: Partial<ITarea>): Promise<ITarea> {
+    // Mapear camelCase -> snake_case
+    const fieldMap: Record<string, string> = {
+      titulo: 'titulo',
+      descripcion: 'descripcion',
+      estadoTarea: 'estado_tarea',
+      prioridad: 'prioridad',
+      fechaCreacion: 'fecha_creacion',
+      fechaFinalizacion: 'fecha_limite',
+      asignadoA: 'id_staff_proyecto',
+      estatus: 'estado',
+    };
 
-  const columnas = Object.keys(datosLimpios); 
-  const parametros = Object.values(datosLimpios);
-  const setClause = columnas.map((col, i) => `${col}=$${i + 1}`).join(", ");
+    const columnas: string[] = [];
+    const parametros: any[] = [];
+    let idx = 1;
 
-  parametros.push(idTarea);
+    for (const [k, v] of Object.entries(datos)) {
+      if (v === undefined || v === null) continue;
+      const col = fieldMap[k];
+      if (!col) continue;
+      columnas.push(`${col}=$${idx++}`);
+      parametros.push(v);
+    }
 
-  const query = `
-    UPDATE tareas
-    SET ${setClause}
-    WHERE idtarea=$${parametros.length}
-    RETURNING *;
-  `;
+    if (columnas.length === 0) {
+      const existente = await this.obtenerTareaPorId(idTarea);
+      if (!existente) throw new Error(`Tarea con ID ${idTarea} no encontrada`);
+      return existente;
+    }
 
-  const result = await ejecutarConsulta(query, parametros);
-  return result.rows[0];
-}
+    parametros.push(idTarea);
 
-
-  async eliminarTarea(idTarea: number): Promise<void> {
     const query = `
-      UPDATE Tareas
-      SET estatus='Eliminado'
-      WHERE idTarea=$1
-      AND estatus != 'Eliminado';
+      UPDATE tareas
+      SET ${columnas.join(", ")}
+      WHERE id_tarea = $${parametros.length}
+      RETURNING *;
+    `;
+
+    const result = await ejecutarConsulta(query, parametros);
+    const row = result.rows[0];
+    if (!row) throw new Error(`No se pudo actualizar la tarea con ID ${idTarea}`);
+
+    return {
+      idTarea: row.id_tarea,
+      titulo: row.titulo,
+      descripcion: row.descripcion,
+      estadoTarea: row.estado_tarea,
+      prioridad: row.prioridad,
+      fechaCreacion: row.fecha_creacion,
+      fechaFinalizacion: row.fecha_limite,
+      asignadoA: row.id_staff_proyecto,
+      estatus: row.estado,
+    };
+  }
+
+
+  async eliminarTarea(idTarea: string): Promise<void> {
+    const query = `
+      UPDATE tareas
+      SET estado='Eliminado'
+      WHERE id_tarea=$1
+      AND estado != 'Eliminado';
     `;
     const result = await ejecutarConsulta(query, [idTarea]);
     if (result.rowCount === 0) {

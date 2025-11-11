@@ -15,13 +15,14 @@ export class TareaCasosUso {
     const nuevaTarea = new Tarea({
       ...datos,
       estado: "Activo",
-      estado_tarea: "Creada",
+      estado_tarea: "pendiente",
       fechaCreacion: fechaActual,
       // En caso de no proporcionar fechaFinalizacion, se establece a 1 semana después de la creación
       fechaFinalizacion: datos.fechaFinalizacion || new Date(fechaActual.getTime() + 7 * 24 * 60 * 60 * 1000),
       prioridad: datos.prioridad || "Media",
       asignadoA: datos.asignadoA 
     });
+    
     if (nuevaTarea.fechaFinalizacion <= fechaActual) {
       throw new AppError("La fecha de finalización debe ser posterior a la fecha de creación");
     }

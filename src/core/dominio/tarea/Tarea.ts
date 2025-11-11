@@ -1,11 +1,10 @@
 import { ITarea } from "./ITarea";
 
 export class Tarea implements ITarea {
-  // Required by ITarea
   idTarea?: string;
   titulo!: string;
   descripcion!: string;
-  estadoTarea!: 'Creada' | 'En Proceso' | 'Finalizada';
+  estadoTarea!: 'pendiente' | 'en progreso' | 'bloqueada' | 'completada';
   estatus!: 'Eliminado' | 'Activo';
   fechaCreacion?: Date;
   fechaFinalizacion!: Date;
