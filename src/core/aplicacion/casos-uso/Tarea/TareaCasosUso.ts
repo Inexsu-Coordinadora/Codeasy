@@ -57,19 +57,18 @@ export class TareaCasosUso {
     }
 
     // 2. Construir objeto de actualización manteniendo los campos requeridos
-    const actualizacion = {
-      ...tareaExistente, // Mantener todos los campos existentes como base
+    const actualizacion: Partial<ITarea> = {
       titulo: datos.titulo ?? tareaExistente.titulo,
       descripcion: datos.descripcion ?? tareaExistente.descripcion,
-      estadotarea: datos.estado_tarea ?? tareaExistente.estadoTarea,
-      fechafinalizacion: datos.fechaFinalizacion ?? tareaExistente.fechaFinalizacion,
+      estadoTarea: datos.estadoTarea ?? tareaExistente.estadoTarea,
+      fechaFinalizacion: datos.fechaFinalizacion ?? tareaExistente.fechaFinalizacion,
       prioridad: datos.prioridad ?? tareaExistente.prioridad,
-      asignadoa: datos.asignadoA ?? tareaExistente.asignadoA
-    } as ITarea; // Asegurar que el tipo coincida con ITarea
+      asignadoA: datos.asignadoA ?? tareaExistente.asignadoA,
+    };
 
-    // 3. Validar fechas si se está actualizando fechaFinalizacion
-    if (datos.fechaFinalizacion && actualizacion.fechaCreacion) {
-      if (datos.fechaFinalizacion <= actualizacion.fechaCreacion) {
+    // Validar fechas si se está actualizando fechaFinalizacion
+    if (datos.fechaFinalizacion && tareaExistente.fechaCreacion) {
+      if (datos.fechaFinalizacion <= tareaExistente.fechaCreacion) {
         throw new AppError("La fecha de finalización debe ser posterior a la fecha de creación");
       }
     }
