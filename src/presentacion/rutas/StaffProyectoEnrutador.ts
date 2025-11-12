@@ -3,14 +3,14 @@ import { StaffProyectoControlador } from "../controladores/StaffProyectoControla
 import { StaffProyectoCasosUso } from "../../core/aplicacion/casos-uso/staff-proyecto/StaffProyectoCasosUso";
 import { StaffProyectoRepositorio } from "../../core/infraestructura/postgres/StaffProyectoRepositorio";
 import { ProyectoRepositorio } from "../../core/infraestructura/postgres/ProyectoRepositorio";
-import { ConsultorRepositorio } from "../../core/infraestructura/postgres/ConsultorRepository";
+import { ClienteRepositorio } from "../../core/infraestructura/postgres/ClienteRepositorio";
 import { validarZod } from "../esquemas/middlewares/validarZod";
 import { StaffProyectoCrearEsquema } from "../esquemas/Staff-Proyecto/staffProyectoCrearEsquema";
 
 // Rutas del módulo StaffProyecto
 function staffProyectoEnrutador(app: FastifyInstance, controlador: StaffProyectoControlador) {
   app.post(
-    "/proyecto/:idProyecto/asignar-consultor",
+    "/proyecto/:id_proyecto/asignar-consultor",
     { preHandler: validarZod(StaffProyectoCrearEsquema, "body") },
     controlador.asignarConsultorAProyecto.bind(controlador)
   );
@@ -20,9 +20,8 @@ function staffProyectoEnrutador(app: FastifyInstance, controlador: StaffProyecto
 export async function construirStaffProyectoEnrutador(app: FastifyInstance) {
   const staffRepo = new StaffProyectoRepositorio();
   const proyectoRepo = new ProyectoRepositorio();
-  const consultorRepo = new ConsultorRepositorio();
-
-  const casosUso = new StaffProyectoCasosUso(staffRepo, proyectoRepo, consultorRepo);
+  const clienteRepo = new ClienteRepositorio();
+  const casosUso = new StaffProyectoCasosUso(staffRepo, proyectoRepo, clienteRepo);
   const controlador = new StaffProyectoControlador(casosUso);
 
   staffProyectoEnrutador(app, controlador);

@@ -4,7 +4,7 @@ import { Proyecto } from "../../../dominio/proyecto/Proyecto";
 export interface IProyectoRepositorio {
   registrarProyecto(proyecto: Proyecto): Promise<IProyecto>;
   listarTodosProyectos(): Promise<IProyecto[]>;
-  obtenerProyectoPorId(idProyecto: number): Promise<IProyecto | null>;
-  actualizarProyecto(idProyecto: number, datosProyecto: IProyecto): Promise<IProyecto>;
-  eliminarProyecto(idProyecto: number): Promise<void>;
+  obtenerProyectoPorId(id_proyecto: number): Promise<IProyecto | null>;
+  actualizarProyecto(id_proyecto: number, datosProyecto: IProyecto): Promise<IProyecto>;
+  eliminarProyecto(id_proyecto: number): Promise<void>;
 }

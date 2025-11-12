@@ -2,6 +2,7 @@ import type { IStaffProyecto } from "../../../dominio/staff-proyecto/IStaffProye
 import type { IStaffProyectoRepositorio } from "../../../dominio/staff-proyecto/repositorio/IStaffProyectoRepositorio";
 import type { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IProyectoRepositorio";
 import type { IConsultorRepositorio } from "../../../dominio/consultor/repositorio/IConsultorRepositorio";
+import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
 
 export class StaffProyectoCasosUso {
   constructor(
@@ -26,13 +27,13 @@ export class StaffProyectoCasosUso {
     // Verificar existencia de proyecto
     const proyecto = await this.proyectoRepositorio.obtenerProyectoPorId(id_proyecto);
     if (!proyecto) {
-      throw new Error("El proyecto especificado no existe");
+      throw new AppError("El proyecto especificado no existe.");
     }
 
     // Verificar existencia de consultor
     const consultor = await this.consultorRepositorio.obtenerConsultorPorId(id_consultor);
     if (!consultor) {
-      throw new Error("El consultor especificado no existe");
+      throw new AppError("El consultor especificado no existe.");
     }
 
     // Verificar duplicado (consultor + proyecto + rol)
@@ -42,7 +43,7 @@ export class StaffProyectoCasosUso {
       id_rol
     );
     if (duplicado) {
-      throw new Error("Ya existe una asignación idéntica para este consultor en el proyecto");
+      throw new AppError("Ya existe una asignación idéntica para este consultor en el proyecto.");
     }
 
     // Validar coherencia de fechas
@@ -50,7 +51,12 @@ export class StaffProyectoCasosUso {
     const finNueva = new Date(fecha_fin);
 
     if (finNueva < inicioNueva) {
-      throw new Error("La fecha de fin no puede ser anterior a la fecha de inicio");
+      throw new AppError("La fecha de fin no puede ser anterior a la fecha de inicio.");
+    }
+
+    // Validar porcentaje de dedicación (nuevo)
+    if (porcentaje_dedicacion < 0 || porcentaje_dedicacion > 100) {
+      throw new AppError("El porcentaje de dedicación debe estar entre 0 y 100.");
     }
 
     // Validar dedicación acumulada del consultor
@@ -71,7 +77,7 @@ export class StaffProyectoCasosUso {
     const total = sumaDedicacion + porcentaje_dedicacion;
 
     if (total > 100) {
-      throw new Error(`La dedicación total del consultor superaría el 100% (${total}%)`);
+      throw new AppError(`La dedicación total del consultor superaría el 100% (${total}%).`);
     }
 
     // Registrar la asignación

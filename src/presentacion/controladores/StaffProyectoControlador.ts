@@ -8,11 +8,11 @@ export class StaffProyectoControlador {
   // Asignar un consultor a un proyecto
   async asignarConsultorAProyecto(req: FastifyRequest, reply: FastifyReply) {
     try {
-      const { idProyecto } = req.params as { idProyecto: string };
+      const { id_proyecto } = req.params as { id_proyecto: string };
       const datos = req.body as StaffProyectoCrearDTO;
 
       const nuevaAsignacion = await this.casosUso.asignarConsultorAProyecto(
-        idProyecto,
+        id_proyecto,
         datos
       );
 
