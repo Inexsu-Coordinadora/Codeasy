@@ -17,16 +17,16 @@ function clienteEnrutador(
   app.get("/cliente", ClienteController.listarTodosClientes.bind(ClienteController));
   
   // GET: Obtener un cliente por su ID
-  app.get("/cliente/:idCliente", ClienteController.obtenerClientePorId.bind(ClienteController));
+  app.get("/cliente/:id_cliente", ClienteController.obtenerClientePorId.bind(ClienteController));
   
   //Registrar un nuevo cliente
   app.post("/cliente", { preHandler: validarZod(ClienteCrearEsquema, "body") }, ClienteController.registrarCliente.bind(ClienteController));
   
   //Actualizar un cliente por su ID
-  app.put("/cliente/:idCliente", { preHandler: validarZod(ClienteActualizarEsquema, "body") },ClienteController.actualizarCliente.bind(ClienteController));
+  app.put("/cliente/:id_cliente", { preHandler: validarZod(ClienteActualizarEsquema, "body") },ClienteController.actualizarCliente.bind(ClienteController));
   
   //Eliminar un cliente por su ID
-  app.put("/cliente/eliminar/:idCliente", ClienteController.eliminarCliente.bind(ClienteController));
+  app.put("/cliente/eliminar/:id_cliente", ClienteController.eliminarCliente.bind(ClienteController));
 }
 
 

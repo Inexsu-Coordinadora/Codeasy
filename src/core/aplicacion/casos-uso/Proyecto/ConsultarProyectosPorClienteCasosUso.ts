@@ -10,22 +10,22 @@ export class ConsultarProyectosPorClienteCasosUso {
   ) {}
 
  async ejecutar(
-    idCliente: string,
+    id_cliente: string,
     filtros?: { estado?: string; fecha_inicio?: Date; fecha_fin?: Date }
   ): Promise<{ proyectos: Proyecto[]; mensaje?: string }> {
-    const clienteExiste = await this.clienteRepositorio.obtenerClientePorId(idCliente);
+    const clienteExiste = await this.clienteRepositorio.obtenerClientePorId(id_cliente);
 
    if (!clienteExiste) {
-      throw new AppError("Cliente no encontrado", idCliente, 404);
+      throw new AppError("Cliente no encontrado", id_cliente, 404);
     }
 
-    const proyectos = await this.proyectoRepositorio.obtenerPorCliente(idCliente, filtros);
+    const proyectos = await this.proyectoRepositorio.obtenerPorCliente(id_cliente, filtros);
 
    if (!proyectos || proyectos.length === 0) {
-      // ✅ Cliente existe pero no tiene proyectos: lista vacía (no error)
+      
       return {
         proyectos: [],
-        mensaje: `El cliente con id ${idCliente} no tiene proyectos registrados.`,
+        mensaje: `El cliente con id ${id_cliente} no tiene proyectos registrados.`,
       };
     }
 

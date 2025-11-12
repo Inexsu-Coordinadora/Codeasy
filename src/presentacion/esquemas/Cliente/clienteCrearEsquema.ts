@@ -1,5 +1,7 @@
 import {z} from "zod";
 
+
+
 export const ClienteCrearEsquema = z.object({
   idCliente: z.number().int().positive().optional(),
 
@@ -29,3 +31,4 @@ export const ClienteCrearEsquema = z.object({
 });
 
 export type ClienteCrearDTO = z.infer<typeof ClienteCrearEsquema>;
+

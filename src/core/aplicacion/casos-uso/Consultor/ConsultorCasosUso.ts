@@ -39,20 +39,20 @@ export class ConsultorCasosUso {
   }
 
  
-  async obtenerConsultorPorId(idConsultor: string): Promise<IConsultor | null> {
-    const consultor = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
+  async obtenerConsultorPorId(id_consultor: string): Promise<IConsultor | null> {
+    const consultor = await this.consultorRepositorio.obtenerConsultorPorId(id_consultor);
     if (!consultor) {
-    throw new AppError(`No se encontró un consultor con el ID ${idConsultor}`);
+    throw new AppError(`No se encontró un consultor con el ID ${id_consultor}`);
   }
     return consultor;
   }
 
 
-  async actualizarConsultor(idConsultor: string, datos: ConsultorActualizarDTO): Promise<IConsultor> {
-  const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
+  async actualizarConsultor(id_consultor: string, datos: ConsultorActualizarDTO): Promise<IConsultor> {
+  const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(id_consultor);
 
   if (!consultorExistente) {
-    throw new AppError(`No se encontró el consultor con ID ${idConsultor}`);
+    throw new AppError(`No se encontró el consultor con ID ${id_consultor}`);
   }
 
 
@@ -63,7 +63,7 @@ export class ConsultorCasosUso {
 
 
   const resultado = await this.consultorRepositorio.actualizarConsultor(
-    idConsultor,
+    id_consultor,
     consultorActualizado as IConsultor
   );
 
@@ -72,16 +72,16 @@ export class ConsultorCasosUso {
 
 
 
-  async eliminarConsultor(idConsultor: string): Promise<void> {
-    const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
+  async eliminarConsultor(id_consultor: string): Promise<void> {
+    const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(id_consultor);
 
      if (!consultorExistente || consultorExistente.estado === "Eliminado") {
-    throw new AppError(`No se encontró el consultor con ID ${idConsultor}`);
+    throw new AppError(`No se encontró el consultor con ID ${id_consultor}`);
   }
 
     consultorExistente.estado = "Eliminado";
 
-    await this.consultorRepositorio.actualizarConsultor(idConsultor, consultorExistente);
+    await this.consultorRepositorio.actualizarConsultor(id_consultor, consultorExistente);
   }
 
   

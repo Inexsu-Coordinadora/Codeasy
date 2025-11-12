@@ -4,13 +4,13 @@ import { Pool } from 'pg';
 export interface IClienteRepositorio {
 
     // Operaciones CRUD
-    crearCliente(datosCliente: ICliente): Promise<string>;
+     crearCliente(datosCliente: ICliente): Promise<ICliente>;
     buscarTodosCliente(): Promise<ICliente[]>;
-    buscarPorIdCliente(idCliente: number): Promise<ICliente | null>; 
-    ActualizarCliente(idCliente: number, datosCliente: ICliente): Promise<ICliente | null>;
-    buscarPorIdentificacionCliente(idCliente: string): Promise<ICliente | null>;
-    EliminarCliente(idCliente: number): Promise<void>;
-    obtenerClientePorId(idCliente: number): Promise<ICliente | null>;
+    buscarPorIdCliente(id_cliente: number): Promise<ICliente | null>; 
+    ActualizarCliente(id_cliente: number, datosCliente: ICliente): Promise<ICliente | null>;
+    buscarPorIdentificacionCliente(id_cliente: string): Promise<ICliente | null>;
+    EliminarCliente(id_cliente: number): Promise<void>;
+    obtenerClientePorId(id_cliente: number): Promise<ICliente | null>;
 
 }
 

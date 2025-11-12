@@ -28,8 +28,8 @@ export class ConsultorControlador {
   }
 
   async obtenerConsultorPorId(req: FastifyRequest, reply: FastifyReply) {
-    const { idConsultor } = req.params as { idConsultor: string };
-    const consultor = await this.casosUso.obtenerConsultorPorId(idConsultor);
+    const { id_consultor } = req.params as { id_consultor: string };
+    const consultor = await this.casosUso.obtenerConsultorPorId(id_consultor);
 
     return reply.code(200).send({
       exito: true,
@@ -39,11 +39,11 @@ export class ConsultorControlador {
   }
 
   async actualizarConsultor(req: FastifyRequest, reply: FastifyReply) {
-    const { idConsultor } = req.params as { idConsultor: string };
+    const { id_consultor } = req.params as { id_consultor: string };
     const datos = req.body as ConsultorActualizarDTO;
 
     const consultorActualizado = await this.casosUso.actualizarConsultor(
-      idConsultor,
+      id_consultor,
       datos
     );
 
@@ -55,8 +55,8 @@ export class ConsultorControlador {
   }
 
   async eliminarConsultor(req: FastifyRequest, reply: FastifyReply) {
-    const { idConsultor } = req.params as { idConsultor: string };
-    await this.casosUso.eliminarConsultor(idConsultor);
+    const { id_consultor } = req.params as { id_consultor: string };
+    await this.casosUso.eliminarConsultor(id_consultor);
 
     return reply.code(200).send({
       exito: true,

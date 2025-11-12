@@ -4,23 +4,24 @@ import { ejecutarConsulta } from "./clientePostgres";
 
 export class ClienteRepositorio implements IClienteRepositorio {
 
-  async crearCliente(cliente: ICliente): Promise<string> {
-    const clienteSinId = { ...cliente };
-    delete clienteSinId.idCliente;
+  async crearCliente(cliente: ICliente): Promise<ICliente> {
+  const clienteSinId = { ...cliente };
+  delete clienteSinId.id_cliente;
 
-    const columnas = Object.keys(clienteSinId);
-    const valores = Object.values(clienteSinId).filter(v => v !== undefined && v !== null);
-    const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
+  const columnas = Object.keys(clienteSinId);
+  const valores = Object.values(clienteSinId).filter(v => v !== undefined && v !== null);
+  const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
 
-    const query = `
-      INSERT INTO clientes (${columnas.join(", ")})
-      VALUES (${placeholders})
-      RETURNING idcliente;
-    `;
+  const query = `
+    INSERT INTO clientes (${columnas.join(", ")})
+    VALUES (${placeholders})
+    RETURNING *;
+  `;
 
-    const resultado = await ejecutarConsulta(query, valores);
-    return String(resultado.rows[0].idcliente);
-  }
+  const resultado = await ejecutarConsulta(query, valores);
+  return resultado.rows[0] as ICliente;
+}
+
 
 
   async buscarTodosCliente(): Promise<ICliente[]> {
@@ -31,14 +32,14 @@ export class ClienteRepositorio implements IClienteRepositorio {
   }
 
 
-  async buscarPorIdCliente(idCliente: number): Promise<ICliente | null> {
-    const query = `SELECT * FROM clientes WHERE idcliente = $1;`;
-    const result = await ejecutarConsulta(query, [idCliente]);
-    return (result.rows[0] as ICliente) || null;
-  }
-  async obtenerClientePorId(idCliente: number): Promise<ICliente | null> {
-    const query = `SELECT * FROM clientes WHERE idcliente = $1;`;
-    const result = await ejecutarConsulta(query, [idCliente]);
+  // async buscarPorIdCliente(string: string): Promise<ICliente | null> {
+  //   const query = `SELECT * FROM clientes WHERE string = $1;`;
+  //   const result = await ejecutarConsulta(query, [string]);
+  //   return (result.rows[0] as ICliente) || null;
+  // }
+   async obtenerClientePorId(id_cliente: string): Promise<ICliente | null> {
+   const query = `SELECT * FROM clientes WHERE id_cliente = $1;`;
+    const result = await ejecutarConsulta(query, [id_cliente]);
     return (result.rows[0] as ICliente) || null;
   }
 
@@ -54,7 +55,7 @@ export class ClienteRepositorio implements IClienteRepositorio {
   }
 
 
-  async ActualizarCliente(idCliente: number, datos: ICliente): Promise<ICliente | null> {
+  async ActualizarCliente(id_cliente: string, datos: ICliente): Promise<ICliente | null> {
     const datosLimpios = Object.fromEntries(
       Object.entries(datos).filter(([_, v]) => v !== null && v !== undefined)
     );
@@ -64,11 +65,11 @@ export class ClienteRepositorio implements IClienteRepositorio {
     const parametros = Object.values(datosLimpios);
     const setClause = columnas.map((col, i) => `${col}=$${i + 1}`).join(", ");
 
-    parametros.push(idCliente);
+    parametros.push(id_cliente);
     const query = `
       UPDATE clientes
       SET ${setClause}
-      WHERE idcliente=$${parametros.length}
+      WHERE id_cliente=$${parametros.length}
       RETURNING *;
     `;
 
@@ -76,11 +77,12 @@ export class ClienteRepositorio implements IClienteRepositorio {
     return (result.rows[0] as ICliente) || null;
   }
 
-  async EliminarCliente(idCliente: number): Promise<void> {
+  async EliminarCliente(id_cliente: string): Promise<void> {
     const query = `
-      DELETE FROM clientes
-      WHERE idcliente=$1;
+      UPDATE clientes
+      SET estado='Eliminado'
+      WHERE id_cliente=$1;
     `;
-    await ejecutarConsulta(query, [idCliente]);
+    await ejecutarConsulta(query, [id_cliente]);
   }
 }

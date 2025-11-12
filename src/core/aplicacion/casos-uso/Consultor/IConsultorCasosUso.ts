@@ -3,11 +3,11 @@ import { Consultor } from "../../../dominio/consultor/Consultor";
 
 
 export interface IConsultorRepositorio {
-  registrarConsultor(consultor: Consultor): Promise<IConsultor>;
+  c
   listarTodosConsultores(): Promise<IConsultor[]>;
-  obtenerConsultorPorId(idConsultor: string): Promise<IConsultor | null>;
-  actualizarConsultor(idConsultor: string, datosPlato: IConsultor): Promise<IConsultor>;
-  eliminarConsultor(idConsultor: string): Promise<void>;
+  obtenerConsultorPorId(id_consultor: string): Promise<IConsultor | null>;
+  actualizarConsultor(id_consultor: string, datosConsultor: IConsultor): Promise<IConsultor>;
+  eliminarConsultor(id_consultor: string): Promise<void>;
   buscarPorCorreoOIdentificacion(correo: string, identificacion: string): Promise<IConsultor | null>;
 
 }

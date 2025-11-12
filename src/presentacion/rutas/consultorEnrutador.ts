@@ -12,12 +12,12 @@ function consultorEnrutador(
   ConsultorController: ConsultorControlador
 ) {
   app.get("/consultor", ConsultorController.listarTodosConsultores.bind(ConsultorController));
-  app.get("/consultor/:idConsultor", ConsultorController.obtenerConsultorPorId.bind(ConsultorController));
+  app.get("/consultor/:id_consultor", ConsultorController.obtenerConsultorPorId.bind(ConsultorController));
 
 
   app.post("/consultor", { preHandler: validarZod(ConsultorCrearEsquema, "body") },ConsultorController.registrarConsultor.bind(ConsultorController));
-  app.put("/consultor/:idConsultor", { preHandler: validarZod(ConsultorActualizarEsquema, "body") },ConsultorController.actualizarConsultor.bind(ConsultorController));
-  app.put("/consultor/eliminar/:idConsultor", ConsultorController.eliminarConsultor.bind(ConsultorController));
+  app.put("/consultor/:id_consultor", { preHandler: validarZod(ConsultorActualizarEsquema, "body") },ConsultorController.actualizarConsultor.bind(ConsultorController));
+  app.put("/consultor/eliminar/:id_consultor", ConsultorController.eliminarConsultor.bind(ConsultorController));
 }
 
 export async function construirConsultorEnrutador(app: FastifyInstance) {

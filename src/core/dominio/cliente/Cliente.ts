@@ -1,7 +1,7 @@
 import { ICliente, EstadoCliente } from './ICliente';
 
 export class Cliente implements ICliente {
-    idCliente?: number;
+    id_cliente?: string;
     nombre!: string;
     identificacion!: string;
     email!: string;

@@ -70,25 +70,25 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
   // Listar proyectos por cliente
 
  async obtenerPorCliente(
-  idCliente: string,
+  id_cliente: string,
   filtros?: { estado?: string; fecha_inicio?: Date; fecha_fin?: Date }
 ): Promise<Proyecto[]> {
   let query = `
     SELECT 
-      p.id,
+      p.id_proyecto,
       p.nombre,
       p.estado,
       p.fecha_inicio,
       p.fecha_fin
     FROM proyectos p
-    WHERE p.idcliente = $1
+    WHERE p.id_cliente = $1
   `;
 
-  const params: any[] = [idCliente];
+  const params: any[] = [id_cliente];
   let index = 2;
 
   if (filtros?.estado) {
-    query += ` AND p.estado = $${index++}`;
+    query += ` AND p.estado_proyecto = $${index++}`;
     params.push(filtros.estado);
   }
 
@@ -102,7 +102,6 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
   
 
   const result = await ejecutarConsulta(query, params);
-
   // Consultar los consultores asociados a cada proyecto
   const proyectos = await Promise.all(
     result.rows.map(async (p: any) => {
@@ -110,10 +109,10 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
         `
         SELECT 
       c.nombre AS nombre,
-      r.nombre_rol AS rol
+      r.nombre AS rol
       FROM staff_proyecto sp
-      JOIN consultores c ON sp.idconsultor = c.idconsultor
-      JOIN roles r ON sp.idrol = r.idrol
+      JOIN consultores c ON sp.id_consultor = c.id_consultor
+      JOIN roles r ON sp.id_rol = r.id_rol
       WHERE sp.id = $1
   `,
         [p.id]

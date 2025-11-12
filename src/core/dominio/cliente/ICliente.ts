@@ -1,7 +1,7 @@
 export type EstadoCliente = 'Activo' | 'Eliminado';
 
 export interface ICliente {
-    idCliente?: number;
+    id_cliente?: string;
     nombre: string;
     identificacion: string;
     email: string;         

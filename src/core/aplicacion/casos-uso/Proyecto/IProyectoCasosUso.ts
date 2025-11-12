@@ -7,5 +7,5 @@ export interface IProyectoRepositorio {
   obtenerProyectoPorId(idProyecto: number): Promise<IProyecto | null>;
   actualizarProyecto(idProyecto: number, datosProyecto: IProyecto): Promise<IProyecto>;
   eliminarProyecto(idProyecto: number): Promise<void>;
-  obtenerPorCliente(idCliente: string, filtros?: { estado?: string; fecha_inicio?:Date}): Promise<IProyecto[]>
+  obtenerPorCliente(id_cliente: string, filtros?: { estado?: string; fecha_inicio?:Date}): Promise<IProyecto[]>
 }

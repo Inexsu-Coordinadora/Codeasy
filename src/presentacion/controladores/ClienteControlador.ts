@@ -28,8 +28,8 @@ export class ClienteControlador {
   }
 
   async obtenerClientePorId(req: FastifyRequest, reply: FastifyReply) {
-    const { idCliente } = req.params as { idCliente: number };
-    const cliente = await this.casosUso.obtenerClientePorId(idCliente);
+    const { id_cliente } = req.params as { id_cliente: string };
+    const cliente = await this.casosUso.obtenerClientePorId(id_cliente);
 
     return reply.code(200).send({
       exito: true,
@@ -39,11 +39,11 @@ export class ClienteControlador {
   }
 
   async actualizarCliente(req: FastifyRequest, reply: FastifyReply) {
-    const { idCliente } = req.params as { idCliente: number };
+    const { id_cliente } = req.params as { id_cliente: number };
     const datos = req.body as ClienteActualizarDTO;
 
     const clienteActualizado = await this.casosUso.actualizarCliente(
-      idCliente,
+      id_cliente,
       datos
     );
 
@@ -55,8 +55,8 @@ export class ClienteControlador {
   }
 
   async eliminarCliente(req: FastifyRequest, reply: FastifyReply) {
-    const { idCliente } = req.params as { idCliente: number };
-    await this.casosUso.eliminarCliente(idCliente);
+    const { id_cliente } = req.params as { id_cliente: number };
+    await this.casosUso.eliminarCliente(id_cliente);
 
     return reply.code(200).send({
       exito: true,

@@ -7,7 +7,7 @@ import { ConsultarProyectosPorClienteCasosUso } from "../../core/aplicacion/caso
 import { validarZod } from "../esquemas/middlewares/validarZod";
 import { ProyectoCrearEsquema } from "../esquemas/Proyectos/proyectoCrearEsquema";
 import { ProyectoActualizarEsquema } from "../esquemas/Proyectos/proyectoActualizarEsquema";
-import { ClienteRepositorio } from "../../core/infraestructura/postgres/ClienteRepositorio"; // 👈 necesario para verificar cliente
+import { ClienteRepositorio } from "../../core/infraestructura/postgres/ClienteRepositorio"; 
 
 function proyectoEnrutador(app: FastifyInstance, proyectoController: ProyectoControlador) {
   app.get("/proyecto", proyectoController.listarTodosProyectos.bind(proyectoController));
@@ -16,7 +16,6 @@ function proyectoEnrutador(app: FastifyInstance, proyectoController: ProyectoCon
   app.put("/proyecto/:idProyecto", { preHandler: validarZod(ProyectoActualizarEsquema, "body") }, proyectoController.actualizarProyecto.bind(proyectoController));
   app.put("/proyecto/eliminar/:idProyecto", proyectoController.eliminarProyecto.bind(proyectoController));
 
-  // ✅ Ruta para el servicio 2
   app.get(
     "/clientes/:idCliente/proyectos",
     proyectoController.consultarProyectosPorCliente.bind(proyectoController)
@@ -25,7 +24,7 @@ function proyectoEnrutador(app: FastifyInstance, proyectoController: ProyectoCon
 
 export async function construirProyectoEnrutador(app: FastifyInstance) {
   const proyectoRepositorio: IProyectoRepositorio = new ProyectoRepositorio();
-  const clienteRepositorio = new ClienteRepositorio(); // ✅ agregado
+  const clienteRepositorio = new ClienteRepositorio();
 
   // Casos de uso
   const proyectoCasosUso = new ProyectoCasosUso(proyectoRepositorio);
@@ -34,7 +33,7 @@ export async function construirProyectoEnrutador(app: FastifyInstance) {
     clienteRepositorio
   );
 
-  // Controlador con ambas dependencias inyectadas ✅
+
   const proyectoController = new ProyectoControlador(
     proyectoCasosUso,
     consultarProyectosPorClienteCasosUso

@@ -9,7 +9,7 @@ async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
 
     
   const consultorSinId = { ...consultor };
-  delete consultorSinId.idConsultor;
+  delete consultorSinId.id_consultor;
 
  
   
@@ -35,14 +35,14 @@ async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
   }
 
 
-  async obtenerConsultorPorId(idConsultor: string): Promise<IConsultor | null> {
-    const query = `SELECT * FROM consultores WHERE idconsultor = $1 AND estado != 'Eliminado'`;
-    const result = await ejecutarConsulta(query, [idConsultor]);
+  async obtenerConsultorPorId(id_consultor: string): Promise<IConsultor | null> {
+    const query = `SELECT * FROM consultores WHERE id_consultor = $1 AND estado != 'Eliminado'`;
+    const result = await ejecutarConsulta(query, [id_consultor]);
     return result.rows[0] || null;
   }
 
   
-  async actualizarConsultor(idConsultor: string, datos: IConsultor): Promise<IConsultor> {
+  async actualizarConsultor(id_consultor: string, datos: IConsultor): Promise<IConsultor> {
   const datosLimpios = Object.fromEntries(
     Object.entries(datos).filter(([_, v]) => v !== null && v !== undefined)
   );
@@ -50,12 +50,12 @@ async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
   const columnas = Object.keys(datosLimpios).map((key) => key.toLowerCase());
   const parametros = Object.values(datosLimpios);
   const setClause = columnas.map((col, i) => `${col}=$${i + 1}`).join(", ");
-  parametros.push(idConsultor);
+  parametros.push(id_consultor);
 
   const query = `
     UPDATE consultores
     SET ${setClause}
-    WHERE idconsultor=$${parametros.length}
+    WHERE id_consultor=$${parametros.length}
     RETURNING *;
   `;
 
@@ -64,13 +64,13 @@ async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
 }
 
   
-  async eliminarConsultor(idConsultor: string): Promise<void> {
+  async eliminarConsultor(id_consultor: string): Promise<void> {
     const query = `
       UPDATE consultores
       SET estado='Eliminado'
-      WHERE idconsultor=$1;
+      WHERE id_consultor=$1;
     `;
-    await ejecutarConsulta(query, [idConsultor]);
+    await ejecutarConsulta(query, [id_consultor]);
   }
 
  
