@@ -28,16 +28,12 @@ function proyectoEnrutador(app: FastifyInstance, proyectoController: ProyectoCon
 }
 
 export async function construirProyectoEnrutador(app: FastifyInstance) {
-  // 🔹 Crear repositorios
   const proyectoRepositorio: IProyectoRepositorio = new ProyectoRepositorio();
   const clienteRepositorio = new ClienteRepositorio();
 
-  // 🔹 Inyectar dependencias en el caso de uso
   const proyectoCasosUso = new ProyectoCasosUso(proyectoRepositorio, clienteRepositorio);
 
-  // 🔹 Crear el controlador con el caso de uso ya configurado
   const proyectoController = new ProyectoControlador(proyectoCasosUso);
 
-  // 🔹 Registrar rutas
   proyectoEnrutador(app, proyectoController);
 }

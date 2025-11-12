@@ -4,6 +4,7 @@ import { StaffProyectoCasosUso } from "../../core/aplicacion/casos-uso/staff-pro
 import { StaffProyectoRepositorio } from "../../core/infraestructura/postgres/StaffProyectoRepositorio";
 import { ProyectoRepositorio } from "../../core/infraestructura/postgres/ProyectoRepositorio";
 import { ClienteRepositorio } from "../../core/infraestructura/postgres/ClienteRepositorio";
+import { ConsultorRepositorio } from "../../core/infraestructura/postgres/ConsultorRepository"
 import { validarZod } from "../esquemas/middlewares/validarZod";
 import { StaffProyectoCrearEsquema } from "../esquemas/Staff-Proyecto/staffProyectoCrearEsquema";
 
@@ -21,7 +22,8 @@ export async function construirStaffProyectoEnrutador(app: FastifyInstance) {
   const staffRepo = new StaffProyectoRepositorio();
   const proyectoRepo = new ProyectoRepositorio();
   const clienteRepo = new ClienteRepositorio();
-  const casosUso = new StaffProyectoCasosUso(staffRepo, proyectoRepo, clienteRepo);
+  const consultorRepo = new ConsultorRepositorio();
+  const casosUso = new StaffProyectoCasosUso(staffRepo, proyectoRepo, consultorRepo);
   const controlador = new StaffProyectoControlador(casosUso);
 
   staffProyectoEnrutador(app, controlador);

@@ -15,7 +15,7 @@ export class ClienteRepositorio implements IClienteRepositorio {
     const query = `
       INSERT INTO clientes (${columnas.join(", ")})
       VALUES (${placeholders})
-      RETURNING idcliente;
+      RETURNING id_cliente;
     `;
 
     const resultado = await ejecutarConsulta(query, valores);
@@ -25,14 +25,14 @@ export class ClienteRepositorio implements IClienteRepositorio {
 
   async buscarTodosCliente(): Promise<ICliente[]> {
 
-    const query = `SELECT * FROM clientes WHERE estatus = 'Activo';`;
+    const query = `SELECT * FROM clientes WHERE estado = 'Activo';`;
     const result = await ejecutarConsulta(query, []);
     return result.rows as ICliente[];
   }
 
 
   async buscarPorIdCliente(idCliente: number): Promise<ICliente | null> {
-    const query = `SELECT * FROM clientes WHERE idcliente = $1;`;
+    const query = `SELECT * FROM clientes WHERE id_cliente = $1;`;
     const result = await ejecutarConsulta(query, [idCliente]);
     return (result.rows[0] as ICliente) || null;
   }
@@ -63,7 +63,7 @@ export class ClienteRepositorio implements IClienteRepositorio {
     const query = `
       UPDATE clientes
       SET ${setClause}
-      WHERE idcliente=$${parametros.length}
+      WHERE id_cliente=$${parametros.length}
       RETURNING *;
     `;
 
@@ -74,7 +74,7 @@ export class ClienteRepositorio implements IClienteRepositorio {
   async EliminarCliente(idCliente: number): Promise<void> {
     const query = `
       DELETE FROM clientes
-      WHERE idcliente=$1;
+      WHERE id_cliente=$1;
     `;
     await ejecutarConsulta(query, [idCliente]);
   }
