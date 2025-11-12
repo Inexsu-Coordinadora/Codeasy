@@ -1,6 +1,7 @@
 import { ITareaRepositorio } from "../../dominio/tarea/repositorio/ITareaRepositorio.js";
 import { ITarea } from "../../dominio/tarea/ITarea.js";
 import { ejecutarConsulta } from "./clientepostgres.js";
+import { AppError } from "../../../presentacion/esquemas/middlewares/AppError.js";
 
 export class TareaRepositorio implements ITareaRepositorio {
 
@@ -16,7 +17,7 @@ export class TareaRepositorio implements ITareaRepositorio {
       [idStaffProyecto]
     );
     if ((staffInfoRes.rowCount ?? 0) === 0) {
-      throw new Error('El staff_proyecto especificado no existe.');
+      throw new AppError('El staff_proyecto especificado no existe.', 404, { idStaffProyecto });
     }
     const idProyecto = staffInfoRes.rows[0].id_proyecto;
 
@@ -46,7 +47,7 @@ export class TareaRepositorio implements ITareaRepositorio {
     const dup = await ejecutarConsulta(dupQuery, params);
     
     if ((dup.rowCount ?? 0) > 0) {
-      throw new Error('Ya existe una tarea con el mismo título en este proyecto.');
+      throw new AppError('Ya existe una tarea con el mismo título en este proyecto.', 409, { titulo });
     }
   }
 
@@ -63,7 +64,7 @@ export class TareaRepositorio implements ITareaRepositorio {
       [idStaffProyecto]
     );
     if ((staffInfoRes.rowCount ?? 0) === 0) {
-      throw new Error('El staff_proyecto especificado no existe.');
+      throw new AppError('El staff_proyecto especificado no existe.', 404, { idStaffProyecto });
     }
     const idProyecto = staffInfoRes.rows[0].id_proyecto;
 
@@ -73,7 +74,7 @@ export class TareaRepositorio implements ITareaRepositorio {
       [idProyecto]
     );
     if ((proyectoRes.rowCount ?? 0) === 0) {
-      throw new Error('El proyecto asociado no existe.');
+      throw new AppError('El proyecto asociado no existe.', 404, { idProyecto });
     }
 
     const fechaInicioProyecto = new Date(proyectoRes.rows[0].fecha_inicio);
@@ -81,10 +82,10 @@ export class TareaRepositorio implements ITareaRepositorio {
 
     // Validar que la fecha límite esté dentro del rango del proyecto
     if (fechaLimite < fechaInicioProyecto) {
-      throw new Error('La fecha límite de la tarea no puede ser anterior a la fecha de inicio del proyecto.');
+      throw new AppError('La fecha límite de la tarea no puede ser anterior a la fecha de inicio del proyecto.', 400, `fechaLimite: ${fechaLimite}, fechaInicioProyecto: ${fechaInicioProyecto}`);
     }
     if (fechaLimite > fechaEntregaProyecto) {
-      throw new Error('La fecha límite de la tarea no puede ser posterior a la fecha de entrega del proyecto.');
+      throw new AppError('La fecha límite de la tarea no puede ser posterior a la fecha de entrega del proyecto.', 400, `fechaLimite: ${fechaLimite}, fechaEntregaProyecto: ${fechaEntregaProyecto}`);
     }
 
     // También validar contra fecha_fin del staff_proyecto (si existe)
@@ -95,7 +96,7 @@ export class TareaRepositorio implements ITareaRepositorio {
     const fechaFinStaff: Date | null = staffFechaRes.rows[0]?.fecha_fin ?? null;
 
     if (fechaFinStaff && fechaLimite > fechaFinStaff) {
-      throw new Error('La fecha límite de la tarea no puede superar la fecha fin de la asignación del staff.');
+      throw new AppError('La fecha límite de la tarea no puede superar la fecha fin de la asignación del staff.', 400, `fechaLimite: ${fechaLimite}, fechaFinStaff: ${fechaFinStaff}`);
     }
   }
 
@@ -112,7 +113,7 @@ export class TareaRepositorio implements ITareaRepositorio {
     const staff = await ejecutarConsulta(validarStaffQuery, [tarea.asignadoA]);
 
     if ((staff.rowCount ?? 0) === 0) {
-      throw new Error('El consultor no está asignado.');
+      throw new AppError('El consultor no está asignado.', 404, { idStaffProyecto: tarea.asignadoA });
     }
 
     // 2️⃣ Validar duplicidad por proyecto
@@ -192,7 +193,7 @@ export class TareaRepositorio implements ITareaRepositorio {
     // Obtener tarea existente para valores por defecto
     const tareaExistente = await this.obtenerTareaPorId(idTarea);
     if (!tareaExistente) {
-      throw new Error(`Tarea con ID ${idTarea} no encontrada`);
+      throw new AppError(`Tarea con ID ${idTarea} no encontrada`, 404);
     }
 
     // Calcular valores efectivos después de la actualización
@@ -250,7 +251,7 @@ export class TareaRepositorio implements ITareaRepositorio {
 
     const result = await ejecutarConsulta(query, parametros);
     const row = result.rows[0];
-    if (!row) throw new Error(`No se pudo actualizar la tarea con ID ${idTarea}`);
+    if (!row) throw new AppError(`No se pudo actualizar la tarea con ID ${idTarea}`, 400);
 
     // Mapear respuesta BD -> ITarea (camelCase)
     return {
@@ -276,7 +277,7 @@ export class TareaRepositorio implements ITareaRepositorio {
     `;
     const result = await ejecutarConsulta(query, [idTarea]);
     if (result.rowCount === 0) {
-      throw new Error(`No se encontró la tarea con ID ${idTarea} para eliminar`);
+      throw new AppError(`No se encontró la tarea con ID ${idTarea} para eliminar`, 404);
     }
   }
 

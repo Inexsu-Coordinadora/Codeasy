@@ -24,7 +24,7 @@ export class TareaCasosUso {
     });
     
     if (nuevaTarea.fechaFinalizacion <= fechaActual) {
-      throw new AppError("La fecha de finalización debe ser posterior a la fecha de creación");
+      throw new AppError("La fecha de finalización debe ser posterior a la fecha de creación", 400, { fechaFinalizacion: nuevaTarea.fechaFinalizacion, fechaActual: fechaActual });
     }
 
     const tareaCreada = await this.tareaRepositorio.registrarTarea(nuevaTarea);
@@ -38,22 +38,22 @@ export class TareaCasosUso {
   }
 
  
- async obtenerTareaPorId(idTarea: number): Promise<ITarea> {
+ async obtenerTareaPorId(idTarea: string): Promise<ITarea> {
   const tarea = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
   
   if (!tarea) {
-    throw new AppError('Tarea', idTarea);
+    throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, 404);
   }
 
   return tarea;
 }
 
 
-  async actualizarTarea(idTarea: number, datos: TareaActualizarDTO): Promise<ITarea | null> {
+  async actualizarTarea(idTarea: string, datos: TareaActualizarDTO): Promise<ITarea | null> {
     // 1. Obtener la tarea existente
     const tareaExistente = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
     if (!tareaExistente) {
-      throw new AppError(`No se encontró la tarea con ID ${idTarea}`);
+      throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, 404);
     }
 
     // 2. Construir objeto de actualización manteniendo los campos requeridos
@@ -69,7 +69,7 @@ export class TareaCasosUso {
     // Validar fechas si se está actualizando fechaFinalizacion
     if (datos.fechaFinalizacion && tareaExistente.fechaCreacion) {
       if (datos.fechaFinalizacion <= tareaExistente.fechaCreacion) {
-        throw new AppError("La fecha de finalización debe ser posterior a la fecha de creación");
+        throw new AppError("La fecha de finalización debe ser posterior a la fecha de creación", 400, { fechaFinalizacion: datos.fechaFinalizacion, fechaCreacion: tareaExistente.fechaCreacion });
       }
     }
 
@@ -78,15 +78,15 @@ export class TareaCasosUso {
   }
 
 
-  async eliminarTarea(idTarea: number): Promise<void> {
+  async eliminarTarea(idTarea: string): Promise<void> {
     const tareaExistente = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
 
     if (!tareaExistente) {
-      throw new AppError(`No se encontró la tarea con ID ${idTarea}`);
+      throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, 404);
     }
 
     if (tareaExistente.estatus === "Eliminado") {
-      throw new AppError(`La tarea con ID ${idTarea} ya está eliminada.`);
+      throw new AppError(`La tarea con ID ${idTarea} ya está eliminada.`, 400);
     }
 
 
