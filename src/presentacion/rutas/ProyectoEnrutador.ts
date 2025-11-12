@@ -10,14 +10,28 @@ import { ProyectoActualizarEsquema } from "../esquemas/Proyectos/proyectoActuali
 import { ClienteRepositorio } from "../../core/infraestructura/postgres/ClienteRepositorio"; 
 
 function proyectoEnrutador(app: FastifyInstance, proyectoController: ProyectoControlador) {
-  app.get("/proyecto", proyectoController.listarTodosProyectos.bind(proyectoController));
+   app.get("/proyecto", proyectoController.listarTodosProyectos.bind(proyectoController));
   app.get("/proyecto/:idProyecto", proyectoController.obtenerProyectoPorId.bind(proyectoController));
-  app.post("/proyecto",{ preHandler: validarZod(ProyectoCrearEsquema, "body") },proyectoController.registrarProyecto.bind(proyectoController));
-  app.put("/proyecto/:idProyecto", { preHandler: validarZod(ProyectoActualizarEsquema, "body") }, proyectoController.actualizarProyecto.bind(proyectoController));
+  app.post(
+    "/proyecto",
+    { preHandler: validarZod(ProyectoCrearEsquema, "body") },
+    proyectoController.registrarProyecto.bind(proyectoController)
+  );
+
+  app.put(
+    "/proyecto/:idProyecto",
+    { preHandler: validarZod(ProyectoActualizarEsquema, "body") },
+    proyectoController.actualizarProyecto.bind(proyectoController)
+  );
+
   app.put("/proyecto/eliminar/:idProyecto", proyectoController.eliminarProyecto.bind(proyectoController));
 
+
+
+
+
   app.get(
-    "/clientes/:idCliente/proyectos",
+    "/clientes/:id_cliente/proyectos",
     proyectoController.consultarProyectosPorCliente.bind(proyectoController)
   );
 }
@@ -27,11 +41,13 @@ export async function construirProyectoEnrutador(app: FastifyInstance) {
   const clienteRepositorio = new ClienteRepositorio();
 
   // Casos de uso
-  const proyectoCasosUso = new ProyectoCasosUso(proyectoRepositorio);
+  const proyectoCasosUso = new ProyectoCasosUso(proyectoRepositorio , clienteRepositorio);
   const consultarProyectosPorClienteCasosUso = new ConsultarProyectosPorClienteCasosUso(
     proyectoRepositorio,
     clienteRepositorio
   );
+
+
 
 
   const proyectoController = new ProyectoControlador(

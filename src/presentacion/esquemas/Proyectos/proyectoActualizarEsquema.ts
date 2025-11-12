@@ -15,10 +15,8 @@ export const ProyectoActualizarEsquema = z
       .optional(),
 
     id_cliente: z
-      .number()
-      .int("El id_cliente debe ser un número entero positivo")
-      .positive("El id_cliente debe ser mayor a 0")
-      .optional(),
+      .string()
+      .uuid("El id_cliente debe tener formato UUID"),
 
     fecha_inicio: z
       .string()
@@ -41,9 +39,9 @@ export const ProyectoActualizarEsquema = z
       })
       .optional(),
 
-    estado: z.enum(["Creado", "En proceso", "Finalizado"]).optional(),
+    estado_proyecto: z.enum(["Creado", "En proceso", "Finalizado"]).optional(),
 
-    estatus: z.enum(["Activo", "Eliminado"]).optional(),
+    estado: z.enum(["Activo", "Eliminado"]).optional(),
   })
   // Validar coherencia: si hay ambas fechas, entrega > inicio
   .refine(

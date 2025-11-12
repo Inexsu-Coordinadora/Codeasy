@@ -3,7 +3,7 @@ import { Consultor } from "../../../dominio/consultor/Consultor";
 
 
 export interface IConsultorRepositorio {
-  c
+  registrarConsultor(consultor: Consultor): Promise<IConsultor>;
   listarTodosConsultores(): Promise<IConsultor[]>;
   obtenerConsultorPorId(id_consultor: string): Promise<IConsultor | null>;
   actualizarConsultor(id_consultor: string, datosConsultor: IConsultor): Promise<IConsultor>;

@@ -3,7 +3,6 @@ import { Pool } from 'pg';
 
 export interface IClienteRepositorio {
 
-    // Operaciones CRUD
      crearCliente(datosCliente: ICliente): Promise<ICliente>;
     buscarTodosCliente(): Promise<ICliente[]>;
     buscarPorIdCliente(id_cliente: number): Promise<ICliente | null>; 

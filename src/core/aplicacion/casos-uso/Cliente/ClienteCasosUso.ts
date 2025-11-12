@@ -39,15 +39,15 @@ export class ClienteCasosUso {
     return await this.clienteRepositorio.buscarTodosCliente();
   }
 
-  async obtenerClientePorId(idCliente: number): Promise<ICliente | null> {
-    return await this.clienteRepositorio.obtenerClientePorId(idCliente);
+  async obtenerClientePorId(id_cliente: string): Promise<ICliente | null> {
+    return await this.clienteRepositorio.obtenerClientePorId(id_cliente);
   }
 
   async obtenerClientePorIdentificacion(identificacion: string): Promise<ICliente | null> {
     return await this.clienteRepositorio.buscarPorIdentificacionCliente(identificacion);
   }
 
-  async actualizarCliente(id_cliente: number, datos: ClienteActualizarDTO): Promise<ICliente> {
+  async actualizarCliente(id_cliente: string, datos: ClienteActualizarDTO): Promise<ICliente> {
 
     const clienteExistente = await this.clienteRepositorio.obtenerClientePorId(id_cliente);
 
@@ -81,7 +81,7 @@ export class ClienteCasosUso {
     return resultado;
   }
 
-  async eliminarCliente(id_cliente: number): Promise<void> {
+  async eliminarCliente(id_cliente: string): Promise<void> {
     const clienteExistente = await this.clienteRepositorio.obtenerClientePorId(id_cliente);
     if (!clienteExistente) {
       throw new AppError(`No se encontró el cliente con ID ${id_cliente} para eliminar.`);

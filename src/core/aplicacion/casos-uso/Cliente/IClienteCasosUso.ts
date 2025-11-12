@@ -4,7 +4,7 @@ export interface IClientesCasosUso {
     obtenerClientePorId(id_cliente: string): Promise<ICliente | null>;
     registrarCliente(
         data: Omit<ICliente, 'id_cliente' | 'estado'>
-    ): Promise<number>;
+    ): Promise<string>;
     actualizarCliente(id_cliente: string, data: Partial<ICliente>): Promise<ICliente | null>;
     eliminarCliente(id_cliente: string): Promise<void>;
 }

@@ -39,7 +39,7 @@ export class ClienteControlador {
   }
 
   async actualizarCliente(req: FastifyRequest, reply: FastifyReply) {
-    const { id_cliente } = req.params as { id_cliente: number };
+    const { id_cliente } = req.params as { id_cliente: string };
     const datos = req.body as ClienteActualizarDTO;
 
     const clienteActualizado = await this.casosUso.actualizarCliente(
@@ -55,7 +55,7 @@ export class ClienteControlador {
   }
 
   async eliminarCliente(req: FastifyRequest, reply: FastifyReply) {
-    const { id_cliente } = req.params as { id_cliente: number };
+    const { id_cliente } = req.params as { id_cliente: string };
     await this.casosUso.eliminarCliente(id_cliente);
 
     return reply.code(200).send({
