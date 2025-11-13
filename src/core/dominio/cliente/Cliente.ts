@@ -1,12 +1,12 @@
-import { ICliente, EstatusCliente } from './ICliente';
+import { ICliente, EstadoCliente } from './ICliente';
 
 export class Cliente implements ICliente {
-    idCliente?: number;
+    id_cliente?: string;
     nombre!: string;
     identificacion!: string;
     email!: string;
     telefono!: string | null; 
-    estatus: EstatusCliente = 'Activo'; 
+    estado: EstadoCliente = 'Activo'; 
 
     constructor(props: Partial<ICliente>)
     {

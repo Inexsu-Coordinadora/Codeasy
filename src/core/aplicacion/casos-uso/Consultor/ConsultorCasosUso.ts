@@ -3,6 +3,7 @@ import  {Consultor} from "../../../dominio/consultor/Consultor";
 import  { IConsultorRepositorio } from "./IConsultorCasosUso";
 import  { ConsultorCrearDTO } from "../../../../presentacion/esquemas/consultorCrearEsquema";
 import  { ConsultorActualizarDTO } from "../../../../presentacion/esquemas/consultorActualizarEsquema";
+import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
 
 export class ConsultorCasosUso {
   constructor(private consultorRepositorio: IConsultorRepositorio) {}
@@ -16,7 +17,7 @@ export class ConsultorCasosUso {
     );
 
     if (existente) {
-      throw new Error("Ya existe un consultor con ese correo o identificación");
+      throw new AppError("Ya existe un consultor con ese correo o identificación");
     }
 
 
@@ -38,20 +39,20 @@ export class ConsultorCasosUso {
   }
 
  
-  async obtenerConsultorPorId(idConsultor: number): Promise<IConsultor | null> {
-    const consultor = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
+  async obtenerConsultorPorId(id_consultor: string): Promise<IConsultor | null> {
+    const consultor = await this.consultorRepositorio.obtenerConsultorPorId(id_consultor);
     if (!consultor) {
-    throw new Error(`No se encontró un consultor con el ID ${idConsultor}`);
+    throw new AppError(`No se encontró un consultor con el ID ${id_consultor}`);
   }
     return consultor;
   }
 
 
-  async actualizarConsultor(idConsultor: number, datos: ConsultorActualizarDTO): Promise<IConsultor> {
-  const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
+  async actualizarConsultor(id_consultor: string, datos: ConsultorActualizarDTO): Promise<IConsultor> {
+  const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(id_consultor);
 
   if (!consultorExistente) {
-    throw new Error(`No se encontró el consultor con ID ${idConsultor}`);
+    throw new AppError(`No se encontró el consultor con ID ${id_consultor}`);
   }
 
 
@@ -62,7 +63,7 @@ export class ConsultorCasosUso {
 
 
   const resultado = await this.consultorRepositorio.actualizarConsultor(
-    idConsultor,
+    id_consultor,
     consultorActualizado as IConsultor
   );
 
@@ -71,15 +72,17 @@ export class ConsultorCasosUso {
 
 
 
-  async eliminarConsultor(idConsultor: number): Promise<void> {
-    const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
+  async eliminarConsultor(id_consultor: string): Promise<void> {
+    const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(id_consultor);
 
      if (!consultorExistente || consultorExistente.estado === "Eliminado") {
-    throw new Error(`No se encontró el consultor con ID ${idConsultor}`);
+    throw new AppError(`No se encontró el consultor con ID ${id_consultor}`);
   }
 
     consultorExistente.estado = "Eliminado";
 
-    await this.consultorRepositorio.actualizarConsultor(idConsultor, consultorExistente);
+    await this.consultorRepositorio.actualizarConsultor(id_consultor, consultorExistente);
   }
+
+  
 }

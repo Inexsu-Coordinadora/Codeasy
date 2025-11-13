@@ -1,7 +1,9 @@
 import {z} from "zod";
 
+
+
 export const ClienteCrearEsquema = z.object({
-  idCliente: z.number().int().positive().optional(),
+  idCliente: z.string().optional(),
 
   nombre: z
     .string()
@@ -15,7 +17,7 @@ export const ClienteCrearEsquema = z.object({
     .min(5, "La identificación debe tener al menos 5 caracteres")
     .max(20, "La identificación no puede exceder los 20 caracteres"),
 
-  email: z.string().email({ message: "Formato de email inválido" }),
+  email: z.email({ message: "Formato de email inválido" }),
   
   telefono: z
     .string()
@@ -24,8 +26,9 @@ export const ClienteCrearEsquema = z.object({
     .optional() 
     .transform((val) => val ?? null),
 
-    estatus: z.literal("Activo").or(z.literal("Eliminado")),
+    estado: z.literal("Activo").or(z.literal("Eliminado")),
 
 });
 
 export type ClienteCrearDTO = z.infer<typeof ClienteCrearEsquema>;
+

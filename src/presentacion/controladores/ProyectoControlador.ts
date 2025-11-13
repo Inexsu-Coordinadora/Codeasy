@@ -1,99 +1,100 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ProyectoCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ProyectoCasosUso";
-import type { ProyectoCrearDTO } from "../esquemas/ProyectoCrearEsquema";
-import type { ProyectoActualizarDTO } from "../esquemas/ProyectoActualizarEsquema";
+import type { ProyectoCrearDTO } from "../esquemas/proyectoCrearEsquema";
+import type { ProyectoActualizarDTO } from "../esquemas/proyectoActualizarEsquema";
+import { ConsultarProyectosPorClienteCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ConsultarProyectosPorClienteCasosUso";
 
 export class ProyectoControlador {
-  constructor(private casosUso: ProyectoCasosUso) {}
+  constructor(private casosUso: ProyectoCasosUso, private  consultarProyectosPorClienteCasosUso: ConsultarProyectosPorClienteCasosUso) {}
+
 
   // Registrar un nuevo proyecto
   async registrarProyecto(req: FastifyRequest, reply: FastifyReply) {
-    try {
-      const datos = req.body as ProyectoCrearDTO;
-      const nuevoProyecto = await this.casosUso.registrarProyecto(datos);
-      return reply.code(201).send({
-        mensaje: "Proyecto creado correctamente",
-        data: nuevoProyecto,
-      });
-    } catch (error: any) {
-      return reply.code(500).send({
-        mensaje: "Error interno al crear proyecto",
-        detalles: error.message,
-      });
-    }
+    const datos = req.body as ProyectoCrearDTO;
+    const nuevoProyecto = await this.casosUso.registrarProyecto(datos);
+
+    return reply.code(201).send({
+      exito: true,
+      mensaje: "Proyecto creado correctamente",
+      data: nuevoProyecto,
+    });
   }
 
   // Listar todos los proyectos activos
   async listarTodosProyectos(_req: FastifyRequest, reply: FastifyReply) {
-    try {
-      const proyectos = await this.casosUso.listarTodosProyectos();
-      return reply.code(200).send({
-        mensaje: "Proyectos activos obtenidos correctamente",
-        data: proyectos,
-      });
-    } catch (error: any) {
-      return reply.code(500).send({
-        mensaje: "Error al listar proyectos",
-        detalles: error.message,
-      });
-    }
+    const proyectos = await this.casosUso.listarTodosProyectos();
+    return reply.code(200).send({
+      exito: true,
+      mensaje: "Proyectos obtenidos correctamente",
+      data: proyectos,
+    });
   }
 
   // Obtener un proyecto por ID
   async obtenerProyectoPorId(req: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { idProyecto } = req.params as { idProyecto: number };
-      const proyecto = await this.casosUso.obtenerProyectoPorId(idProyecto);
+    const { idProyecto } = req.params as { idProyecto: number };
+    const proyecto = await this.casosUso.obtenerProyectoPorId(idProyecto);
 
-      if (!proyecto) {
-        return reply.code(404).send({ mensaje: "Proyecto no encontrado" });
-      }
-
-      return reply.code(200).send({
-        mensaje: "Proyecto obtenido correctamente",
-        data: proyecto,
-      });
-    } catch (error: any) {
-      return reply.code(500).send({
-        mensaje: "Error al obtener proyecto",
-        detalles: error.message,
-      });
-    }
+    return reply.code(200).send({
+      exito: true,
+      mensaje: "Proyecto obtenido correctamente",
+      data: proyecto,
+    });
   }
 
   // Actualizar un proyecto existente
   async actualizarProyecto(req: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { idProyecto } = req.params as { idProyecto: number };
-      const datos = req.body as ProyectoActualizarDTO;
+    const { idProyecto } = req.params as { idProyecto: number };
+    const datos = req.body as ProyectoActualizarDTO;
 
-      const proyectoActualizado = await this.casosUso.actualizarProyecto(idProyecto, datos);
+    const proyectoActualizado = await this.casosUso.actualizarProyecto(idProyecto, datos);
 
-      return reply.code(200).send({
-        mensaje: "Proyecto actualizado correctamente",
-        data: proyectoActualizado,
-      });
-    } catch (error: any) {
-      return reply.code(500).send({
-        mensaje: "Error al actualizar proyecto",
-        detalles: error.message,
-      });
-    }
+    return reply.code(200).send({
+      exito: true,
+      mensaje: "Proyecto actualizado correctamente",
+      data: proyectoActualizado,
+    });
   }
 
   // Eliminar (lógicamente) un proyecto
   async eliminarProyecto(req: FastifyRequest, reply: FastifyReply) {
-    try {
-      const { idProyecto } = req.params as { idProyecto: number };
-      await this.casosUso.eliminarProyecto(idProyecto);
-      return reply.code(200).send({
-        mensaje: "Proyecto eliminado correctamente",
-      });
-    } catch (error: any) {
-      return reply.code(500).send({
-        mensaje: "Error al eliminar proyecto",
-        detalles: error.message,
-      });
-    }
+    const { idProyecto } = req.params as { idProyecto: number };
+    await this.casosUso.eliminarProyecto(idProyecto);
+    
+    return reply.code(200).send({
+      exito: true,
+      mensaje: "Proyecto eliminado correctamente",
+    });
   }
+
+// Nuevo método para consultar proyectos por cliente
+  async consultarProyectosPorCliente(req: FastifyRequest, reply: FastifyReply) {
+    const { id_cliente } = req.params as { id_cliente: string };
+    const { estado, fecha_inicio, fecha_fin } = req.query as {
+      estado?: string;
+      fecha_inicio?: string;
+      fecha_fin?: string;
+    };
+
+    const filtros = {
+      estado,
+      fecha_inicio: fecha_inicio ? new Date(fecha_inicio) : undefined,
+    };
+
+    const resultado = await this.consultarProyectosPorClienteCasosUso.ejecutar(id_cliente, filtros);
+
+     if (resultado.mensaje) {
+    return reply.code(200).send({
+      exito: true,
+      mensaje: resultado.mensaje,
+      data: resultado.proyectos,
+    });
+  }
+
+  return reply.code(200).send({
+    exito: true,
+    data: resultado.proyectos,
+  });
+  }
+  
 }
