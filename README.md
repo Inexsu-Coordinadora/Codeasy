@@ -49,6 +49,11 @@ git clone https://github.com/Inexsu-Coordinadora/Codeasy.git
 ## Video
 https://www.youtube.com/watch?v=AmeaxzkaRTs&feature=youtu.be
 
+Video servicio 3.
+
+https://youtu.be/Th-kow1ofnY
+
+
 
 ## 🧑🏼‍💻 Integrantes
 
