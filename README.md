@@ -50,10 +50,10 @@ git clone https://github.com/Inexsu-Coordinadora/Codeasy.git
 https://www.youtube.com/watch?v=AmeaxzkaRTs&feature=youtu.be
 
 Video servicio 3.
-
 https://youtu.be/Th-kow1ofnY
 
-
+Documentacion servicio 3.
+[Documentación del Servicio Partes de Hora (3).pdf](https://github.com/user-attachments/files/23532547/Documentacion.del.Servicio.Partes.de.Hora.3.pdf)
 
 ## 🧑🏼‍💻 Integrantes
 
