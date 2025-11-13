@@ -32,7 +32,7 @@ export class ClienteCasosUso {
 
     //Persistir en la base de datos
     const idClienteCreado = await this.clienteRepositorio.crearCliente(nuevoCliente);
-    return idClienteCreado;
+    return Number(idClienteCreado);
   }
 
   async listarTodosClientes(): Promise<ICliente[]> {
