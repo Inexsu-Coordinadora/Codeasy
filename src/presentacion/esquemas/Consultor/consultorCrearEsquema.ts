@@ -27,7 +27,7 @@ export const ConsultorCrearEsquema = z.object({
     .optional()
     .transform((val) => val ?? null),
 
-  nivelexperiencia: z
+  nivel_experiencia: z
     .enum(["Junior", "Semi-Senior", "Senior", "Experto"], {
       message:
         "El nivel de experiencia debe ser uno de: Junior, Semi-Senior, Senior o Experto",

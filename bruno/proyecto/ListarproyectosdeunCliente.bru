@@ -1,0 +1,21 @@
+meta {
+  name: Consultar proyectos por cliente
+  type: http
+  seq: 3
+}
+
+get {
+  url: http://localhost:3000/api/clientes/3373c004-743f-461c-abf0-8fd589f44cf7/proyectos?fecha_inicio=2025-09-01
+  body: none
+  auth: inherit
+}
+
+params:query {
+  fecha_inicio: 2025-09-01
+  ~estado: En proceso
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

@@ -1,18 +1,21 @@
 import Fastify from "fastify";
 import { FastifyError } from "fastify";
-import { construirConsultorEnrutador } from "./rutas/consultorEnrutador";
-import { construirTareaEnrutador } from "./rutas/enrutadorTarea";
-import { construirClienteEnrutador } from "./rutas/ClienteEnrutador";
 import { construirProyectoEnrutador } from "./rutas/ProyectoEnrutador";
+import { construirClienteEnrutador } from "./rutas/ClienteEnrutador";
+import { construirConsultorEnrutador } from "./rutas/ConsultorEnrutador";
+import { construirTareaEnrutador } from "./rutas/enrutadorTarea";
+import { ManejadorErrores } from "./esquemas/middlewares/ManejadorErrores";
 
 const app = Fastify({ logger: true });
 
+app.setErrorHandler(ManejadorErrores);
+
 app.register(
   async (appInstance) => {
+    construirProyectoEnrutador(appInstance);
+    construirClienteEnrutador(appInstance);
     construirConsultorEnrutador(appInstance);
     construirTareaEnrutador(appInstance);
-    construirClienteEnrutador(appInstance);
-    construirProyectoEnrutador(appInstance);
   },
   { prefix: "/api" }
 );

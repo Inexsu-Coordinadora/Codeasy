@@ -3,6 +3,7 @@ import  { Tarea } from "../../../dominio/tarea/Tarea";
 import  { ITareaRepositorio } from "../../../dominio/tarea/repositorio/ITareaRepositorio.js";
 import  { TareaCrearDTO } from "../../../../presentacion/esquemas/EsquemaTareas";
 import  { TareaActualizarDTO } from "../../../../presentacion/esquemas/EsquemaTareas";
+import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
 //import { randomUUID } from "crypto";
 
 export class TareaCasosUso {
@@ -22,7 +23,7 @@ export class TareaCasosUso {
       asignadoA: datos.asignadoA || "Sin asignar"
     });
     if (nuevaTarea.fechaFinalizacion <= fechaActual) {
-      throw new Error("La fecha de finalización debe ser posterior a la fecha de creación");
+      throw new AppError("La fecha de finalización debe ser posterior a la fecha de creación");
     }
 
     const tareaCreada = await this.tareaRepositorio.registrarTarea(nuevaTarea);
@@ -36,17 +37,22 @@ export class TareaCasosUso {
   }
 
  
-  async obtenerTareaPorId(idTarea: number): Promise<ITarea | null> {
-    const tarea = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
-    return tarea;
+ async obtenerTareaPorId(idTarea: number): Promise<ITarea> {
+  const tarea = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
+  
+  if (!tarea) {
+    throw new AppError('Tarea', idTarea);
   }
+
+  return tarea;
+}
 
 
   async actualizarTarea(idTarea: number, datos: TareaActualizarDTO): Promise<ITarea | null> {
     // 1. Obtener la tarea existente
     const tareaExistente = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
     if (!tareaExistente) {
-      throw new Error(`No se encontró la tarea con ID ${idTarea}`);
+      throw new AppError(`No se encontró la tarea con ID ${idTarea}`);
     }
 
     // 2. Construir objeto de actualización manteniendo los campos requeridos
@@ -63,7 +69,7 @@ export class TareaCasosUso {
     // 3. Validar fechas si se está actualizando fechaFinalizacion
     if (datos.fechaFinalizacion && actualizacion.fechaCreacion) {
       if (datos.fechaFinalizacion <= actualizacion.fechaCreacion) {
-        throw new Error("La fecha de finalización debe ser posterior a la fecha de creación");
+        throw new AppError("La fecha de finalización debe ser posterior a la fecha de creación");
       }
     }
 
@@ -76,11 +82,11 @@ export class TareaCasosUso {
     const tareaExistente = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
 
     if (!tareaExistente) {
-      throw new Error(`No se encontró la tarea con ID ${idTarea}`);
+      throw new AppError(`No se encontró la tarea con ID ${idTarea}`);
     }
 
     if (tareaExistente.estatus === "Eliminado") {
-      throw new Error(`La tarea con ID ${idTarea} ya está eliminada.`);
+      throw new AppError(`La tarea con ID ${idTarea} ya está eliminada.`);
     }
 
 

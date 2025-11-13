@@ -137,7 +137,11 @@ secrets/
 private_keys/
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .env
 =======
 .env
 >>>>>>> feature/CRUD-Tareas
+=======
+.env
+>>>>>>> feature/consulta-proyectos-cliente
