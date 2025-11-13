@@ -3,7 +3,7 @@ import {z} from "zod";
 
 
 export const ClienteCrearEsquema = z.object({
-  idCliente: z.number().int().positive().optional(),
+  idCliente: z.string().optional(),
 
   nombre: z
     .string()

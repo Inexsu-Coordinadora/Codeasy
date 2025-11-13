@@ -69,7 +69,7 @@ export class ProyectoControlador {
 
 // Nuevo método para consultar proyectos por cliente
   async consultarProyectosPorCliente(req: FastifyRequest, reply: FastifyReply) {
-    const { idCliente } = req.params as { idCliente: string };
+    const { id_cliente } = req.params as { id_cliente: string };
     const { estado, fecha_inicio, fecha_fin } = req.query as {
       estado?: string;
       fecha_inicio?: string;
@@ -81,7 +81,7 @@ export class ProyectoControlador {
       fecha_inicio: fecha_inicio ? new Date(fecha_inicio) : undefined,
     };
 
-    const resultado = await this.consultarProyectosPorClienteCasosUso.ejecutar(idCliente, filtros);
+    const resultado = await this.consultarProyectosPorClienteCasosUso.ejecutar(id_cliente, filtros);
 
      if (resultado.mensaje) {
     return reply.code(200).send({

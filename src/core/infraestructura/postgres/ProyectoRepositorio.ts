@@ -68,7 +68,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
   }
   // Listar proyectos por cliente
 
- async obtenerPorCliente(
+async obtenerPorCliente(
   id_cliente: string,
   filtros?: { estado?: string; fecha_inicio?: Date; fecha_fin?: Date }
 ): Promise<Proyecto[]> {
@@ -76,9 +76,8 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     SELECT 
       p.id_proyecto,
       p.nombre,
-      p.estado,
-      p.fecha_inicio,
-      p.fecha_fin
+      p.estado_proyecto,
+      p.fecha_inicio
     FROM proyectos p
     WHERE p.id_cliente = $1
   `;
@@ -92,39 +91,39 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
   }
 
   if (filtros?.fecha_inicio) {
-  const fecha = new Date(filtros.fecha_inicio).toISOString().slice(0, 10);
-  query += ` AND DATE(p.fecha_inicio) = $${index}::date`;
-  params.push(fecha);
-  index++;
-}
-
-  
+    const fecha = new Date(filtros.fecha_inicio).toISOString().slice(0, 10);
+    query += ` AND DATE(p.fecha_inicio) = $${index}::date`;
+    params.push(fecha);
+    index++;
+  }
 
   const result = await ejecutarConsulta(query, params);
-  // Consultar los consultores asociados a cada proyecto
+
+ 
   const proyectos = await Promise.all(
     result.rows.map(async (p: any) => {
       const consultoresQuery = await ejecutarConsulta(
         `
         SELECT 
-      c.nombre AS nombre,
-      r.nombre AS rol
-      FROM staff_proyecto sp
-      JOIN consultores c ON sp.id_consultor = c.id_consultor
-      JOIN roles r ON sp.id_rol = r.id_rol
-      WHERE sp.id = $1
-  `,
-        [p.id]
+          c.nombre AS nombre,
+          r.nombre AS rol
+        FROM staff_proyecto sp
+        JOIN consultores c ON sp.id_consultor = c.id_consultor
+        JOIN roles r ON sp.id_rol = r.id_rol
+        WHERE sp.id_proyecto = $1
+        `,
+        [p.id_proyecto] 
       );
 
-      return ({
+      return {
         ...p,
         consultores: consultoresQuery.rows,
-      });
+      };
     })
   );
 
   return proyectos;
 }
+
  
 }
