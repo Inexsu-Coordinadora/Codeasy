@@ -49,33 +49,38 @@ export class TareaCasosUso {
 }
 
 
-  async actualizarTarea(idTarea: string, datos: TareaActualizarDTO): Promise<ITarea | null> {
-    // 1. Obtener la tarea existente
-    const tareaExistente = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
-    if (!tareaExistente) {
-      throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, 404);
-    }
-
-    // 2. Construir objeto de actualización manteniendo los campos requeridos
-    const actualizacion: Partial<ITarea> = {
-      titulo: datos.titulo ?? tareaExistente.titulo,
-      descripcion: datos.descripcion ?? tareaExistente.descripcion,
-      estadoTarea: datos.estadoTarea ?? tareaExistente.estadoTarea,
-      fechaFinalizacion: datos.fechaFinalizacion ?? tareaExistente.fechaFinalizacion,
-      prioridad: datos.prioridad ?? tareaExistente.prioridad,
-      asignadoA: datos.asignadoA ?? tareaExistente.asignadoA,
-    };
-
-    // Validar fechas si se está actualizando fechaFinalizacion
-    if (datos.fechaFinalizacion && tareaExistente.fechaCreacion) {
-      if (datos.fechaFinalizacion <= tareaExistente.fechaCreacion) {
-        throw new AppError("La fecha de finalización debe ser posterior a la fecha de creación", 400, { fechaFinalizacion: datos.fechaFinalizacion, fechaCreacion: tareaExistente.fechaCreacion });
-      }
-    }
-
-    // 4. Realizar la actualización
-    return await this.tareaRepositorio.actualizarTarea(idTarea, actualizacion);
+async actualizarTarea(idTarea: string, datos: TareaActualizarDTO): Promise<ITarea> {
+  // 1. Obtener la tarea existente
+  const tareaExistente = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
+  if (!tareaExistente) {
+    throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, 404);
   }
+
+  // 2. Validar si se intenta marcar como completada una tarea que ya está completada
+  if (datos.estadoTarea === 'completada' && tareaExistente.estadoTarea === 'completada') {
+    throw new AppError('La tarea ya está marcada como completada. El estado ya fue aplicado.', 400);
+  }
+
+  // 3. Construir objeto de actualización manteniendo los campos requeridos
+  const actualizacion: Partial<ITarea> = {
+    titulo: datos.titulo ?? tareaExistente.titulo,
+    descripcion: datos.descripcion ?? tareaExistente.descripcion,
+    estadoTarea: datos.estadoTarea ?? tareaExistente.estadoTarea,
+    fechaFinalizacion: datos.fechaFinalizacion ?? tareaExistente.fechaFinalizacion,
+    prioridad: datos.prioridad ?? tareaExistente.prioridad,
+    asignadoA: datos.asignadoA ?? tareaExistente.asignadoA,
+  };
+
+  // 4. Validar fechas si se está actualizando fechaFinalizacion
+  if (datos.fechaFinalizacion && tareaExistente.fechaCreacion) {
+    if (datos.fechaFinalizacion <= tareaExistente.fechaCreacion) {
+      throw new AppError("La fecha de finalización debe ser posterior a la fecha de creación", 400);
+    }
+  }
+
+  // 5. Realizar la actualización
+  return await this.tareaRepositorio.actualizarTarea(idTarea, actualizacion);
+}
 
 
   async eliminarTarea(idTarea: string): Promise<void> {
