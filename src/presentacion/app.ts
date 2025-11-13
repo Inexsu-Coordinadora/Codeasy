@@ -4,7 +4,6 @@ import { construirProyectoEnrutador } from "./rutas/ProyectoEnrutador";
 import { construirClienteEnrutador } from "./rutas/ClienteEnrutador";
 import { construirConsultorEnrutador } from "./rutas/ConsultorEnrutador";
 import { construirTareaEnrutador } from "./rutas/enrutadorTarea";
-import { construirStaffProyectoEnrutador } from "./rutas/StaffProyectoEnrutador";
 import { ManejadorErrores } from "./esquemas/middlewares/ManejadorErrores";
 
 
@@ -18,7 +17,6 @@ app.register(
     construirClienteEnrutador(appInstance);
     construirConsultorEnrutador(appInstance);
     construirTareaEnrutador(appInstance);
-    construirStaffProyectoEnrutador(appInstance);
   },
   { prefix: "/api" }
 );
