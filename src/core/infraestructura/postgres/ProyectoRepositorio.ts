@@ -8,7 +8,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
   // Crear un nuevo proyecto
   async registrarProyecto(proyecto: IProyecto): Promise<IProyecto> {
     const proyectoSinId = { ...proyecto };
-    delete (proyectoSinId as any).id_proyecto;
+    delete (proyectoSinId as any).idProyecto;
 
     const columnas = Object.keys(proyectoSinId);
     const valores = Object.values(proyectoSinId).filter(v => v !== undefined && v !== null);
@@ -32,14 +32,14 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
   }
 
   // Obtener un proyecto por su ID
-  async obtenerProyectoPorId(idProyecto: number): Promise<IProyecto | null> {
+  async obtenerProyectoPorId(idProyecto: string): Promise<IProyecto | null> {
     const query = `SELECT * FROM proyectos WHERE id_proyecto = $1 AND estado = 'Activo';`;
     const resultado = await ejecutarConsulta(query, [idProyecto]);
     return resultado.rows[0] || null;
   }
 
   // Actualizar un proyecto
-  async actualizarProyecto(idProyecto: number, datos: Partial<IProyecto>): Promise<IProyecto> {
+  async actualizarProyecto(idProyecto: string, datos: Partial<IProyecto>): Promise<IProyecto> {
     const datosLimpios = Object.fromEntries(
       Object.entries(datos).filter(([_, v]) => v !== null && v !== undefined)
     );
@@ -49,14 +49,19 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     const setClause = columnas.map((col, i) => `${col}=$${i + 1}`).join(", ");
     parametros.push(idProyecto);
 
-    const query = ` UPDATE proyectos SET ${setClause} WHERE id_proyecto=$${parametros.length} RETURNING *;`;
+    const query = `
+      UPDATE proyectos
+      SET ${setClause}
+      WHERE id_proyecto=$${parametros.length}
+      RETURNING *;
+    `;
 
     const resultado = await ejecutarConsulta(query, parametros);
     return resultado.rows[0];
   }
 
   // Eliminación lógica del proyecto
-  async eliminarProyecto(idProyecto: number): Promise<void> {
+  async eliminarProyecto(idProyecto: string): Promise<void> {
     const query = `UPDATE proyectos SET estado ='Eliminado' WHERE id_proyecto=$1;`;
     await ejecutarConsulta(query, [idProyecto]);
   }

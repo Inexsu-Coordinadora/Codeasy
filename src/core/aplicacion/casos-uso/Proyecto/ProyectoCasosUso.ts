@@ -16,26 +16,26 @@ export class ProyectoCasosUso {
   async registrarProyecto(datos: ProyectoCrearDTO): Promise<IProyecto> {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
-    const fechaInicio = new Date(datos.fechaInicio);
-    const fechaEntrega = new Date(datos.fechaEntrega);
-    fechaInicio.setHours(0, 0, 0, 0);
-    fechaEntrega.setHours(0, 0, 0, 0);
+    const fecha_inicio = new Date(datos.fecha_inicio);
+    const fecha_entrega = new Date(datos.fecha_entrega);
+    fecha_inicio.setHours(0, 0, 0, 0);
+    fecha_entrega.setHours(0, 0, 0, 0);
 
     // Validaciones de negocio
-    if (isNaN(fechaInicio.getTime()) || isNaN(fechaEntrega.getTime())) {
+    if (isNaN(fecha_inicio.getTime()) || isNaN(fecha_entrega.getTime())) {
       throw new AppError("Las fechas proporcionadas no son válidas.");
     }
-    if (fechaInicio < hoy) {
+    if (fecha_inicio < hoy) {
       throw new AppError("La fecha de inicio no puede ser anterior a la fecha actual.");
     }
-    if (fechaEntrega < hoy) {
+    if (fecha_entrega < hoy) {
       throw new AppError("La fecha de entrega no puede ser anterior a la fecha actual.");
     }
-    if (fechaEntrega <= fechaInicio) {
+    if (fecha_entrega <= fecha_inicio) {
       throw new AppError("La fecha de entrega debe ser posterior a la fecha de inicio.");
     }
       // Validar existencia del cliente
-      const cliente = await this.clienteRepositorio.buscarPorIdCliente(datos.idCliente);
+      const cliente = await this.clienteRepositorio.buscarPorIdCliente(datos.id_cliente);
     if (!cliente) {
       throw new AppError("El cliente especificado no existe.");
     }
@@ -44,7 +44,7 @@ export class ProyectoCasosUso {
     const proyectosCliente: IProyecto[] = await this.proyectoRepositorio.listarTodosProyectos();
     const existeDuplicado = proyectosCliente.some(
       (p: IProyecto) =>
-        p.idCliente === datos.idCliente &&
+        p.id_cliente === datos.id_cliente &&
         p.nombre.trim().toLowerCase() === datos.nombre.trim().toLowerCase() &&
         p.estado === "Activo"
     );
@@ -57,11 +57,11 @@ export class ProyectoCasosUso {
       0,
       datos.nombre,
       datos.descripcion,
-      datos.estadoProyecto || "Creado",
+      datos.estado_proyecto || "Creado",
       datos.estado || "Activo",
-      datos.idCliente,
-      fechaInicio,
-      fechaEntrega,
+      datos.id_cliente,
+      fecha_inicio,
+      fecha_entrega,
       new Date()
     );
 
@@ -75,7 +75,7 @@ export class ProyectoCasosUso {
   }
 
   // Obtener un proyecto por ID
-  async obtenerProyectoPorId(idProyecto: number): Promise<IProyecto | null> {
+  async obtenerProyectoPorId(idProyecto: string): Promise<IProyecto | null> {
     const proyecto = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
     if (!proyecto) {
       throw new AppError(`No se encontró el proyecto con ID ${idProyecto}`);
@@ -84,7 +84,7 @@ export class ProyectoCasosUso {
   }
 
   // Actualizar un proyecto existente
-  async actualizarProyecto(idProyecto: number, datos: ProyectoActualizarDTO): Promise<IProyecto> {
+  async actualizarProyecto(idProyecto: string, datos: ProyectoActualizarDTO): Promise<IProyecto> {
     const proyectoExistente = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
     if (!proyectoExistente) {
       throw new AppError(`No se encontró el proyecto con ID ${idProyecto}`);
@@ -93,29 +93,29 @@ export class ProyectoCasosUso {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
 
-    if (datos.fechaInicio) {
-      const fechaInicio = new Date(datos.fechaInicio);
-      fechaInicio.setHours(0, 0, 0, 0);
-      if (isNaN(fechaInicio.getTime())) throw new AppError("La fecha de inicio no es válida.");
-      if (fechaInicio < hoy)
+    if (datos.fecha_inicio) {
+      const fecha_inicio = new Date(datos.fecha_inicio);
+      fecha_inicio.setHours(0, 0, 0, 0);
+      if (isNaN(fecha_inicio.getTime())) throw new AppError("La fecha de inicio no es válida.");
+      if (fecha_inicio < hoy)
         throw new AppError("La fecha de inicio no puede ser anterior a la fecha actual.");
     }
 
-    if (datos.fechaEntrega) {
-      const fechaEntrega = new Date(datos.fechaEntrega);
-      fechaEntrega.setHours(0, 0, 0, 0);
-      if (isNaN(fechaEntrega.getTime())) throw new AppError("La fecha de entrega no es válida.");
-      if (fechaEntrega < hoy)
+    if (datos.fecha_entrega) {
+      const fecha_entrega = new Date(datos.fecha_entrega);
+      fecha_entrega.setHours(0, 0, 0, 0);
+      if (isNaN(fecha_entrega.getTime())) throw new AppError("La fecha de entrega no es válida.");
+      if (fecha_entrega < hoy)
         throw new AppError("La fecha de entrega no puede ser anterior a la fecha actual.");
 
-      // Si también se envía fechaInicio, validar coherencia
-      if (datos.fechaInicio) {
-        const fechaInicio = new Date(datos.fechaInicio);
-        fechaInicio.setHours(0, 0, 0, 0);
-        if (fechaEntrega <= fechaInicio)
+      // Si también se envía fecha_inicio, validar coherencia
+      if (datos.fecha_inicio) {
+        const fecha_inicio = new Date(datos.fecha_inicio);
+        fecha_inicio.setHours(0, 0, 0, 0);
+        if (fecha_entrega <= fecha_inicio)
           throw new AppError("La fecha de entrega debe ser posterior a la fecha de inicio.");
-      } else if (proyectoExistente.fechaInicio && fechaEntrega <= proyectoExistente.fechaInicio) {
-        // Si no se envía fechaInicio nueva, usar la existente
+      } else if (proyectoExistente.fecha_inicio && fecha_entrega <= proyectoExistente.fecha_inicio) {
+        // Si no se envía fecha_inicio nueva, usar la existente
         throw new AppError("La fecha de entrega debe ser posterior a la fecha de inicio actual.");
       }
     }
@@ -126,7 +126,7 @@ export class ProyectoCasosUso {
   }
 
   // Eliminar (lógicamente) un proyecto
-  async eliminarProyecto(idProyecto: number): Promise<void> {
+  async eliminarProyecto(idProyecto: string): Promise<void> {
     const proyectoExistente = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
     if (!proyectoExistente || proyectoExistente.estado === "Eliminado") {
       throw new AppError(`No se encontró el proyecto con ID ${idProyecto}`);

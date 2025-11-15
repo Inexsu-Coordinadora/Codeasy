@@ -1,7 +1,7 @@
 import {z} from "zod";
 
 export const ClienteCrearEsquema = z.object({
-  idCliente: z.number().int().positive().optional(),
+  id_cliente: z.number().int().positive().optional(),
 
   nombre: z
     .string()
@@ -24,7 +24,7 @@ export const ClienteCrearEsquema = z.object({
     .optional() 
     .transform((val) => val ?? null),
 
-    estatus: z.literal("Activo").or(z.literal("Eliminado")),
+    estado: z.literal("Activo").or(z.literal("Eliminado")),
 
 });
 

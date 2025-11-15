@@ -40,9 +40,9 @@ export const ProyectoActualizarEsquema = z
       .optional(),
 
     estado_proyecto: z.enum(["Creado", "En proceso", "Finalizado"]).optional(),
+
     estado: z.enum(["Activo", "Eliminado"]).optional(),
   })
-  
   // Validar coherencia: si hay ambas fechas, entrega > inicio
   .refine(
     (data) =>

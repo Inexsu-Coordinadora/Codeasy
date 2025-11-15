@@ -6,7 +6,7 @@ export interface ICliente {
     identificacion: string;
     email: string;         
     telefono: string | null;
-    estatus: EstatusCliente; 
+    estado: EstatusCliente; 
 }
 
 

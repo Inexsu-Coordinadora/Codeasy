@@ -6,7 +6,7 @@ export class Cliente implements ICliente {
     identificacion!: string;
     email!: string;
     telefono!: string | null; 
-    estatus: EstatusCliente = 'Activo'; 
+    estado: EstatusCliente = 'Activo'; 
 
     constructor(props: Partial<ICliente>)
     {

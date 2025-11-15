@@ -30,7 +30,7 @@ export class ProyectoControlador {
 
   // Obtener un proyecto por ID
   async obtenerProyectoPorId(req: FastifyRequest, reply: FastifyReply) {
-    const { idProyecto } = req.params as { idProyecto: number };
+    const { idProyecto } = req.params as { idProyecto: string };
     const proyecto = await this.casosUso.obtenerProyectoPorId(idProyecto);
 
     return reply.code(200).send({
@@ -42,7 +42,7 @@ export class ProyectoControlador {
 
   // Actualizar un proyecto existente
   async actualizarProyecto(req: FastifyRequest, reply: FastifyReply) {
-    const { idProyecto } = req.params as { idProyecto: number };
+    const { idProyecto } = req.params as { idProyecto: string };
     const datos = req.body as ProyectoActualizarDTO;
 
     const proyectoActualizado = await this.casosUso.actualizarProyecto(idProyecto, datos);
@@ -56,7 +56,7 @@ export class ProyectoControlador {
 
   // Eliminar (lógicamente) un proyecto
   async eliminarProyecto(req: FastifyRequest, reply: FastifyReply) {
-    const { idProyecto } = req.params as { idProyecto: number };
+    const { idProyecto } = req.params as { idProyecto: string };
     await this.casosUso.eliminarProyecto(idProyecto);
     
     return reply.code(200).send({

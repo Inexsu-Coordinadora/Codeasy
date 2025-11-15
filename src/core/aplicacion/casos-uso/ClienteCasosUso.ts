@@ -27,7 +27,7 @@ export class ClienteCasosUso {
       identificacion: datos.identificacion,
       email: datos.email,
       telefono: datos.telefono, 
-      estatus: datos.estatus, 
+      estado: datos.estatus, 
     }as ICliente); 
 
     //Persistir en la base de datos
