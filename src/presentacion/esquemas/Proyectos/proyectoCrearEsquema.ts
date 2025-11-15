@@ -15,9 +15,8 @@ export const ProyectoCrearEsquema = z
       .max(255, "La descripción no puede tener más de 255 caracteres"),
 
     id_cliente: z
-      .number()
-      .refine((val) => !isNaN(val), { message: "El id_cliente debe ser un número" })
-      .refine((val) => val > 0, { message: "El id_cliente debe ser mayor a 0" }),
+      .string()
+      .uuid("El id_cliente debe tener formato UUID"),
 
     fecha_inicio: z
       .string()
@@ -33,11 +32,11 @@ export const ProyectoCrearEsquema = z
         message: "La fecha de entrega debe tener un formato válido (YYYY-MM-DD)",
       }),
 
-    estado: z
+    estado_proyecto: z
       .enum(["Creado", "En proceso", "Finalizado"])
       .default("Creado"),
 
-    estatus: z
+    estado: z
       .enum(["Activo", "Eliminado"])
       .default("Activo"),
   })
