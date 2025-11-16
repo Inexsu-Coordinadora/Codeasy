@@ -39,7 +39,7 @@ export class ClienteCasosUso {
     return await this.clienteRepositorio.buscarTodosCliente();
   }
 
-  async obtenerClientePorId(idCliente: number): Promise<ICliente | null> {
+  async obtenerClientePorId(idCliente: string): Promise<ICliente | null> {
     return await this.clienteRepositorio.buscarPorIdCliente(idCliente);
   }
 
@@ -47,7 +47,7 @@ export class ClienteCasosUso {
     return await this.clienteRepositorio.buscarPorIdentificacionCliente(identificacion);
   }
 
-  async actualizarCliente(idCliente: number, datos: ClienteActualizarDTO): Promise<ICliente> {
+  async actualizarCliente(idCliente: string, datos: ClienteActualizarDTO): Promise<ICliente> {
 
     const clienteExistente = await this.clienteRepositorio.buscarPorIdCliente(idCliente);
 
@@ -81,7 +81,7 @@ export class ClienteCasosUso {
     return resultado;
   }
 
-  async eliminarCliente(idCliente: number): Promise<void> {
+  async eliminarCliente(idCliente: string): Promise<void> {
     const clienteExistente = await this.clienteRepositorio.buscarPorIdCliente(idCliente);
     if (!clienteExistente) {
       throw new Error(`No se encontró el cliente con ID ${idCliente} para eliminar.`);

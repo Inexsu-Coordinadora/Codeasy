@@ -1,8 +1,7 @@
-import {  ZodError, ZodType } from "zod";
+import { ZodError, ZodType } from "zod";
 import { FastifyReply, FastifyRequest } from "fastify";
 
 type TipoValidacion = "body" | "params" | "query";
-
 
 export function validarZod<T>(
   esquema: ZodType<T>,
@@ -10,6 +9,7 @@ export function validarZod<T>(
 ) {
   return async (req: FastifyRequest, reply: FastifyReply) => {
     try {
+      // Validación según tipo
       switch (tipo) {
         case "body":
           req.body = esquema.parse(req.body);
@@ -22,19 +22,35 @@ export function validarZod<T>(
           break;
       }
     } catch (error) {
-     
       if (error instanceof ZodError) {
+        // Agrupar y mostrar solo un error por campo
+        const erroresUnicos = Object.values(
+          error.issues.reduce((acc, issue) => {
+            const campo = issue.path.join(".");
+            if (!acc[campo]) {
+              acc[campo] = { campo, mensaje: issue.message };
+            }
+            return acc;
+          }, {} as Record<string, { campo: string; mensaje: string }>)
+        );
+
         return reply.code(400).send({
-          mensaje: " Error de validación",
-          errores: error.issues.map((issue) => ({
-            campo: issue.path.join("."),
-            mensaje: issue.message,
-          })),
+          exito: false,
+          error: {
+            codigo: 400,
+            mensaje: "Error de validación de datos",
+            detalles: erroresUnicos,
+          },
         });
       }
 
+     
       return reply.code(500).send({
-        mensaje: "Error interno del servidor",
+        exito: false,
+        error: {
+          codigo: 500,
+          mensaje: "Error interno del servidor",
+        },
       });
     }
   };
