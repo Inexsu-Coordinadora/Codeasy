@@ -1,8 +1,9 @@
 import  {IConsultor} from "../../../dominio/consultor/IConsultor";
 import  {Consultor} from "../../../dominio/consultor/Consultor";
 import  { IConsultorRepositorio } from "./IConsultorCasosUso";
-import  { ConsultorCrearDTO } from "../../../../presentacion/esquemas/consultorCrearEsquema";
-import  { ConsultorActualizarDTO } from "../../../../presentacion/esquemas/consultorActualizarEsquema";
+import  { ConsultorCrearDTO } from "../../../../presentacion/esquemas/Consultores/consultorCrearEsquema";
+import  { ConsultorActualizarDTO } from "../../../../presentacion/esquemas/Consultores/consultorActualizarEsquema";
+import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
 
 export class ConsultorCasosUso {
   constructor(private consultorRepositorio: IConsultorRepositorio) {}
@@ -16,14 +17,13 @@ export class ConsultorCasosUso {
     );
 
     if (existente) {
-      throw new Error("Ya existe un consultor con ese correo o identificación");
+      throw new AppError("Ya existe un consultor con ese correo o identificación");
     }
 
 
     const nuevoConsultor = new Consultor({
       ...datos,
-      estado: "Activo",
-      disponibilidad: "Disponible",
+      estado: "Activo"
     });
 
 
@@ -38,20 +38,20 @@ export class ConsultorCasosUso {
   }
 
  
-  async obtenerConsultorPorId(idConsultor: number): Promise<IConsultor | null> {
+  async obtenerConsultorPorId(idConsultor: string): Promise<IConsultor | null> {
     const consultor = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
     if (!consultor) {
-    throw new Error(`No se encontró un consultor con el ID ${idConsultor}`);
+    throw new AppError(`No se encontró un consultor con el ID ${idConsultor}`);
   }
     return consultor;
   }
 
 
-  async actualizarConsultor(idConsultor: number, datos: ConsultorActualizarDTO): Promise<IConsultor> {
+  async actualizarConsultor(idConsultor: string, datos: ConsultorActualizarDTO): Promise<IConsultor> {
   const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
 
   if (!consultorExistente) {
-    throw new Error(`No se encontró el consultor con ID ${idConsultor}`);
+    throw new AppError(`No se encontró el consultor con ID ${idConsultor}`);
   }
 
 
@@ -71,11 +71,11 @@ export class ConsultorCasosUso {
 
 
 
-  async eliminarConsultor(idConsultor: number): Promise<void> {
+  async eliminarConsultor(idConsultor: string): Promise<void> {
     const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
 
      if (!consultorExistente || consultorExistente.estado === "Eliminado") {
-    throw new Error(`No se encontró el consultor con ID ${idConsultor}`);
+    throw new AppError(`No se encontró el consultor con ID ${idConsultor}`);
   }
 
     consultorExistente.estado = "Eliminado";

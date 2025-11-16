@@ -27,17 +27,13 @@ export const ConsultorCrearEsquema = z.object({
     .optional()
     .transform((val) => val ?? null),
 
-  nivelexperiencia: z
-    .enum(["Junior", "Semi-Senior", "Senior", "Experto"], {
+  nivel_experiencia: z
+    .enum(["Junior", "Semi-Senior", "Senior", "Expert"], {
       message:
-        "El nivel de experiencia debe ser uno de: Junior, Semi-Senior, Senior o Experto",
+        "El nivel de experiencia debe ser uno de: Junior, Semi-Senior, Senior o Expert",
     }),
 
-  disponibilidad: z
-    .enum(["Disponible", "No disponible"], {
-      message: "La disponibilidad debe ser 'Disponible' o 'No disponible'",
-    })
-    .default("Disponible"),
+
 
 });
 

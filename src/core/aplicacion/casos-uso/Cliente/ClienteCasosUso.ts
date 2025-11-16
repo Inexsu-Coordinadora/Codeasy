@@ -1,8 +1,9 @@
-import { ICliente } from "../../dominio/cliente/ICliente";
-import { Cliente } from "../../dominio/cliente/Cliente";
-import { IClienteRepositorio } from "../../dominio/cliente/repositorio/IClienteRepositorio";
+import { ICliente } from "../../../dominio/cliente/ICliente"
+import { Cliente } from "../../../dominio/cliente/Cliente";
+import { IClienteRepositorio } from "../../../dominio/cliente/repositorio/IClienteRepositorio";
 import { ClienteCrearDTO } from "../../../presentacion/esquemas/clienteCrearEsquema";
 import { ClienteActualizarDTO} from "../../../presentacion/esquemas/clienteActualizarEsquema";
+import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
 
 
 //Logica de negocio para gestionar los clientes
@@ -10,36 +11,33 @@ import { ClienteActualizarDTO} from "../../../presentacion/esquemas/clienteActua
 export class ClienteCasosUso {
   constructor(private clienteRepositorio: IClienteRepositorio) {}
 
-  /**
-   * Registrar un nuevo cliente en el sistema.
-   */
-  async registrarCliente(datos: ClienteCrearDTO): Promise<number> {
+  
+  async registrarCliente(datos: ClienteCrearDTO): Promise<ICliente> {
     const existentePorIdentificacion = await this.clienteRepositorio.buscarPorIdentificacionCliente(
-      datos.identificacion
+      datos.identificacion,
+      datos.correo
     );
 
     if (existentePorIdentificacion) {
-      throw new Error(`Ya existe un cliente con la identificación ${datos.identificacion}.`);
+      throw new AppError(`Ya existe un consultor con ese correo o identificación`);
     }
 
     const nuevoCliente = new Cliente({
-      nombre: datos.nombre,
-      identificacion: datos.identificacion,
-      email: datos.email,
-      telefono: datos.telefono, 
-      estatus: datos.estatus, 
-    }as ICliente); 
+      ...datos,
+      estado: "Activo"
+    });
 
-    //Persistir en la base de datos
-    const idClienteCreado = await this.clienteRepositorio.crearCliente(nuevoCliente);
-    return Number(idClienteCreado);
+
+    const clienteCreado = await this.clienteRepositorio.registrarCliente(nuevoCliente);
+
+    return clienteCreado; 
   }
 
   async listarTodosClientes(): Promise<ICliente[]> {
     return await this.clienteRepositorio.buscarTodosCliente();
   }
 
-  async obtenerClientePorId(idCliente: number): Promise<ICliente | null> {
+  async obtenerClientePorId(idCliente: string): Promise<ICliente | null> {
     return await this.clienteRepositorio.buscarPorIdCliente(idCliente);
   }
 
@@ -47,19 +45,19 @@ export class ClienteCasosUso {
     return await this.clienteRepositorio.buscarPorIdentificacionCliente(identificacion);
   }
 
-  async actualizarCliente(idCliente: number, datos: ClienteActualizarDTO): Promise<ICliente> {
+  async actualizarCliente(idCliente: string, datos: ClienteActualizarDTO): Promise<ICliente> {
 
     const clienteExistente = await this.clienteRepositorio.buscarPorIdCliente(idCliente);
 
     if (!clienteExistente) {
-      throw new Error(`No se encontró el cliente con ID ${idCliente} para actualizar.`);
+      throw new AppError(`No se encontró el cliente con ID ${idCliente} para actualizar.`);
     }
 
     if (datos.identificacion && datos.identificacion !== clienteExistente.identificacion) {
         const existentePorNuevaIdentificacion = await this.clienteRepositorio.buscarPorIdentificacionCliente(datos.identificacion);
         
         if (existentePorNuevaIdentificacion && existentePorNuevaIdentificacion.idCliente !== idCliente) {
-            throw new Error(`La identificación ${datos.identificacion} ya está en uso por otro cliente.`);
+            throw new AppError(`La identificación ${datos.identificacion} ya está en uso por otro cliente.`);
         }
     }
 
@@ -75,16 +73,16 @@ export class ClienteCasosUso {
     
     
     if (!resultado) {
-       throw new Error(`Error al guardar la actualización del cliente con ID ${idCliente}.`);
+       throw new AppError(`Error al guardar la actualización del cliente con ID ${idCliente}.`);
     }
 
     return resultado;
   }
 
-  async eliminarCliente(idCliente: number): Promise<void> {
+  async eliminarCliente(idCliente: string): Promise<void> {
     const clienteExistente = await this.clienteRepositorio.buscarPorIdCliente(idCliente);
     if (!clienteExistente) {
-      throw new Error(`No se encontró el cliente con ID ${idCliente} para eliminar.`);
+      throw new AppError(`No se encontró el cliente con ID ${idCliente} para eliminar.`);
     }
 
     await this.clienteRepositorio.EliminarCliente(idCliente);
