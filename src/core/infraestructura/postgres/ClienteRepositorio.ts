@@ -4,7 +4,7 @@ import { ejecutarConsulta } from "./clientePostgres";
 
 export class ClienteRepositorio implements IClienteRepositorio {
 
-  async crearCliente(cliente: ICliente): Promise<string> {
+  async registrarCliente(cliente: ICliente): Promise<string> {
     const clienteSinId = { ...cliente };
     delete clienteSinId.idCliente;
 
@@ -15,11 +15,11 @@ export class ClienteRepositorio implements IClienteRepositorio {
     const query = `
       INSERT INTO clientes (${columnas.join(", ")})
       VALUES (${placeholders})
-      RETURNING id_cliente;
+      RETURNING *;
     `;
 
     const resultado = await ejecutarConsulta(query, valores);
-    return String(resultado.rows[0].idcliente);
+    return resultado.rows[0];
   }
 
 
@@ -31,7 +31,7 @@ export class ClienteRepositorio implements IClienteRepositorio {
   }
 
 
-  async buscarPorIdCliente(idCliente: number): Promise<ICliente | null> {
+  async buscarPorIdCliente(idCliente: string): Promise<ICliente | null> {
     const query = `SELECT * FROM clientes WHERE id_cliente = $1;`;
     const result = await ejecutarConsulta(query, [idCliente]);
     return (result.rows[0] as ICliente) || null;
@@ -49,7 +49,7 @@ export class ClienteRepositorio implements IClienteRepositorio {
   }
 
 
-  async ActualizarCliente(idCliente: number, datos: ICliente): Promise<ICliente | null> {
+  async ActualizarCliente(idCliente: string, datos: ICliente): Promise<ICliente | null> {
     const datosLimpios = Object.fromEntries(
       Object.entries(datos).filter(([_, v]) => v !== null && v !== undefined)
     );
@@ -71,7 +71,7 @@ export class ClienteRepositorio implements IClienteRepositorio {
     return (result.rows[0] as ICliente) || null;
   }
 
-  async EliminarCliente(idCliente: number): Promise<void> {
+  async EliminarCliente(idCliente: string): Promise<void> {
     const query = `
       DELETE FROM clientes
       WHERE id_cliente=$1;

@@ -11,7 +11,7 @@ export class AppError extends Error {
   }
 }
 
-//  Errores genéricos reutilizables
+
 export class NoEncontradoError extends AppError {
   constructor(entidad: string, id?: number | string) {
     const mensaje = id 

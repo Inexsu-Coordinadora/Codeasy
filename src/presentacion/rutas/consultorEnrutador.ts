@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { ConsultorControlador } from "../controladores/CunsultorControlador.js";
+import { ConsultorControlador } from "../controladores/CunsultorControlador";
 import { IConsultorRepositorio } from "../../core/dominio/consultor/repositorio/IConsultorRepositorio.js";
 import { ConsultorCasosUso } from "../../core/aplicacion/casos-uso/Consultor/ConsultorCasosUso.js";
 import { ConsultorRepositorio } from "../../core/infraestructura/postgres/ConsultorRepository.js";

@@ -1,7 +1,7 @@
 import {z} from "zod";
 
 export const ClienteCrearEsquema = z.object({
-  id_cliente: z.number().int().positive().optional(),
+  
 
   nombre: z
     .string()
@@ -15,7 +15,9 @@ export const ClienteCrearEsquema = z.object({
     .min(5, "La identificación debe tener al menos 5 caracteres")
     .max(20, "La identificación no puede exceder los 20 caracteres"),
 
-  email: z.string().email({ message: "Formato de email inválido" }),
+  correo: z
+    .email("El correo es obligatorio y debe tener un formato válido")
+    .max(100, "El correo no puede tener más de 100 caracteres"),
   
   telefono: z
     .string()

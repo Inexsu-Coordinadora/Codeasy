@@ -47,6 +47,15 @@ export const ProyectoCrearEsquema = z
       path: ["fecha_entrega"],
     }
   )
-  .strict();
+  .strict()
+  .transform((data) => ({
+    nombre: data.nombre,
+    descripcion: data.descripcion,
+    idCliente: data.id_cliente,
+    fechaInicio: data.fecha_inicio,
+    fechaEntrega: data.fecha_entrega,
+    estadoProyecto: data.estado_proyecto,
+    estado: data.estado,
+  }));
 
 export type ProyectoCrearDTO = z.infer<typeof ProyectoCrearEsquema>;

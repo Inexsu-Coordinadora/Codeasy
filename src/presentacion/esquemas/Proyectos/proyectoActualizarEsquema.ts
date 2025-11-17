@@ -15,21 +15,15 @@ export const ProyectoActualizarEsquema = z
       .optional(),
 
     id_cliente: z
-    .string()
-    .uuid("El id_cliente debe tener formato UUID"),
+      .string()
+      .uuid("El id_cliente debe tener formato UUID")
+      .optional(),
 
     fecha_inicio: z
       .string()
       .refine((fecha) => !isNaN(Date.parse(fecha)), {
         message: "La fecha de inicio debe tener un formato válido (YYYY-MM-DD)",
       })
-      .refine((fecha) => {
-        const hoy = new Date();
-        const inicio = new Date(fecha);
-        hoy.setHours(0, 0, 0, 0);
-        inicio.setHours(0, 0, 0, 0);
-        return inicio >= hoy;
-      }, { message: "La fecha de inicio no puede ser anterior a la fecha actual" })
       .optional(),
 
     fecha_entrega: z
@@ -39,11 +33,14 @@ export const ProyectoActualizarEsquema = z
       })
       .optional(),
 
-    estado_proyecto: z.enum(["Creado", "En proceso", "Finalizado"]).optional(),
+    estado_proyecto: z
+      .enum(["Creado", "En proceso", "Finalizado"])
+      .optional(),
 
-    estado: z.enum(["Activo", "Eliminado"]).optional(),
+    estado: z
+      .enum(["Activo", "Eliminado"])
+      .optional(),
   })
-  // Validar coherencia: si hay ambas fechas, entrega > inicio
   .refine(
     (data) =>
       !data.fecha_inicio ||
@@ -54,6 +51,15 @@ export const ProyectoActualizarEsquema = z
       path: ["fecha_entrega"],
     }
   )
-  .strict();
+  .strict()
+  .transform((data) => ({
+    nombre: data.nombre,
+    descripcion: data.descripcion,
+    idCliente: data.id_cliente,
+    fechaInicio: data.fecha_inicio,
+    fechaEntrega: data.fecha_entrega,
+    estadoProyecto: data.estado_proyecto,
+    estado: data.estado,
+  }));
 
 export type ProyectoActualizarDTO = z.infer<typeof ProyectoActualizarEsquema>;
