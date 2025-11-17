@@ -5,7 +5,7 @@ export class Tarea implements ITarea {
   titulo!: string;
   descripcion!: string;
   estadoTarea!: 'pendiente' | 'en progreso' | 'bloqueada' | 'completada';
-  estatus!: 'Eliminado' | 'Activo';
+  estado!: 'Eliminado' | 'Activo';
   fechaCreacion?: Date;
   fechaFinalizacion!: Date;
   prioridad!: 'Baja' | 'Media' | 'Alta';

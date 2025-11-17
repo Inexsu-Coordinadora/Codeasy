@@ -7,5 +7,5 @@ export interface ITarea {
   fechaFinalizacion: Date ;
   prioridad: 'Baja' | 'Media' | 'Alta';
   asignadoA: string;
-  estatus: 'Eliminado' | 'Activo';
+  estado: 'Eliminado' | 'Activo';
 }
