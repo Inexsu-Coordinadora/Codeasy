@@ -1,0 +1,26 @@
+meta {
+  name: Crear Equipo Proyecto
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/api/equipo-proyecto
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id_proyecto": "UUID_DEL_PROYECTO",
+    "nombre": "Equipo Backend",
+    "fecha_inicio": "2025-02-01",
+    "fecha_fin": "2025-06-01"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

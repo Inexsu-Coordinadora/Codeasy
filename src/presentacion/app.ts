@@ -4,6 +4,7 @@ import { construirProyectoEnrutador } from "./rutas/ProyectoEnrutador";
 import { construirClienteEnrutador } from "./rutas/ClienteEnrutador";
 import { construirConsultorEnrutador } from "./rutas/ConsultorEnrutador";
 import { construirTareaEnrutador } from "./rutas/enrutadorTarea";
+import { construirEquipoProyectoEnrutador } from "./rutas/EquipoProyectoEnrutador";
 import { ManejadorErrores } from "./esquemas/middlewares/ManejadorErrores";
 
 const app = Fastify({ logger: true });
@@ -15,6 +16,7 @@ app.register(
     construirClienteEnrutador(appInstance);
     construirConsultorEnrutador(appInstance);
     construirTareaEnrutador(appInstance);
+    construirEquipoProyectoEnrutador(appInstance);
   },
   { prefix: "/api" }
 );

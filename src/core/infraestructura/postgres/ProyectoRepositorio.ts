@@ -13,9 +13,6 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     delete (proyectoBD as any).id_proyecto;
 
     const columnas = Object.keys(proyectoBD);
-    console.log("🔥 proyectoBD:", proyectoBD);
-    console.log("🔥 Valores antes de insert:", Object.values(proyectoBD));
-
     const valores = Object.values(proyectoBD).map((v) =>
       v === null || v === undefined ? null : v
     ) as (string | Date | number | null)[];

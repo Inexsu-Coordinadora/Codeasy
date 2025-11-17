@@ -4,12 +4,14 @@ import { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IPro
 import { ProyectoCrearDTO } from "../../../../presentacion/esquemas/Proyectos/proyectoCrearEsquema";
 import { ProyectoActualizarDTO } from "../../../../presentacion/esquemas/Proyectos/ProyectoActualizarEsquema";
 import type { IClienteRepositorio } from "../../../dominio/cliente/repositorio/IClienteRepositorio";
+import type { IEquipoProyectoRepositorio } from "../../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio";
 import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
 
 export class ProyectoCasosUso {
   constructor(
     private proyectoRepositorio: IProyectoRepositorio,     
-    private clienteRepositorio: IClienteRepositorio
+    private clienteRepositorio: IClienteRepositorio,
+    private equipoProyectoRepositorio: IEquipoProyectoRepositorio
 ) {}
 
   // Registrar un nuevo proyecto
@@ -127,11 +129,23 @@ export class ProyectoCasosUso {
 
   // Eliminar (lógicamente) un proyecto
   async eliminarProyecto(idProyecto: string): Promise<void> {
-    const proyectoExistente = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
-    if (!proyectoExistente || proyectoExistente.estado === "Eliminado") {
+    const proyecto = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
+
+    if (!proyecto || proyecto.estado === "Eliminado") {
       throw new AppError(`No se encontró el proyecto con ID ${idProyecto}`);
     }
-    proyectoExistente.estado = "Eliminado";
-    await this.proyectoRepositorio.actualizarProyecto(idProyecto, proyectoExistente);
+
+    // 1. Buscar equipo asociado
+    const equipo = await this.equipoProyectoRepositorio.obtenerPorProyecto(idProyecto);
+
+    // 2. Si existe y está activo → eliminar lógicamente el equipo
+    if (equipo && equipo.estado === "Activo") {
+      await this.equipoProyectoRepositorio.eliminarEquipoProyecto(equipo.idEquipoProyecto!);
+    }
+
+    // 3. Eliminar lógicamente el proyecto
+    proyecto.estado = "Eliminado";
+
+    await this.proyectoRepositorio.actualizarProyecto(idProyecto, proyecto);
   }
 }

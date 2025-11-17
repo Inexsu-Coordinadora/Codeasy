@@ -1,0 +1,64 @@
+import { FastifyInstance } from "fastify";
+import { EquipoProyectoControlador } from "../controladores/EquipoProyectoControlador";
+import type { IEquipoProyectoRepositorio } from "../../core/dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio";
+import { EquipoProyectoRepositorio } from "../../core/infraestructura/postgres/EquipoProyectoRepositorio";
+import { EquipoProyectoCasosUso } from "../../core/aplicacion/casos-uso/Equipo-Proyecto/EquipoProyectoCasosUso";
+import { ProyectoRepositorio } from "../../core/infraestructura/postgres/ProyectoRepositorio";
+import { validarZod } from "../esquemas/middlewares/validarZod";
+import { EquipoProyectoCrearEsquema } from "../esquemas/EquipoProyecto/EquipoProyectoCrearEsquema";
+import { EquipoProyectoActualizarEsquema } from "../esquemas/EquipoProyecto/EquipoProyectoActualizarEsquema";
+
+function equipoProyectoEnrutador(app: FastifyInstance, equipoController: EquipoProyectoControlador) {
+
+  // Listar equipos (activos)
+  app.get(
+    "/equipo-proyecto",
+    equipoController.listarEquipos.bind(equipoController)
+  );
+
+  // Obtener equipo por ID
+  app.get(
+    "/equipo-proyecto/:idEquipoProyecto",
+    equipoController.obtenerEquipoPorId.bind(equipoController)
+  );
+
+  // Obtener equipo por proyecto
+  app.get(
+    "/equipo-proyecto/proyecto/:idProyecto",
+    equipoController.obtenerEquipoPorProyecto.bind(equipoController)
+  );
+
+  // Crear equipo
+  app.post(
+    "/equipo-proyecto",
+    { preHandler: validarZod(EquipoProyectoCrearEsquema, "body") },
+    equipoController.crearEquipoProyecto.bind(equipoController)
+  );
+
+  // Actualizar equipo
+  app.put(
+    "/equipo-proyecto/:idEquipoProyecto",
+    { preHandler: validarZod(EquipoProyectoActualizarEsquema, "body") },
+    equipoController.actualizarEquipoProyecto.bind(equipoController)
+  );
+
+  // Eliminar equipo (lógico)
+  app.put(
+    "/equipo-proyecto/eliminar/:idEquipoProyecto",
+    equipoController.eliminarEquipoProyecto.bind(equipoController)
+  );
+}
+
+export async function construirEquipoProyectoEnrutador(app: FastifyInstance) {
+  const equipoProyectoRepositorio: IEquipoProyectoRepositorio = new EquipoProyectoRepositorio();
+  const proyectoRepositorio = new ProyectoRepositorio();
+
+  const equipoProyectoCasosUso = new EquipoProyectoCasosUso(
+    equipoProyectoRepositorio,
+    proyectoRepositorio
+  );
+
+  const equipoProyectoController = new EquipoProyectoControlador(equipoProyectoCasosUso);
+
+  equipoProyectoEnrutador(app, equipoProyectoController);
+}
