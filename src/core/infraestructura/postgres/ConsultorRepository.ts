@@ -1,20 +1,21 @@
 import { IConsultorRepositorio } from "../../dominio/consultor/repositorio/IConsultorRepositorio.js";
 import { IConsultor } from "../../dominio/consultor/IConsultor.js";
 import { ejecutarConsulta } from "./clientepostgres.js";
+import { toSnakeCase } from "../../utils/toSnakeCase.js";
+import { toCamelCase } from "../../utils/toCamelCase.js";
 
 export class ConsultorRepositorio implements IConsultorRepositorio {
 
-  
-async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
+  async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
 
-    
-  const consultorSinId = { ...consultor };
-  delete consultorSinId.idConsultor;
+  const consultorBD = toSnakeCase(consultor);
 
- 
-  
-  const columnas = Object.keys(consultorSinId);
-  const valores = Object.values(consultorSinId).filter(v => v !== undefined && v !== null);
+  const columnas = Object.keys(consultorBD);
+  const valores = Object.values(consultorBD).map(v =>
+    v === null ? "" : v
+  ) as (string | Date)[];
+
+
   const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
 
   const query = `
@@ -23,9 +24,14 @@ async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
     RETURNING *;
   `;
 
+
   const resultado = await ejecutarConsulta(query, valores);
-  return resultado.rows[0];
+
+  return toCamelCase(resultado.rows[0]);
 }
+
+
+
 
 
   async listarTodosConsultores(): Promise<IConsultor[]> {
@@ -35,14 +41,14 @@ async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
   }
 
 
-  async obtenerConsultorPorId(idConsultor: number): Promise<IConsultor | null> {
-    const query = `SELECT * FROM consultores WHERE idconsultor = $1 AND estado != 'Eliminado'`;
+  async obtenerConsultorPorId(idConsultor: string): Promise<IConsultor | null> {
+    const query = `SELECT * FROM consultores WHERE id_consultor = $1 AND estado != 'Eliminado'`;
     const result = await ejecutarConsulta(query, [idConsultor]);
     return result.rows[0] || null;
   }
 
   
-  async actualizarConsultor(idConsultor: number, datos: IConsultor): Promise<IConsultor> {
+  async actualizarConsultor(idConsultor: string, datos: IConsultor): Promise<IConsultor> {
   const datosLimpios = Object.fromEntries(
     Object.entries(datos).filter(([_, v]) => v !== null && v !== undefined)
   );
@@ -55,7 +61,7 @@ async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
   const query = `
     UPDATE consultores
     SET ${setClause}
-    WHERE idconsultor=$${parametros.length}
+    WHERE id_consultor=$${parametros.length}
     RETURNING *;
   `;
 
@@ -64,11 +70,11 @@ async registrarConsultor(consultor: IConsultor): Promise<IConsultor> {
 }
 
   
-  async eliminarConsultor(idConsultor: number): Promise<void> {
+  async eliminarConsultor(idConsultor: string): Promise<void> {
     const query = `
       UPDATE consultores
       SET estado='Eliminado'
-      WHERE idconsultor=$1;
+      WHERE id_consultor=$1;
     `;
     await ejecutarConsulta(query, [idConsultor]);
   }

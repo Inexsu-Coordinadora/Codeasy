@@ -1,8 +1,8 @@
 import { ICliente } from "../../../dominio/cliente/ICliente.js"
 import { Cliente } from "../../../dominio/cliente/Cliente.js";
 import { IClienteRepositorio } from "../../../dominio/cliente/repositorio/IClienteRepositorio.js";
-import { ClienteCrearDTO } from "../../../../presentacion/esquemas/clienteCrearEsquema.js";
-import { ClienteActualizarDTO} from "../../../../presentacion/esquemas/clienteActualizarEsquema.js";
+import { ClienteCrearDTO } from "../../../../presentacion/esquemas/Clientes/clienteCrearEsquema.js";
+import { ClienteActualizarDTO} from "../../../../presentacion/esquemas/Clientes/clienteActualizarEsquema.js";
 import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError.js";
 
 

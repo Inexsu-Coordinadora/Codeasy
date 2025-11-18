@@ -5,9 +5,17 @@ meta {
 }
 
 put {
-  url: http://localhost:3000/api/equipo-proyecto/
-  body: none
+  url: http://localhost:3000/api/equipo-proyecto/5a1e479c-249a-40f5-bd42-75b1a65da152
+  body: json
   auth: inherit
+}
+
+body:json {
+  {
+    "nombre": "Equipo de testing",
+    "fecha_fin": "2028-07-01"
+  }
+  
 }
 
 settings {

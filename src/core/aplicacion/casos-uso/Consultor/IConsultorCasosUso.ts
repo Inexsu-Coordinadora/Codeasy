@@ -5,9 +5,9 @@ import { Consultor } from "../../../dominio/consultor/Consultor";
 export interface IConsultorRepositorio {
   registrarConsultor(consultor: Consultor): Promise<IConsultor>;
   listarTodosConsultores(): Promise<IConsultor[]>;
-  obtenerConsultorPorId(idConsultor: number): Promise<IConsultor | null>;
-  actualizarConsultor(idConsultor: number, datosPlato: IConsultor): Promise<IConsultor>;
-  eliminarConsultor(idConsultor: number): Promise<void>;
+  obtenerConsultorPorId(idConsultor: string): Promise<IConsultor | null>;
+  actualizarConsultor(idConsultor: string, datosPlato: IConsultor): Promise<IConsultor>;
+  eliminarConsultor(idConsultor: string): Promise<void>;
   buscarPorCorreoOIdentificacion(correo: string, identificacion: string): Promise<IConsultor | null>;
 
 }

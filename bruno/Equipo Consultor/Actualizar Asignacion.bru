@@ -1,0 +1,28 @@
+meta {
+  name: Actualizar Asignacion
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:3000/api/equipo-consultor/1f972fe2-127f-4f0a-8c94-9a3f77b82276
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id_consultor": "425347ca-418f-4bf7-93ad-417261f807e6",
+    "id_equipo_proyecto": "3aeb2202-aba4-4c2d-9712-cf8f79f67566",
+    "id_rol": "e8c53204-8ed9-4dc5-a8a6-83a43e77292f",
+    "porcentaje_dedicacion": 60,
+    "fecha_inicio": "2027-04-01",
+    "fecha_fin": "2028-07-01"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
