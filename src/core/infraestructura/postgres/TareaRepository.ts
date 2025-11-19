@@ -13,7 +13,8 @@ export class TareaRepositorio implements ITareaRepositorio {
       SELECT ep.id_proyecto 
       FROM equipos_consultores ec
       INNER JOIN equipos_proyectos ep ON ec.id_equipo_proyecto = ep.id_equipo_proyecto
-      WHERE ec.id_equipo_consultores = $1;
+      WHERE ec.id_equipo_consultores = $1
+       AND ep.estado = 'Activo';
     `;
     const result = await ejecutarConsulta(query, [idEquipoConsultor]);
     
