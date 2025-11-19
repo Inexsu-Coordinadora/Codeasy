@@ -1,12 +1,13 @@
 import  {IConsultor} from "../../../dominio/consultor/IConsultor";
 import  {Consultor} from "../../../dominio/consultor/Consultor";
 import  { IConsultorRepositorio } from "./IConsultorCasosUso";
+import type { IEquipoConsultorRepositorio } from "../../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio";
 import  { ConsultorCrearDTO } from "../../../../presentacion/esquemas/Consultores/consultorCrearEsquema";
 import  { ConsultorActualizarDTO } from "../../../../presentacion/esquemas/Consultores/consultorActualizarEsquema";
 import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
 
 export class ConsultorCasosUso {
-  constructor(private consultorRepositorio: IConsultorRepositorio) {}
+  constructor(private consultorRepositorio: IConsultorRepositorio, private equipoConsultorRepositorio: IEquipoConsultorRepositorio) {}
 
 
   async registrarConsultor(datos: ConsultorCrearDTO): Promise<IConsultor> {
@@ -81,5 +82,8 @@ export class ConsultorCasosUso {
     consultorExistente.estado = "Eliminado";
 
     await this.consultorRepositorio.actualizarConsultor(idConsultor, consultorExistente);
+    
+    // Eliminar asignaciones del consultor
+    await this.equipoConsultorRepositorio.eliminarPorConsultor(idConsultor);
   }
 }

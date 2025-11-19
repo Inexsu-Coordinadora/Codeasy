@@ -6,6 +6,9 @@ import { ConsultorRepositorio } from "../../core/infraestructura/postgres/Consul
 import { validarZod } from "../esquemas/middlewares/validarZod.js";
 import { ConsultorCrearEsquema } from "../esquemas/Consultores/consultorCrearEsquema.js";
 import { ConsultorActualizarEsquema } from "../esquemas/Consultores/consultorActualizarEsquema.js";
+import { EquipoConsultorRepositorio } from "../../core/infraestructura/postgres/EquipoConsultorRepositorio.js";
+import type { IEquipoConsultorRepositorio } from "../../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio";
+
 
 function consultorEnrutador(
   app: FastifyInstance,
@@ -22,7 +25,8 @@ function consultorEnrutador(
 
 export async function construirConsultorEnrutador(app: FastifyInstance) {
   const consultorRepositorio: IConsultorRepositorio = new ConsultorRepositorio();
-  const consultorCasosUso = new ConsultorCasosUso(consultorRepositorio);
+  const equipoConsultorRepositorio: IEquipoConsultorRepositorio = new EquipoConsultorRepositorio();
+  const consultorCasosUso = new ConsultorCasosUso(consultorRepositorio, equipoConsultorRepositorio);
   const consultorController = new ConsultorControlador(consultorCasosUso);
 
   consultorEnrutador(app, consultorController);

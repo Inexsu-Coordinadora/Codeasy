@@ -116,4 +116,23 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
     const result = await ejecutarConsulta(query, [id]);
     return toCamelCase(result.rows[0]);
   }
+  
+  async eliminarPorConsultor(idConsultor: string): Promise<void> {
+    const query = `
+      UPDATE equipos_consultores
+      SET estado = 'Eliminado'
+      WHERE id_consultor = $1;
+    `;
+    await ejecutarConsulta(query, [idConsultor]);
+  }
+
+  async eliminarPorEquipo(idEquipoProyecto: string): Promise<void> {
+    const query = `
+      UPDATE equipos_consultores
+      SET estado = 'Eliminado'
+      WHERE id_equipo_proyecto = $1;
+    `;
+    await ejecutarConsulta(query, [idEquipoProyecto]);
+  }
+
 }

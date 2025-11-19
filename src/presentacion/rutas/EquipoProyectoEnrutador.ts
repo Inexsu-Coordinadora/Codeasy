@@ -7,6 +7,7 @@ import { ProyectoRepositorio } from "../../core/infraestructura/postgres/Proyect
 import { validarZod } from "../esquemas/middlewares/validarZod";
 import { EquipoProyectoCrearEsquema } from "../esquemas/EquipoProyecto/EquipoProyectoCrearEsquema";
 import { EquipoProyectoActualizarEsquema } from "../esquemas/EquipoProyecto/EquipoProyectoActualizarEsquema";
+import { EquipoConsultorRepositorio } from "../../core/infraestructura/postgres/EquipoConsultorRepositorio.js";
 
 function equipoProyectoEnrutador(app: FastifyInstance, equipoController: EquipoProyectoControlador) {
 
@@ -52,10 +53,13 @@ function equipoProyectoEnrutador(app: FastifyInstance, equipoController: EquipoP
 export async function construirEquipoProyectoEnrutador(app: FastifyInstance) {
   const equipoProyectoRepositorio: IEquipoProyectoRepositorio = new EquipoProyectoRepositorio();
   const proyectoRepositorio = new ProyectoRepositorio();
+  const equipoConsultorRepositorio = new EquipoConsultorRepositorio();
 
   const equipoProyectoCasosUso = new EquipoProyectoCasosUso(
     equipoProyectoRepositorio,
-    proyectoRepositorio
+    proyectoRepositorio,
+    equipoConsultorRepositorio
+
   );
 
   const equipoProyectoController = new EquipoProyectoControlador(equipoProyectoCasosUso);
