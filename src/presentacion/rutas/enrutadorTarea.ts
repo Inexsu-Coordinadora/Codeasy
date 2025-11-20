@@ -1,11 +1,11 @@
 import { FastifyInstance } from "fastify";
-import { TareaControlador } from "../controladores/TareaControlador";
-import { ITareaRepositorio } from "../../core/dominio/tarea/repositorio/ITareaRepositorio";
-import { TareaCasosUso } from "../../core/aplicacion/casos-uso/Tarea/TareaCasosUso";
-import { TareaRepositorio } from "../../core/infraestructura/postgres/TareaRepository";
-import { TareaCrearEsquema } from "../esquemas/TareaCrearEsquema";
-import { validarZod } from "../esquemas/middlewares/validarZod";
-import { TareaActualizarEsquema } from "../esquemas/TareaActualizarEsquema";
+import { TareaControlador } from "../controladores/TareaControlador.js";
+import { ITareaRepositorio } from "../../core/dominio/tarea/repositorio/ITareaRepositorio.js";
+import { TareaCasosUso } from "../../core/aplicacion/casos-uso/Tarea/TareaCasosUso.js";
+import { TareaRepositorio } from "../../core/infraestructura/postgres/TareaRepository.js";
+import { TareaCrearEsquema } from "../esquemas/TareaCrearEsquema.js";
+import { validarZod } from "../esquemas/middlewares/validarZod.js";
+import { TareaActualizarEsquema } from "../esquemas/TareaActualizarEsquema.js";
 
 
 function tareaEnrutador(

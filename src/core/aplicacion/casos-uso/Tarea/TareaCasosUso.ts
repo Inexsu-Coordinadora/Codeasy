@@ -4,13 +4,14 @@ import  { ITareaRepositorio } from "../../../dominio/tarea/repositorio/ITareaRep
 import  { TareaCrearDTO } from "../../../../presentacion/esquemas/TareaCrearEsquema.js";
 import  { TareaActualizarDTO } from "../../../../presentacion/esquemas/TareaActualizarEsquema.js";
 import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError.js";
+import { ITareaCasosUso } from "./ITareaCasosUso.js";
 //import { randomUUID } from "crypto";
 
-export class TareaCasosUso {
+export class TareaCasosUso implements ITareaCasosUso {
   constructor(private tareaRepositorio: ITareaRepositorio) {}
 
 
-  async registrar(datos: TareaCrearDTO): Promise<ITarea> {
+  async registrarTarea(datos: TareaCrearDTO): Promise<ITarea> {
     const fechaActual = new Date();
     const nuevaTarea = new Tarea({
       ...datos,

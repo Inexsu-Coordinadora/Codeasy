@@ -1,14 +1,14 @@
 import { FastifyReply, FastifyRequest } from "fastify";
-import { TareaCasosUso } from "../../core/aplicacion/casos-uso/Tarea/TareaCasosUso";
-import { TareaCrearDTO } from "../esquemas/TareaCrearEsquema";
-import { TareaActualizarDTO } from "../esquemas/TareaActualizarEsquema";
+import { TareaCasosUso } from "../../core/aplicacion/casos-uso/Tarea/TareaCasosUso.js";
+import { TareaCrearDTO } from "../esquemas/TareaCrearEsquema.js";
+import { TareaActualizarDTO } from "../esquemas/TareaActualizarEsquema.js";
 
 export class TareaControlador {
   constructor(private casosUso: TareaCasosUso) {}
 
   async registrarTarea(req: FastifyRequest, reply: FastifyReply) {
     const datos = req.body as TareaCrearDTO;
-    const nuevaTarea = await this.casosUso.registrar(datos);
+    const nuevaTarea = await this.casosUso.registrarTarea(datos);
 
     return reply.code(201).send({
       exito: true,
@@ -28,7 +28,7 @@ export class TareaControlador {
   }
 
   async obtenerTareaPorId(req: FastifyRequest, reply: FastifyReply) {
-    const { idTarea } = req.params as { idTarea: number };
+    const { idTarea } = req.params as { idTarea: string };
     const tarea = await this.casosUso.obtenerTareaPorId(idTarea);
 
     return reply.code(200).send({
@@ -39,7 +39,7 @@ export class TareaControlador {
   }
 
   async actualizarTarea(req: FastifyRequest, reply: FastifyReply) {
-  const { idTarea } = req.params as { idTarea: number };
+  const { idTarea } = req.params as { idTarea: string };
   const datos = req.body as TareaActualizarDTO;
 
     const tareaActualizada = await this.casosUso.actualizarTarea(idTarea, datos);
@@ -52,7 +52,7 @@ export class TareaControlador {
   }
 
   async eliminarTarea(req: FastifyRequest, reply: FastifyReply) {
-  const { idTarea } = req.params as { idTarea: number };
+  const { idTarea } = req.params as { idTarea: string };
   await this.casosUso.eliminarTarea(idTarea);
 
     return reply.code(200).send({
