@@ -1,0 +1,24 @@
+meta {
+  name: Crear Rol
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/api/rol
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "nombre_rol": "Desarrollador Backend",
+    "descripcion": "Encargado del desarrollo backend"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}
