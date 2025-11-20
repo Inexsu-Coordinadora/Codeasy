@@ -6,7 +6,6 @@ import { toCamelCase } from "../../utils/toCamelCase";
 
 export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
 
-  // VERIFICAR SI ROL EXISTE (desde BD)
   async rolExiste(idRol: string): Promise<boolean> {
     const query = `
       SELECT 1
@@ -18,8 +17,7 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
     return result.rows.length > 0;
   }
 
-  // CREAR ASIGNACIÓN
-  async crearAsignacion(asignacion: IEquipoConsultor): Promise<IEquipoConsultor> {
+  async crear(asignacion: IEquipoConsultor): Promise<IEquipoConsultor> {
     const data = toSnakeCase(asignacion);
     delete (data as any).id_equipo_consultores;
 
@@ -37,7 +35,17 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
     return toCamelCase(result.rows[0]);
   }
 
-  // OBTENER POR ID
+  async obtenerTodos(): Promise<IEquipoConsultor[]> {
+    const query = `
+      SELECT *
+      FROM equipos_consultores
+      WHERE estado = 'Activo'
+      ORDER BY fecha_inicio ASC;
+    `;
+    const result = await ejecutarConsulta(query, []);
+    return toCamelCase(result.rows);
+  }
+
   async obtenerPorId(id: string): Promise<IEquipoConsultor | null> {
     const query = `
       SELECT *
@@ -46,12 +54,10 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
       LIMIT 1;
     `;
     const result = await ejecutarConsulta(query, [id]);
-    const row = result.rows[0];
-    return row ? toCamelCase(row) : null;
+    return result.rows[0] ? toCamelCase(result.rows[0]) : null;
   }
 
-  // LISTAR POR EQUIPO
-  async listarPorEquipo(idEquipoProyecto: string): Promise<IEquipoConsultor[]> {
+  async obtenerPorEquipo(idEquipoProyecto: string): Promise<IEquipoConsultor[]> {
     const query = `
       SELECT *
       FROM equipos_consultores
@@ -63,8 +69,7 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
     return toCamelCase(result.rows);
   }
 
-  // LISTAR POR CONSULTOR
-  async listarPorConsultor(idConsultor: string): Promise<IEquipoConsultor[]> {
+  async obtenerPorConsultor(idConsultor: string): Promise<IEquipoConsultor[]> {
     const query = `
       SELECT *
       FROM equipos_consultores
@@ -76,12 +81,7 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
     return toCamelCase(result.rows);
   }
 
-  // ACTUALIZAR ASIGNACIÓN
-  async actualizarAsignacion(
-    id: string,
-    datos: Partial<IEquipoConsultor>
-  ): Promise<IEquipoConsultor> {
-
+  async actualizar(id: string, datos: Partial<IEquipoConsultor>): Promise<IEquipoConsultor> {
     const datosBD = toSnakeCase(
       Object.fromEntries(
         Object.entries(datos).filter(([_, v]) => v !== undefined && v !== null)
@@ -105,8 +105,7 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
     return toCamelCase(result.rows[0]);
   }
 
-  // ELIMINACIÓN LÓGICA
-  async eliminarAsignacion(id: string): Promise<IEquipoConsultor> {
+  async eliminar(id: string): Promise<IEquipoConsultor> {
     const query = `
       UPDATE equipos_consultores
       SET estado = 'Eliminado'
@@ -116,7 +115,7 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
     const result = await ejecutarConsulta(query, [id]);
     return toCamelCase(result.rows[0]);
   }
-  
+
   async eliminarPorConsultor(idConsultor: string): Promise<void> {
     const query = `
       UPDATE equipos_consultores
@@ -134,5 +133,4 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
     `;
     await ejecutarConsulta(query, [idEquipoProyecto]);
   }
-
 }

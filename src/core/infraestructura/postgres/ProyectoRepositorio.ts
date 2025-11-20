@@ -4,11 +4,9 @@ import type { IProyectoRepositorio } from '../../dominio/proyecto/repositorio/IP
 import { toSnakeCase } from "../../utils/toSnakeCase";
 import { toCamelCase } from "../../utils/toCamelCase";
 
-
 export class ProyectoRepositorio implements IProyectoRepositorio {
-  // Crear un nuevo proyecto
-  async registrarProyecto(proyecto: IProyecto): Promise<IProyecto> {
-    // Convertir claves a snake_case para BD
+
+  async crear(proyecto: IProyecto): Promise<IProyecto> {
     const proyectoBD = toSnakeCase(proyecto);
     delete (proyectoBD as any).id_proyecto;
 
@@ -29,8 +27,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     return toCamelCase(resultado.rows[0]);
   }
 
-  // Listar todos los proyectos activos
-  async listarTodosProyectos(): Promise<IProyecto[]> {
+  async obtenerTodos(): Promise<IProyecto[]> {
     const query = `
       SELECT * FROM proyectos
       WHERE estado = 'Activo'
@@ -40,8 +37,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     return toCamelCase(resultado.rows);
   }
 
-  // Obtener un proyecto por su ID
-  async obtenerProyectoPorId(idProyecto: string): Promise<IProyecto | null> {
+  async obtenerPorId(idProyecto: string): Promise<IProyecto | null> {
     const query = `
       SELECT * FROM proyectos
       WHERE id_proyecto = $1
@@ -53,9 +49,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     return proyecto ? toCamelCase(proyecto) : null;
   }
 
-  // Actualizar un proyecto
-  async actualizarProyecto(idProyecto: string, datos: Partial<IProyecto>): Promise<IProyecto> {
-    // Convertir datos a snake_case para SQL
+  async actualizar(idProyecto: string, datos: Partial<IProyecto>): Promise<IProyecto> {
     const datosBD = toSnakeCase(
       Object.fromEntries(
         Object.entries(datos).filter(([_, v]) => v !== null && v !== undefined)
@@ -78,8 +72,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     return toCamelCase(resultado.rows[0]);
   }
 
-  // Eliminación lógica del proyecto
-  async eliminarProyecto(idProyecto: string): Promise<IProyecto> {
+  async eliminar(idProyecto: string): Promise<IProyecto> {
     const query = `
       UPDATE proyectos
       SET estado = 'Eliminado'

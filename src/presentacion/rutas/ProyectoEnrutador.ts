@@ -12,19 +12,8 @@ import { EquipoProyectoRepositorio } from "../../core/infraestructura/postgres/E
 function proyectoEnrutador(app: FastifyInstance, proyectoController: ProyectoControlador) {
   app.get("/proyecto", proyectoController.listarTodosProyectos.bind(proyectoController));
   app.get("/proyecto/:idProyecto", proyectoController.obtenerProyectoPorId.bind(proyectoController));
-
-  app.post(
-    "/proyecto",
-    { preHandler: validarZod(ProyectoCrearEsquema, "body") },
-    proyectoController.registrarProyecto.bind(proyectoController)
-  );
-
-  app.put(
-    "/proyecto/:idProyecto",
-    { preHandler: validarZod(ProyectoActualizarEsquema, "body") },
-    proyectoController.actualizarProyecto.bind(proyectoController)
-  );
-
+  app.post("/proyecto",{ preHandler: validarZod(ProyectoCrearEsquema, "body") },proyectoController.registrarProyecto.bind(proyectoController));
+  app.put("/proyecto/:idProyecto",{ preHandler: validarZod(ProyectoActualizarEsquema, "body") },proyectoController.actualizarProyecto.bind(proyectoController));
   app.put("/proyecto/eliminar/:idProyecto", proyectoController.eliminarProyecto.bind(proyectoController));
 }
 
@@ -32,9 +21,7 @@ export async function construirProyectoEnrutador(app: FastifyInstance) {
   const proyectoRepositorio: IProyectoRepositorio = new ProyectoRepositorio();
   const clienteRepositorio = new ClienteRepositorio();
   const equipoProyectoRepositorio = new EquipoProyectoRepositorio();
-  
   const proyectoCasosUso = new ProyectoCasosUso(proyectoRepositorio, clienteRepositorio, equipoProyectoRepositorio);
   const proyectoController = new ProyectoControlador(proyectoCasosUso);
-  
   proyectoEnrutador(app, proyectoController);
 }

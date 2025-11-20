@@ -8,6 +8,7 @@ import { construirEquipoProyectoEnrutador } from "./rutas/EquipoProyectoEnrutado
 import { construirEquipoConsultorEnrutador } from "./rutas/EquipoConsultorEnrutador";
 import { construirRolEnrutador } from "./rutas/RolEnrutador";
 import { ManejadorErrores } from "./esquemas/middlewares/ManejadorErrores";
+import { configuration } from "../common/configuracion";
 
 const app = Fastify({ logger: true });
 app.setErrorHandler(ManejadorErrores);
@@ -27,8 +28,10 @@ app.register(
 
 export const startServer = async (): Promise<void> => {
   try {
-    await app.listen({ port: Number(process.env.PUERTO) });
-    app.log.info("El servidor esta corriendo...");
+    await app.listen({ port: configuration.httpPuerto }); 
+    app.log.info(
+      `El servidor está corriendo en el puerto ${configuration.httpPuerto}...`
+    );
   } catch (err) {
     app.log.error(`Error al ejecutar el servidor\n ${err}`);
 

@@ -1,6 +1,5 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { EquipoConsultorCasosUso } from "../../core/aplicacion/casos-uso/EquipoConsultor/EquipoConsultorCasosUso";
-
 import type { AsignacionCrearDTO } from "../esquemas/EquipoConsultor/EquipoConsultorCrearEsquema";
 import type { AsignacionActualizarDTO } from "../esquemas/EquipoConsultor/EquipoConsultorActualizarEsquema";
 
@@ -8,10 +7,10 @@ export class EquipoConsultorControlador {
   constructor(private casosUso: EquipoConsultorCasosUso) {}
 
   // CREAR ASIGNACIÓN
-  async crearAsignacion(req: FastifyRequest, reply: FastifyReply) {
+  async crear(req: FastifyRequest, reply: FastifyReply) {
     const datos = req.body as AsignacionCrearDTO;
 
-    const asignacion = await this.casosUso.crearAsignacion(datos);
+    const asignacion = await this.casosUso.crear(datos);
 
     return reply.code(201).send({
       exito: true,
@@ -21,10 +20,10 @@ export class EquipoConsultorControlador {
   }
 
   // OBTENER ASIGNACIÓN POR ID
-  async obtenerAsignacionPorId(req: FastifyRequest, reply: FastifyReply) {
+  async obtenerPorId(req: FastifyRequest, reply: FastifyReply) {
     const { idAsignacion } = req.params as { idAsignacion: string };
 
-    const asignacion = await this.casosUso.obtenerAsignacionPorId(idAsignacion);
+    const asignacion = await this.casosUso.obtenerPorId(idAsignacion);
 
     return reply.code(200).send({
       exito: true,
@@ -34,10 +33,10 @@ export class EquipoConsultorControlador {
   }
 
   // LISTAR ASIGNACIONES POR EQUIPO
-  async listarPorEquipo(req: FastifyRequest, reply: FastifyReply) {
+  async obtenerPorEquipo(req: FastifyRequest, reply: FastifyReply) {
     const { idEquipoProyecto } = req.params as { idEquipoProyecto: string };
 
-    const asignaciones = await this.casosUso.listarAsignacionesPorEquipo(idEquipoProyecto);
+    const asignaciones = await this.casosUso.obtenerPorEquipo(idEquipoProyecto);
 
     return reply.code(200).send({
       exito: true,
@@ -47,10 +46,10 @@ export class EquipoConsultorControlador {
   }
 
   // LISTAR ASIGNACIONES POR CONSULTOR
-  async listarPorConsultor(req: FastifyRequest, reply: FastifyReply) {
+  async obtenerPorConsultor(req: FastifyRequest, reply: FastifyReply) {
     const { idConsultor } = req.params as { idConsultor: string };
 
-    const asignaciones = await this.casosUso.listarAsignacionesPorConsultor(idConsultor);
+    const asignaciones = await this.casosUso.obtenerPorConsultor(idConsultor);
 
     return reply.code(200).send({
       exito: true,
@@ -60,11 +59,11 @@ export class EquipoConsultorControlador {
   }
 
   // ACTUALIZAR ASIGNACIÓN
-  async actualizarAsignacion(req: FastifyRequest, reply: FastifyReply) {
+  async actualizar(req: FastifyRequest, reply: FastifyReply) {
     const { idAsignacion } = req.params as { idAsignacion: string };
     const datos = req.body as AsignacionActualizarDTO;
 
-    const asignacion = await this.casosUso.actualizarAsignacion(idAsignacion, datos);
+    const asignacion = await this.casosUso.actualizar(idAsignacion, datos);
 
     return reply.code(200).send({
       exito: true,
@@ -74,10 +73,10 @@ export class EquipoConsultorControlador {
   }
 
   // ELIMINAR ASIGNACIÓN (LÓGICO)
-  async eliminarAsignacion(req: FastifyRequest, reply: FastifyReply) {
+  async eliminar(req: FastifyRequest, reply: FastifyReply) {
     const { idAsignacion } = req.params as { idAsignacion: string };
 
-    const asignacion = await this.casosUso.eliminarAsignacion(idAsignacion);
+    const asignacion = await this.casosUso.eliminar(idAsignacion);
 
     return reply.code(200).send({
       exito: true,

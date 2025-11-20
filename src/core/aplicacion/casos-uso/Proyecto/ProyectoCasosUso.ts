@@ -12,18 +12,17 @@ export class ProyectoCasosUso {
     private proyectoRepositorio: IProyectoRepositorio,     
     private clienteRepositorio: IClienteRepositorio,
     private equipoProyectoRepositorio: IEquipoProyectoRepositorio
-) {}
+  ) {}
 
-  // Registrar un nuevo proyecto
-  async registrarProyecto(datos: ProyectoCrearDTO): Promise<IProyecto> {
+  async crear(datos: ProyectoCrearDTO): Promise<IProyecto> {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
+
     const fechaInicio = new Date(datos.fechaInicio);
     const fechaEntrega = new Date(datos.fechaEntrega);
     fechaInicio.setHours(0, 0, 0, 0);
     fechaEntrega.setHours(0, 0, 0, 0);
 
-    // Validaciones de negocio
     if (isNaN(fechaInicio.getTime()) || isNaN(fechaEntrega.getTime())) {
       throw new AppError("Las fechas proporcionadas no son válidas.");
     }
@@ -36,14 +35,13 @@ export class ProyectoCasosUso {
     if (fechaEntrega <= fechaInicio) {
       throw new AppError("La fecha de entrega debe ser posterior a la fecha de inicio.");
     }
-      // Validar existencia del cliente
-      const cliente = await this.clienteRepositorio.buscarPorIdCliente(datos.idCliente);
+
+    const cliente = await this.clienteRepositorio.buscarPorIdCliente(datos.idCliente);
     if (!cliente) {
       throw new AppError("El cliente especificado no existe.");
     }
 
-    // Validar que el cliente no tenga un proyecto con el mismo nombre
-    const proyectosCliente: IProyecto[] = await this.proyectoRepositorio.listarTodosProyectos();
+    const proyectosCliente: IProyecto[] = await this.proyectoRepositorio.obtenerTodos();
     const existeDuplicado = proyectosCliente.some(
       (p: IProyecto) =>
         p.idCliente === datos.idCliente &&
@@ -67,27 +65,23 @@ export class ProyectoCasosUso {
       new Date()
     );
 
-    const proyectoCreado = await this.proyectoRepositorio.registrarProyecto(nuevoProyecto);
-    return proyectoCreado;
+    return await this.proyectoRepositorio.crear(nuevoProyecto);
   }
 
-  // Listar todos los proyectos activos
-  async listarTodosProyectos(): Promise<IProyecto[]> {
-    return await this.proyectoRepositorio.listarTodosProyectos();
+  async obtenerTodos(): Promise<IProyecto[]> {
+    return await this.proyectoRepositorio.obtenerTodos();
   }
 
-  // Obtener un proyecto por ID
-  async obtenerProyectoPorId(idProyecto: string): Promise<IProyecto | null> {
-    const proyecto = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
+  async obtenerPorId(idProyecto: string): Promise<IProyecto | null> {
+    const proyecto = await this.proyectoRepositorio.obtenerPorId(idProyecto);
     if (!proyecto) {
       throw new AppError(`No se encontró el proyecto con ID ${idProyecto}`);
     }
     return proyecto;
   }
 
-  // Actualizar un proyecto existente
-  async actualizarProyecto(idProyecto: string, datos: ProyectoActualizarDTO): Promise<IProyecto> {
-    const proyectoExistente = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
+  async actualizar(idProyecto: string, datos: ProyectoActualizarDTO): Promise<IProyecto> {
+    const proyectoExistente = await this.proyectoRepositorio.obtenerPorId(idProyecto);
     if (!proyectoExistente) {
       throw new AppError(`No se encontró el proyecto con ID ${idProyecto}`);
     }
@@ -99,53 +93,42 @@ export class ProyectoCasosUso {
       const fechaInicio = new Date(datos.fechaInicio);
       fechaInicio.setHours(0, 0, 0, 0);
       if (isNaN(fechaInicio.getTime())) throw new AppError("La fecha de inicio no es válida.");
-      if (fechaInicio < hoy)
-        throw new AppError("La fecha de inicio no puede ser anterior a la fecha actual.");
+      if (fechaInicio < hoy) throw new AppError("La fecha de inicio no puede ser anterior a la fecha actual.");
     }
 
     if (datos.fechaEntrega) {
       const fechaEntrega = new Date(datos.fechaEntrega);
       fechaEntrega.setHours(0, 0, 0, 0);
       if (isNaN(fechaEntrega.getTime())) throw new AppError("La fecha de entrega no es válida.");
-      if (fechaEntrega < hoy)
-        throw new AppError("La fecha de entrega no puede ser anterior a la fecha actual.");
+      if (fechaEntrega < hoy) throw new AppError("La fecha de entrega no puede ser anterior a la fecha actual.");
 
-      // Si también se envía fechaInicio, validar coherencia
       if (datos.fechaInicio) {
         const fechaInicio = new Date(datos.fechaInicio);
         fechaInicio.setHours(0, 0, 0, 0);
         if (fechaEntrega <= fechaInicio)
           throw new AppError("La fecha de entrega debe ser posterior a la fecha de inicio.");
       } else if (proyectoExistente.fechaInicio && fechaEntrega <= proyectoExistente.fechaInicio) {
-        // Si no se envía fechaInicio nueva, usar la existente
         throw new AppError("La fecha de entrega debe ser posterior a la fecha de inicio actual.");
       }
     }
 
     const proyectoActualizado = { ...proyectoExistente, ...datos } as IProyecto;
-    const resultado = await this.proyectoRepositorio.actualizarProyecto(idProyecto, proyectoActualizado);
-    return resultado;
+
+    return await this.proyectoRepositorio.actualizar(idProyecto, proyectoActualizado);
   }
 
-  // Eliminar (lógicamente) un proyecto
-  async eliminarProyecto(idProyecto: string): Promise<void> {
-    const proyecto = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
-
+  async eliminar(idProyecto: string): Promise<void> {
+    const proyecto = await this.proyectoRepositorio.obtenerPorId(idProyecto);
     if (!proyecto || proyecto.estado === "Eliminado") {
       throw new AppError(`No se encontró el proyecto con ID ${idProyecto}`);
     }
 
-    // 1. Buscar equipo asociado
     const equipo = await this.equipoProyectoRepositorio.obtenerPorProyecto(idProyecto);
-
-    // 2. Si existe y está activo → eliminar lógicamente el equipo
     if (equipo && equipo.estado === "Activo") {
       await this.equipoProyectoRepositorio.eliminarEquipoProyecto(equipo.idEquipoProyecto!);
     }
 
-    // 3. Eliminar lógicamente el proyecto
     proyecto.estado = "Eliminado";
-
-    await this.proyectoRepositorio.actualizarProyecto(idProyecto, proyecto);
+    await this.proyectoRepositorio.actualizar(idProyecto, proyecto);
   }
 }

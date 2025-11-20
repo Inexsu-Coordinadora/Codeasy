@@ -6,10 +6,10 @@ import type { ProyectoActualizarDTO } from "../esquemas/proyectoActualizarEsquem
 export class ProyectoControlador {
   constructor(private casosUso: ProyectoCasosUso) {}
 
-  // Registrar un nuevo proyecto
+  // Crear
   async registrarProyecto(req: FastifyRequest, reply: FastifyReply) {
     const datos = req.body as ProyectoCrearDTO;
-    const nuevoProyecto = await this.casosUso.registrarProyecto(datos);
+    const nuevoProyecto = await this.casosUso.crear(datos);
 
     return reply.code(201).send({
       exito: true,
@@ -18,9 +18,10 @@ export class ProyectoControlador {
     });
   }
 
-  // Listar todos los proyectos activos
+  // Obtener todos
   async listarTodosProyectos(_req: FastifyRequest, reply: FastifyReply) {
-    const proyectos = await this.casosUso.listarTodosProyectos();
+    const proyectos = await this.casosUso.obtenerTodos();
+
     return reply.code(200).send({
       exito: true,
       mensaje: "Proyectos obtenidos correctamente",
@@ -28,10 +29,10 @@ export class ProyectoControlador {
     });
   }
 
-  // Obtener un proyecto por ID
+  // Obtener por ID
   async obtenerProyectoPorId(req: FastifyRequest, reply: FastifyReply) {
     const { idProyecto } = req.params as { idProyecto: string };
-    const proyecto = await this.casosUso.obtenerProyectoPorId(idProyecto);
+    const proyecto = await this.casosUso.obtenerPorId(idProyecto);
 
     return reply.code(200).send({
       exito: true,
@@ -40,12 +41,12 @@ export class ProyectoControlador {
     });
   }
 
-  // Actualizar un proyecto existente
+  // Actualizar
   async actualizarProyecto(req: FastifyRequest, reply: FastifyReply) {
     const { idProyecto } = req.params as { idProyecto: string };
     const datos = req.body as ProyectoActualizarDTO;
 
-    const proyectoActualizado = await this.casosUso.actualizarProyecto(idProyecto, datos);
+    const proyectoActualizado = await this.casosUso.actualizar(idProyecto, datos);
 
     return reply.code(200).send({
       exito: true,
@@ -54,11 +55,11 @@ export class ProyectoControlador {
     });
   }
 
-  // Eliminar (lógicamente) un proyecto
+  // Eliminar
   async eliminarProyecto(req: FastifyRequest, reply: FastifyReply) {
     const { idProyecto } = req.params as { idProyecto: string };
-    await this.casosUso.eliminarProyecto(idProyecto);
-    
+    await this.casosUso.eliminar(idProyecto);
+
     return reply.code(200).send({
       exito: true,
       mensaje: "Proyecto eliminado correctamente",

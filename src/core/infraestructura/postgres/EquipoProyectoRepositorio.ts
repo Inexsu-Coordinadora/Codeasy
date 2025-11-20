@@ -1,22 +1,17 @@
 import { ejecutarConsulta } from "./clientepostgres";
 import type { IEquipoProyecto } from "../../dominio/equipo-proyecto/IEquipoProyecto";
 import type { IEquipoProyectoRepositorio } from "../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio";
-
 import { toSnakeCase } from "../../utils/toSnakeCase";
 import { toCamelCase } from "../../utils/toCamelCase";
 
 export class EquipoProyectoRepositorio implements IEquipoProyectoRepositorio {
-  
-  // Crear equipo de proyecto
-  async crearEquipoProyecto(equipo: IEquipoProyecto): Promise<IEquipoProyecto> {
+
+  async crear(equipo: IEquipoProyecto): Promise<IEquipoProyecto> {
     const equipoBD = toSnakeCase(equipo);
     delete (equipoBD as any).id_equipo_proyecto;
 
     const columnas = Object.keys(equipoBD);
-    const valores = Object.values(equipoBD).map((v) =>
-      v === undefined ? null : v
-    );
-
+    const valores = Object.values(equipoBD).map((v) => v ?? null);
     const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
 
     const query = `
@@ -29,20 +24,17 @@ export class EquipoProyectoRepositorio implements IEquipoProyectoRepositorio {
     return toCamelCase(resultado.rows[0]);
   }
 
-  // Listar equipos ACTIVOS
-  async listarEquipos(): Promise<IEquipoProyecto[]> {
+  async obtenerTodos(): Promise<IEquipoProyecto[]> {
     const query = `
       SELECT *
       FROM equipos_proyectos
       WHERE estado = 'Activo'
       ORDER BY fecha_inicio DESC;
     `;
-
     const resultado = await ejecutarConsulta(query, []);
     return toCamelCase(resultado.rows);
   }
 
-  // Obtener equipo por ID (si está ACTIVO)
   async obtenerPorId(idEquipoProyecto: string): Promise<IEquipoProyecto | null> {
     const query = `
       SELECT *
@@ -51,13 +43,10 @@ export class EquipoProyectoRepositorio implements IEquipoProyectoRepositorio {
       AND estado = 'Activo'
       LIMIT 1;
     `;
-
     const resultado = await ejecutarConsulta(query, [idEquipoProyecto]);
-    const equipo = resultado.rows[0];
-    return equipo ? toCamelCase(equipo) : null;
+    return resultado.rows[0] ? toCamelCase(resultado.rows[0]) : null;
   }
 
-  // Obtener equipo por ID de proyecto (si está ACTIVO)
   async obtenerPorProyecto(idProyecto: string): Promise<IEquipoProyecto | null> {
     const query = `
       SELECT *
@@ -66,22 +55,13 @@ export class EquipoProyectoRepositorio implements IEquipoProyectoRepositorio {
       AND estado = 'Activo'
       LIMIT 1;
     `;
-
     const resultado = await ejecutarConsulta(query, [idProyecto]);
-    const equipo = resultado.rows[0];
-    return equipo ? toCamelCase(equipo) : null;
+    return resultado.rows[0] ? toCamelCase(resultado.rows[0]) : null;
   }
 
-  // Actualizar equipo
-  async actualizarEquipoProyecto(
-    idEquipoProyecto: string,
-    datos: Partial<IEquipoProyecto>
-  ): Promise<IEquipoProyecto> {
-    // Convertimos a snake_case y filtramos null/undefined
+  async actualizar(idEquipoProyecto: string, datos: Partial<IEquipoProyecto>): Promise<IEquipoProyecto> {
     const datosBD = toSnakeCase(
-      Object.fromEntries(
-        Object.entries(datos).filter(([_, v]) => v !== undefined && v !== null)
-      )
+      Object.fromEntries(Object.entries(datos).filter(([_, v]) => v !== undefined && v !== null))
     );
 
     const columnas = Object.keys(datosBD);
@@ -91,10 +71,7 @@ export class EquipoProyectoRepositorio implements IEquipoProyectoRepositorio {
       throw new Error("No se proporcionó ningún dato para actualizar.");
     }
 
-    const setClause = columnas
-      .map((col, i) => `${col} = $${i + 1}`)
-      .join(", ");
-
+    const setClause = columnas.map((col, i) => `${col} = $${i + 1}`).join(", ");
     valores.push(idEquipoProyecto);
 
     const query = `
@@ -108,15 +85,13 @@ export class EquipoProyectoRepositorio implements IEquipoProyectoRepositorio {
     return toCamelCase(resultado.rows[0]);
   }
 
-  // Eliminación lógica (estado = 'Eliminado')
-  async eliminarEquipoProyecto(idEquipoProyecto: string): Promise<IEquipoProyecto> {
+  async eliminar(idEquipoProyecto: string): Promise<IEquipoProyecto> {
     const query = `
       UPDATE equipos_proyectos
       SET estado = 'Eliminado'
       WHERE id_equipo_proyecto = $1
       RETURNING *;
     `;
-
     const resultado = await ejecutarConsulta(query, [idEquipoProyecto]);
     return toCamelCase(resultado.rows[0]);
   }

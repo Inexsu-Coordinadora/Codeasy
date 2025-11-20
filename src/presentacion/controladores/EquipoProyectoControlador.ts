@@ -7,10 +7,10 @@ export class EquipoProyectoControlador {
   constructor(private casosUso: EquipoProyectoCasosUso) {}
 
   // Crear equipo de proyecto
-  async crearEquipoProyecto(req: FastifyRequest, reply: FastifyReply) {
+  async crear(req: FastifyRequest, reply: FastifyReply) {
     const datos = req.body as EquipoProyectoCrearDTO;
 
-    const nuevoEquipo = await this.casosUso.crearEquipoProyecto(datos);
+    const nuevoEquipo = await this.casosUso.crear(datos);
 
     return reply.code(201).send({
       exito: true,
@@ -20,8 +20,8 @@ export class EquipoProyectoControlador {
   }
 
   // Listar equipos (ACTIVOS)
-  async listarEquipos(_req: FastifyRequest, reply: FastifyReply) {
-    const equipos = await this.casosUso.listarEquipos();
+  async obtenerTodos(_req: FastifyRequest, reply: FastifyReply) {
+    const equipos = await this.casosUso.obtenerTodos();
 
     return reply.code(200).send({
       exito: true,
@@ -31,10 +31,10 @@ export class EquipoProyectoControlador {
   }
 
   // Obtener por ID
-  async obtenerEquipoPorId(req: FastifyRequest, reply: FastifyReply) {
+  async obtenerPorId(req: FastifyRequest, reply: FastifyReply) {
     const { idEquipoProyecto } = req.params as { idEquipoProyecto: string };
 
-    const equipo = await this.casosUso.obtenerEquipoPorId(idEquipoProyecto);
+    const equipo = await this.casosUso.obtenerPorId(idEquipoProyecto);
 
     return reply.code(200).send({
       exito: true,
@@ -44,10 +44,10 @@ export class EquipoProyectoControlador {
   }
 
   // Obtener por ID de proyecto
-  async obtenerEquipoPorProyecto(req: FastifyRequest, reply: FastifyReply) {
+  async obtenerPorProyecto(req: FastifyRequest, reply: FastifyReply) {
     const { idProyecto } = req.params as { idProyecto: string };
 
-    const equipo = await this.casosUso.obtenerEquipoPorProyecto(idProyecto);
+    const equipo = await this.casosUso.obtenerPorProyecto(idProyecto);
 
     return reply.code(200).send({
       exito: true,
@@ -57,11 +57,11 @@ export class EquipoProyectoControlador {
   }
 
   // Actualizar equipo
-  async actualizarEquipoProyecto(req: FastifyRequest, reply: FastifyReply) {
+  async actualizar(req: FastifyRequest, reply: FastifyReply) {
     const { idEquipoProyecto } = req.params as { idEquipoProyecto: string };
     const datos = req.body as EquipoProyectoActualizarDTO;
 
-    const equipoActualizado = await this.casosUso.actualizarEquipoProyecto(
+    const equipoActualizado = await this.casosUso.actualizar(
       idEquipoProyecto,
       datos
     );
@@ -74,10 +74,10 @@ export class EquipoProyectoControlador {
   }
 
   // Eliminar equipo (lógico)
-  async eliminarEquipoProyecto(req: FastifyRequest, reply: FastifyReply) {
+  async eliminar(req: FastifyRequest, reply: FastifyReply) {
     const { idEquipoProyecto } = req.params as { idEquipoProyecto: string };
 
-    const equipoEliminado = await this.casosUso.eliminarEquipoProyecto(idEquipoProyecto);
+    const equipoEliminado = await this.casosUso.eliminar(idEquipoProyecto);
 
     return reply.code(200).send({
       exito: true,

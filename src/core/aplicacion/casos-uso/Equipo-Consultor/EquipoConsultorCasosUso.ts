@@ -12,22 +12,17 @@ export class EquipoConsultorCasosUso {
     private equipoProyectoRepositorio: IEquipoProyectoRepositorio
   ) {}
 
-  // CREAR ASIGNACIÓN
-  async crearAsignacion(datos: IEquipoConsultor): Promise<IEquipoConsultor> {
-    // 1. Validar consultor
+  async crear(datos: IEquipoConsultor): Promise<IEquipoConsultor> {
     const consultor = await this.consultorRepositorio.obtenerConsultorPorId(datos.idConsultor);
     if (!consultor) throw new AppError("El consultor especificado no existe.");
 
-    // 2. Validar equipo
     const equipo = await this.equipoProyectoRepositorio.obtenerPorId(datos.idEquipoProyecto);
     if (!equipo) throw new AppError("El equipo del proyecto no existe.");
 
-    // 3. Validar rol desde BD
     const rolExiste = await this.asignacionRepositorio.rolExiste(datos.idRol);
     if (!rolExiste) throw new AppError("El rol especificado no existe o está inactivo.");
 
-    // 4. Validar duplicidad
-    const asignacionesEquipo = await this.asignacionRepositorio.listarPorEquipo(datos.idEquipoProyecto);
+    const asignacionesEquipo = await this.asignacionRepositorio.obtenerPorEquipo(datos.idEquipoProyecto);
 
     const existeDuplicado = asignacionesEquipo.some(
       (a: IEquipoConsultor) =>
@@ -36,11 +31,8 @@ export class EquipoConsultorCasosUso {
         a.estado === "Activo"
     );
 
-    if (existeDuplicado) {
-      throw new AppError("Este consultor ya está asignado a este equipo con este rol.");
-    }
+    if (existeDuplicado) throw new AppError("Este consultor ya está asignado a este equipo con este rol.");
 
-    // 5. Validaciones de fechas
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
 
@@ -54,10 +46,10 @@ export class EquipoConsultorCasosUso {
       throw new AppError("Las fechas proporcionadas no son válidas.");
     }
     if (fechaInicio < hoy) throw new AppError("La fecha de inicio no puede ser anterior a la fecha actual.");
-    if (fechaFin < fechaInicio) throw new AppError("La fecha de fin debe ser posterior o igual a la fecha de inicio.");
+    if (fechaFin < fechaInicio)
+      throw new AppError("La fecha de fin debe ser posterior o igual a la fecha de inicio.");
 
-    // 6. Validar Dedicación Global
-    const asignacionesConsultor = await this.asignacionRepositorio.listarPorConsultor(datos.idConsultor);
+    const asignacionesConsultor = await this.asignacionRepositorio.obtenerPorConsultor(datos.idConsultor);
 
     const dedicacionTraslapada = asignacionesConsultor
       .filter((a: IEquipoConsultor) => a.estado === "Activo")
@@ -74,7 +66,6 @@ export class EquipoConsultorCasosUso {
       throw new AppError(`La dedicación total sería ${total}%, lo cual excede el límite del 100%.`);
     }
 
-    // 7. Crear asignación
     const nuevaAsignacion = new EquipoConsultor(
       undefined,
       datos.idConsultor,
@@ -86,73 +77,59 @@ export class EquipoConsultorCasosUso {
       fechaFin
     );
 
-    return await this.asignacionRepositorio.crearAsignacion(nuevaAsignacion);
+    return await this.asignacionRepositorio.crear(nuevaAsignacion);
   }
 
-  // OBTENER ASIGNACIÓN POR ID
-  async obtenerAsignacionPorId(idAsignacion: string): Promise<IEquipoConsultor | null> {
+  async obtenerPorId(idAsignacion: string): Promise<IEquipoConsultor | null> {
     const asignacion = await this.asignacionRepositorio.obtenerPorId(idAsignacion);
 
     if (!asignacion || asignacion.estado === "Eliminado") {
       throw new AppError(`No se encontró la asignación con ID ${idAsignacion}`);
     }
 
-    // Validar consultor
     const consultor = await this.consultorRepositorio.obtenerConsultorPorId(asignacion.idConsultor);
     if (!consultor || consultor.estado === "Eliminado") {
-      throw new AppError(`El consultor asociado a esta asignación ya no existe.`);
+      throw new AppError("El consultor asociado ya no existe.");
     }
 
-    // Validar equipo
     const equipo = await this.equipoProyectoRepositorio.obtenerPorId(asignacion.idEquipoProyecto);
     if (!equipo || equipo.estado === "Eliminado") {
-      throw new AppError(`El equipo asociado a esta asignación ya no existe.`);
+      throw new AppError("El equipo asociado ya no existe.");
     }
 
     return asignacion;
   }
 
-  // LISTAR POR EQUIPO
-  async listarAsignacionesPorEquipo(idEquipoProyecto: string): Promise<IEquipoConsultor[]> {
+  async obtenerPorEquipo(idEquipoProyecto: string): Promise<IEquipoConsultor[]> {
     const equipo = await this.equipoProyectoRepositorio.obtenerPorId(idEquipoProyecto);
-
     if (!equipo || equipo.estado === "Eliminado") {
-      throw new AppError(`No se encontró el equipo de proyecto con ID ${idEquipoProyecto}`);
+      throw new AppError(`No se encontró el equipo con ID ${idEquipoProyecto}`);
     }
 
-    return await this.asignacionRepositorio.listarPorEquipo(idEquipoProyecto);
+    return await this.asignacionRepositorio.obtenerPorEquipo(idEquipoProyecto);
   }
 
-  // LISTAR POR CONSULTOR
-  async listarAsignacionesPorConsultor(idConsultor: string): Promise<IEquipoConsultor[]> {
+  async obtenerPorConsultor(idConsultor: string): Promise<IEquipoConsultor[]> {
     const consultor = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
-
     if (!consultor || consultor.estado === "Eliminado") {
       throw new AppError(`No se encontró el consultor con ID ${idConsultor}`);
     }
 
-    return await this.asignacionRepositorio.listarPorConsultor(idConsultor);
-  } 
+    return await this.asignacionRepositorio.obtenerPorConsultor(idConsultor);
+  }
 
-  // ACTUALIZAR ASIGNACIÓN
-  async actualizarAsignacion(
-    id: string,
-    datos: Partial<IEquipoConsultor>
-  ): Promise<IEquipoConsultor> {
-
+  async actualizar(id: string, datos: Partial<IEquipoConsultor>): Promise<IEquipoConsultor> {
     const asignacionExistente = await this.asignacionRepositorio.obtenerPorId(id);
-    
+
     if (!asignacionExistente || asignacionExistente.estado === "Eliminado") {
       throw new AppError("La asignación no existe.");
     }
 
-    // Validar rol si se envía
     if (datos.idRol) {
       const rolExiste = await this.asignacionRepositorio.rolExiste(datos.idRol);
       if (!rolExiste) throw new AppError("El rol especificado no existe o está inactivo.");
     }
 
-    // VALIDAR FECHAS
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
 
@@ -179,9 +156,8 @@ export class EquipoConsultorCasosUso {
       throw new AppError("La fecha de fin debe ser posterior o igual a la fecha de inicio.");
     }
 
-    // VALIDAR DEDICACIÓN GLOBAL SI FECHAS O DEDICACIÓN CAMBIA
     if (datos.porcentajeDedicacion || datos.fechaInicio || datos.fechaFin) {
-      const otrasAsignaciones = await this.asignacionRepositorio.listarPorConsultor(
+      const otrasAsignaciones = await this.asignacionRepositorio.obtenerPorConsultor(
         asignacionExistente.idConsultor
       );
 
@@ -192,7 +168,7 @@ export class EquipoConsultorCasosUso {
           const fin = new Date(a.fechaFin);
           return nuevaFechaInicio <= fin && nuevaFechaFin >= ini;
         })
-        .reduce((suma: number, a: IEquipoConsultor) => suma + a.porcentajeDedicacion, 0);
+        .reduce((s: number, a: IEquipoConsultor) => s + a.porcentajeDedicacion, 0);
 
       const nuevoPorcentaje =
         datos.porcentajeDedicacion ?? asignacionExistente.porcentajeDedicacion;
@@ -206,19 +182,19 @@ export class EquipoConsultorCasosUso {
       }
     }
 
-    const asignacionActualizada = { ...asignacionExistente, ...datos };
-
-    return await this.asignacionRepositorio.actualizarAsignacion(id, asignacionActualizada);
+    return await this.asignacionRepositorio.actualizar(id, {
+      ...asignacionExistente,
+      ...datos
+    });
   }
 
-  // ELIMINAR ASIGNACIÓN (LÓGICO)
-  async eliminarAsignacion(id: string): Promise<IEquipoConsultor> {
+  async eliminar(id: string): Promise<IEquipoConsultor> {
     const asignacion = await this.asignacionRepositorio.obtenerPorId(id);
 
     if (!asignacion || asignacion.estado === "Eliminado") {
       throw new AppError("La asignación no existe.");
     }
 
-    return await this.asignacionRepositorio.eliminarAsignacion(id);
+    return await this.asignacionRepositorio.eliminar(id);
   }
 }
