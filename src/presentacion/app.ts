@@ -3,7 +3,7 @@ import { FastifyError } from "fastify";
 import { construirProyectoEnrutador } from "./rutas/ProyectoEnrutador";
 import { construirClienteEnrutador } from "./rutas/ClienteEnrutador";
 import { construirConsultorEnrutador } from "./rutas/ConsultorEnrutador";
-import { construirTareaEnrutador } from "./rutas/enrutadorTarea";
+import { construirTareaEnrutador } from "./rutas/TareaEnrutador";
 import { ManejadorErrores } from "./esquemas/middlewares/ManejadorErrores";
 
 

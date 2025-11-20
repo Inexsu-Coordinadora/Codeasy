@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { TareaControlador } from "../controladores/TareaControlador.js";
 import { ITareaRepositorio } from "../../core/dominio/tarea/repositorio/ITareaRepositorio.js";
 import { TareaCasosUso } from "../../core/aplicacion/casos-uso/Tarea/TareaCasosUso.js";
-import { TareaRepositorio } from "../../core/infraestructura/postgres/TareaRepository.js";
+import { TareaRepositorio } from "../../core/infraestructura/postgres/TareaRepositorio.js";
 import { TareaCrearEsquema } from "../esquemas/TareaCrearEsquema.js";
 import { validarZod } from "../esquemas/middlewares/validarZod.js";
 import { TareaActualizarEsquema } from "../esquemas/TareaActualizarEsquema.js";
