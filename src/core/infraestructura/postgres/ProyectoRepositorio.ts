@@ -49,6 +49,19 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     return proyecto ? toCamelCase(proyecto) : null;
   }
 
+  async obtenerPorCliente(idCliente: string): Promise<IProyecto[]> {
+    const query = `
+      SELECT *
+      FROM proyectos
+      WHERE id_cliente = $1
+      AND estado = 'Activo'
+      ORDER BY fecha_creacion DESC;
+    `;
+
+    const resultado = await ejecutarConsulta(query, [idCliente]);
+    return toCamelCase(resultado.rows);
+  }
+
   async actualizar(idProyecto: string, datos: Partial<IProyecto>): Promise<IProyecto> {
     const datosBD = toSnakeCase(
       Object.fromEntries(

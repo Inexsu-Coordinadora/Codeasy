@@ -41,10 +41,10 @@ export class ProyectoCasosUso {
       throw new AppError("El cliente especificado no existe.");
     }
 
-    const proyectosCliente: IProyecto[] = await this.proyectoRepositorio.obtenerTodos();
+    const proyectosCliente = await this.proyectoRepositorio.obtenerPorCliente(datos.idCliente);
+
     const existeDuplicado = proyectosCliente.some(
       (p: IProyecto) =>
-        p.idCliente === datos.idCliente &&
         p.nombre.trim().toLowerCase() === datos.nombre.trim().toLowerCase() &&
         p.estado === "Activo"
     );
