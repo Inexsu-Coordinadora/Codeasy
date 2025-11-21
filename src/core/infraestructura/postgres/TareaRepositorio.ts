@@ -1,7 +1,7 @@
 import { ITareaRepositorio } from "../../dominio/tarea/repositorio/ITareaRepositorio.js";
 import { ITarea } from "../../dominio/tarea/ITarea.js";
 import { ejecutarConsulta } from "./clientepostgres.js";
-import { AppError } from "../../../presentacion/esquemas/middlewares/AppError.js";
+
 
 export class TareaRepositorio implements ITareaRepositorio {
 

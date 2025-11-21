@@ -1,10 +1,9 @@
 import { ITarea } from "../../../dominio/tarea/ITarea.js";
 import { Tarea } from "../../../dominio/tarea/Tarea.js";
-import { ITareaRepositorio } from "../../../dominio/tarea/repositorio/ITareaRepositorio.js";
 import { TareaRepositorio } from "../../../infraestructura/postgres/TareaRepositorio.js";
-import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError.js";
 import { TareaValidaciones } from "./TareaValidaciones.js";
 import { ITareaCasosUso } from "./ITareaCasosUso.js";
+import { AppError } from "../../../../common/middlewares/AppError.js";
 
 export class TareaCasosUso implements ITareaCasosUso {
   private validaciones: TareaValidaciones;
@@ -63,12 +62,10 @@ export class TareaCasosUso implements ITareaCasosUso {
     return await this.tareaRepositorio.listarTodasTareas();
   }
 
-  async obtenerTareaPorId(idTarea: string): Promise<ITarea> {
+  async obtenerTareaPorId(idTarea: string): Promise<ITarea | null > {
     const tarea = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
 
-    if (!tarea) {
-      throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, 404);
-    }
+    this.validaciones.validarTareaPorId(tarea, idTarea);
 
     return tarea;
   }

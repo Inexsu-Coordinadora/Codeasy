@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ClienteCasosUso} from "../../core/aplicacion/casos-uso/ClienteCasosUso";
-import { ClienteActualizarEsquema } from "../esquemas/clienteActualizarEsquema";
-import { ClienteCrearEsquema} from "../esquemas/clienteCrearEsquema";
+import { ClienteActualizarEsquema } from "../esquemas/Cliente/clienteActualizarEsquema.js";
+import { ClienteCrearEsquema} from "../esquemas/Cliente/clienteCrearEsquema";
 // para la lógica del error.
 import { ZodError } from "zod";
 

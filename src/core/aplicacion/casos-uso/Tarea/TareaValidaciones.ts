@@ -1,4 +1,4 @@
-import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError.js";
+import { AppError } from "../../../../common/middlewares/AppError.js";
 import {
   CONSULTOR_INACTIVO,
   EQUIPO_SIN_PROYECTO,
@@ -67,6 +67,12 @@ export class TareaValidaciones {
   validarNoDuplicarCompletada(nuevoEstado: string | undefined, estadoExistente: string | undefined) {
     if (nuevoEstado === 'completada' && estadoExistente === 'completada') {
       throw new AppError(TAREA_YA_COMPLETADA, 400);
+    }
+  }
+
+  validarTareaPorId(tarea: any, idTarea: string) {
+    if (!tarea) {
+      throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, 404);
     }
   }
 }

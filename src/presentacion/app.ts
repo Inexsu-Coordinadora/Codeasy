@@ -1,10 +1,11 @@
 import Fastify from "fastify";
 import { FastifyError } from "fastify";
-import { construirProyectoEnrutador } from "./rutas/ProyectoEnrutador";
-import { construirClienteEnrutador } from "./rutas/ClienteEnrutador";
-import { construirConsultorEnrutador } from "./rutas/ConsultorEnrutador";
-import { construirTareaEnrutador } from "./rutas/TareaEnrutador";
-import { ManejadorErrores } from "./esquemas/middlewares/ManejadorErrores";
+import { construirProyectoEnrutador } from "./rutas/ProyectoEnrutador.js";
+import { construirClienteEnrutador } from "./rutas/ClienteEnrutador.js";
+import { construirConsultorEnrutador } from "./rutas/consultorEnrutador.js";
+import { construirTareaEnrutador } from "./rutas/TareaEnrutador.js";
+import { ManejadorErrores } from "../common/middlewares/ManejadorErrores.js";
+import { configuration } from "../common/configuracion.js";
 
 
 const app = Fastify({ logger: true });
@@ -23,7 +24,7 @@ app.register(
 
 export const startServer = async (): Promise<void> => {
   try {
-    await app.listen({ port: Number(process.env.PUERTO) });
+    await app.listen({ port: configuration.httpPuerto });
     app.log.info("El servidor esta corriendo...");
   } catch (err) {
     app.log.error(`Error al ejecutar el servidor\n ${err}`);

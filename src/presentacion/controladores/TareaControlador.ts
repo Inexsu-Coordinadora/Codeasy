@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { TareaCasosUso } from "../../core/aplicacion/casos-uso/Tarea/TareaCasosUso.js";
-import { TareaCrearDTO } from "../esquemas/TareaCrearEsquema.js";
-import { TareaActualizarDTO } from "../esquemas/TareaActualizarEsquema.js";
+import { TareaCrearDTO } from "../esquemas/Tarea/TareaCrearEsquema.js";
+import { TareaActualizarDTO } from "../esquemas/Tarea/TareaActualizarEsquema.js";
 
 export class TareaControlador {
   constructor(private casosUso: TareaCasosUso) {}

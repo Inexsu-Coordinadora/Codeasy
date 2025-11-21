@@ -1,11 +1,11 @@
 import { FastifyInstance } from "fastify";
-import { ProyectoControlador } from "../controladores/ProyectoControlador";
-import { IProyectoRepositorio } from "../../core/dominio/proyecto/repositorio/IProyectoRepositorio";
-import { ProyectoRepositorio } from "../../core/infraestructura/postgres/ProyectoRepositorio";
-import { ProyectoCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ProyectoCasosUso";
-import { validarZod } from "../esquemas/middlewares/validarZod";
-import { ProyectoCrearEsquema } from "../esquemas/ProyectoCrearEsquema";
-import { ProyectoActualizarEsquema } from "../esquemas/proyectoActualizarEsquema";
+import { ProyectoControlador } from "../controladores/ProyectoControlador.js";
+import { IProyectoRepositorio } from "../../core/dominio/proyecto/repositorio/IProyectoRepositorio.js";
+import { ProyectoRepositorio } from "../../core/infraestructura/postgres/ProyectoRepositorio.js";
+import { ProyectoCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ProyectoCasosUso.js";
+import { validarZod } from "../esquemas/validarZod.js";
+import { ProyectoCrearEsquema } from "../esquemas/Proyecto/proyectoCrearEsquema.js";
+import { ProyectoActualizarEsquema } from "../esquemas/Proyecto/proyectoActualizarEsquema.js";
 
 function proyectoEnrutador(app: FastifyInstance, proyectoController: ProyectoControlador) {
   app.get("/proyecto", proyectoController.listarTodosProyectos.bind(proyectoController));
@@ -16,7 +16,7 @@ function proyectoEnrutador(app: FastifyInstance, proyectoController: ProyectoCon
 }
 
 export async function construirProyectoEnrutador(app: FastifyInstance) {
-  const proyectoRepositorio: IProyectoRepositorio = new ProyectoRepositorio();
+  const proyectoRepositorio: ProyectoRepositorio = new ProyectoRepositorio();
   const proyectoCasosUso = new ProyectoCasosUso(proyectoRepositorio);
   const proyectoController = new ProyectoControlador(proyectoCasosUso);
   proyectoEnrutador(app, proyectoController);
