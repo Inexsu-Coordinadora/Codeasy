@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { EquipoProyectoCasosUso } from "../../core/aplicacion/casos-uso/EquipoProyecto/EquipoProyectoCasosUso";
 import type { EquipoProyectoCrearDTO } from "../esquemas/EquipoProyecto/EquipoProyectoCrearEsquema";
 import type { EquipoProyectoActualizarDTO } from "../esquemas/EquipoProyecto/EquipoProyectoActualizarEsquema";
+import { CodigosHttp } from "../../common/codigosHttp";
 
 export class EquipoProyectoControlador {
   constructor(private casosUso: EquipoProyectoCasosUso) {}
@@ -12,7 +13,7 @@ export class EquipoProyectoControlador {
 
     const nuevoEquipo = await this.casosUso.crear(datos);
 
-    return reply.code(201).send({
+    return reply.code(CodigosHttp.CREADO).send({
       exito: true,
       mensaje: "Equipo de proyecto creado correctamente",
       data: nuevoEquipo,
@@ -23,7 +24,7 @@ export class EquipoProyectoControlador {
   async obtenerTodos(_req: FastifyRequest, reply: FastifyReply) {
     const equipos = await this.casosUso.obtenerTodos();
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Equipos de proyecto obtenidos correctamente",
       data: equipos,
@@ -36,7 +37,7 @@ export class EquipoProyectoControlador {
 
     const equipo = await this.casosUso.obtenerPorId(idEquipoProyecto);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Equipo de proyecto obtenido correctamente",
       data: equipo,
@@ -49,7 +50,7 @@ export class EquipoProyectoControlador {
 
     const equipo = await this.casosUso.obtenerPorProyecto(idProyecto);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Equipo del proyecto obtenido correctamente",
       data: equipo,
@@ -66,7 +67,7 @@ export class EquipoProyectoControlador {
       datos
     );
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Equipo de proyecto actualizado correctamente",
       data: equipoActualizado,
@@ -79,7 +80,7 @@ export class EquipoProyectoControlador {
 
     const equipoEliminado = await this.casosUso.eliminar(idEquipoProyecto);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Equipo de proyecto eliminado correctamente",
       data: equipoEliminado,

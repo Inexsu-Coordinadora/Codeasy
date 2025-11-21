@@ -3,11 +3,11 @@ import { ConsultorControlador } from "../controladores/ConsultorControlador.js";
 import { IConsultorRepositorio } from "../../core/dominio/consultor/repositorio/IConsultorRepositorio.js";
 import { ConsultorCasosUso } from "../../core/aplicacion/casos-uso/Consultor/ConsultorCasosUso.js";
 import { ConsultorRepositorio } from "../../core/infraestructura/postgres/ConsultorRepository.js";
-import { validarZod } from "../esquemas/middlewares/validarZod.js";
+import { validarZod } from "../esquemas/validarZod.js";
 import { ConsultorCrearEsquema } from "../esquemas/Consultores/consultorCrearEsquema.js";
 import { ConsultorActualizarEsquema } from "../esquemas/Consultores/consultorActualizarEsquema.js";
 import { EquipoConsultorRepositorio } from "../../core/infraestructura/postgres/EquipoConsultorRepositorio.js";
-import type { IEquipoConsultorRepositorio } from "../../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio";
+import type { IEquipoConsultorRepositorio } from "../../../src/core/dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio.js";
 
 
 function consultorEnrutador(

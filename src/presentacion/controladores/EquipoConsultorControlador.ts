@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { EquipoConsultorCasosUso } from "../../core/aplicacion/casos-uso/EquipoConsultor/EquipoConsultorCasosUso";
 import type { AsignacionCrearDTO } from "../esquemas/EquipoConsultor/EquipoConsultorCrearEsquema";
 import type { AsignacionActualizarDTO } from "../esquemas/EquipoConsultor/EquipoConsultorActualizarEsquema";
+import { CodigosHttp } from "../../common/codigosHttp";
 
 export class EquipoConsultorControlador {
   constructor(private casosUso: EquipoConsultorCasosUso) {}
@@ -12,7 +13,7 @@ export class EquipoConsultorControlador {
 
     const asignacion = await this.casosUso.crear(datos);
 
-    return reply.code(201).send({
+    return reply.code(CodigosHttp.CREADO).send({
       exito: true,
       mensaje: "Consultor asignado correctamente al equipo.",
       data: asignacion,
@@ -25,7 +26,7 @@ export class EquipoConsultorControlador {
 
     const asignacion = await this.casosUso.obtenerPorId(idAsignacion);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Asignación obtenida correctamente.",
       data: asignacion,
@@ -38,7 +39,7 @@ export class EquipoConsultorControlador {
 
     const asignaciones = await this.casosUso.obtenerPorEquipo(idEquipoProyecto);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Asignaciones obtenidas correctamente.",
       data: asignaciones,
@@ -51,7 +52,7 @@ export class EquipoConsultorControlador {
 
     const asignaciones = await this.casosUso.obtenerPorConsultor(idConsultor);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Asignaciones obtenidas correctamente.",
       data: asignaciones,
@@ -65,7 +66,7 @@ export class EquipoConsultorControlador {
 
     const asignacion = await this.casosUso.actualizar(idAsignacion, datos);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Asignación actualizada correctamente.",
       data: asignacion,
@@ -78,7 +79,7 @@ export class EquipoConsultorControlador {
 
     const asignacion = await this.casosUso.eliminar(idAsignacion);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Asignación eliminada correctamente.",
       data: asignacion,

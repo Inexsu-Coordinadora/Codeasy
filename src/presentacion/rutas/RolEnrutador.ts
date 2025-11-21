@@ -2,7 +2,7 @@ import { FastifyInstance } from "fastify";
 import { RolControlador } from "../controladores/RolControlador";
 import { RolRepositorio } from "../../core/infraestructura/postgres/RolRepositorio";
 import { RolCasosUso } from "../../core/aplicacion/casos-uso/Rol/RolCasosUso";
-import { validarZod } from "../esquemas/middlewares/validarZod";
+import { validarZod } from "../esquemas/validarZod";
 import { RolCrearEsquema } from "../esquemas/Roles/rolCrearEsquema";
 import { RolActualizarEsquema } from "../esquemas/Roles/rolActualizarEsquema";
 
@@ -35,7 +35,7 @@ function rolEnrutador(app: FastifyInstance, controller: RolControlador) {
   );
 
   // Eliminar rol (LÓGICO)
-  app.put(
+  app.delete(
     "/rol/eliminar/:idRol",
     controller.eliminarRol.bind(controller)
   );

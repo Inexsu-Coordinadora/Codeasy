@@ -1,7 +1,7 @@
 import type { IRol } from "../../../dominio/rol/IRol";
 import { Rol } from "../../../dominio/rol/Rol";
 import type { IRolRepositorio } from "../../../dominio/rol/repositorio/IRolRepositorio";
-import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
+import { AppError } from "../../../../common/middlewares/AppError";
 
 export class RolCasosUso {
   constructor(private rolRepositorio: IRolRepositorio) {}

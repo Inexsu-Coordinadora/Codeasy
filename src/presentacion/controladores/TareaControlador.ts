@@ -2,9 +2,8 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { TareaCasosUso } from "../../core/aplicacion/casos-uso/Tarea/TareaCasosUso";
 import { TareaActualizarEsquema } from "../esquemas/EsquemaTareas";
 import { TareaCrearEsquema } from "../esquemas/EsquemaTareas";
-//Para los mensajes de error
 import { ZodError } from "zod";
-
+import { CodigosHttp } from "../../common/codigosHttp";
 
 export class TareaControlador {
   constructor(private casosUso: TareaCasosUso) {}
@@ -50,7 +49,7 @@ export class TareaControlador {
     try {
       const datos = TareaCrearEsquema.parse(req.body);
       const nuevo = await this.casosUso.registrar(datos);
-      return reply.code(201).send({ mensaje: "Tarea creada", data: nuevo });
+      return reply.code(CodigosHttp.CREADO).send({ mensaje: "Tarea creada", data: nuevo });
     } catch (error: any) {
       return this.manejarError(reply, error); 
     }
@@ -60,7 +59,7 @@ export class TareaControlador {
   async listarTodasTareas(_req: FastifyRequest, reply: FastifyReply) {
     try {
       const tareas = await this.casosUso.listarTodasTareas();
-      return reply.code(200).send(tareas);
+      return reply.code(CodigosHttp.OK).send(tareas);
     } catch (error: any) {
       return this.manejarError(reply, error);
     }
@@ -73,7 +72,7 @@ export class TareaControlador {
       const tarea = await this.casosUso.obtenerTareaPorId(idTarea);
       if (!tarea)
         return reply.code(404).send({ mensaje: "Tarea no encontrada" });
-      return reply.code(200).send(tarea);
+      return reply.code(CodigosHttp.OK).send(tarea);
     } catch (error: any) {
       return this.manejarError(reply, error);
     }
@@ -85,7 +84,7 @@ export class TareaControlador {
       const { idTarea } = req.params as { idTarea: number };
       const datos = TareaActualizarEsquema.parse(req.body);
       const actualizado = await this.casosUso.actualizarTarea(idTarea, datos);
-      return reply.code(200).send({ mensaje: "Tarea actualizada", data: actualizado });
+      return reply.code(CodigosHttp.OK).send({ mensaje: "Tarea actualizada", data: actualizado });
     } catch (error: any) {
       return this.manejarError(reply, error);
     }
@@ -96,7 +95,7 @@ export class TareaControlador {
     try {
       const { idTarea } = req.params as { idTarea: number };
       await this.casosUso.eliminarTarea(idTarea);
-      return reply.code(200).send({ mensaje: "Tarea eliminada correctamente" });
+      return reply.code(CodigosHttp.OK).send({ mensaje: "Tarea eliminada correctamente" });
     } catch (error: any) {
       return this.manejarError(reply, error);
     }

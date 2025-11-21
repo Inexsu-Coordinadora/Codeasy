@@ -3,8 +3,7 @@ import { Cliente } from "../../../dominio/cliente/Cliente.js";
 import { IClienteRepositorio } from "../../../dominio/cliente/repositorio/IClienteRepositorio.js";
 import { ClienteCrearDTO } from "../../../../presentacion/esquemas/Clientes/clienteCrearEsquema.js";
 import { ClienteActualizarDTO} from "../../../../presentacion/esquemas/Clientes/clienteActualizarEsquema.js";
-import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError.js";
-
+import { AppError } from "../../../../common/middlewares/AppError";
 
 //Logica de negocio para gestionar los clientes
 

@@ -24,7 +24,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     `;
 
     const resultado = await ejecutarConsulta(query, valores);
-    return toCamelCase(resultado.rows[0]);
+    return toCamelCase(resultado.rows[0]) as IProyecto;
   }
 
   async obtenerTodos(): Promise<IProyecto[]> {
@@ -46,7 +46,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     `;
     const resultado = await ejecutarConsulta(query, [idProyecto]);
     const proyecto = resultado.rows[0];
-    return proyecto ? toCamelCase(proyecto) : null;
+    return proyecto ? (toCamelCase(proyecto) as IProyecto) : null;
   }
 
   async obtenerPorCliente(idCliente: string): Promise<IProyecto[]> {
@@ -82,7 +82,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     `;
 
     const resultado = await ejecutarConsulta(query, parametros);
-    return toCamelCase(resultado.rows[0]);
+    return toCamelCase(resultado.rows[0]) as IProyecto;
   }
 
   async eliminar(idProyecto: string): Promise<IProyecto> {
@@ -93,6 +93,6 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
       RETURNING *;
     `;
     const resultado = await ejecutarConsulta(query, [idProyecto]);
-    return toCamelCase(resultado.rows[0]);
+    return toCamelCase(resultado.rows[0]) as IProyecto;
   }
 }

@@ -32,7 +32,7 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
     `;
 
     const result = await ejecutarConsulta(query, valores);
-    return toCamelCase(result.rows[0]);
+    return toCamelCase(result.rows[0]) as IEquipoConsultor;
   }
 
   async obtenerTodos(): Promise<IEquipoConsultor[]> {
@@ -54,7 +54,7 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
       LIMIT 1;
     `;
     const result = await ejecutarConsulta(query, [id]);
-    return result.rows[0] ? toCamelCase(result.rows[0]) : null;
+    return result.rows[0] ? (toCamelCase(result.rows[0]) as IEquipoConsultor) : null;
   }
 
   async obtenerPorEquipo(idEquipoProyecto: string): Promise<IEquipoConsultor[]> {
@@ -102,7 +102,7 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
     `;
 
     const result = await ejecutarConsulta(query, valores);
-    return toCamelCase(result.rows[0]);
+    return toCamelCase(result.rows[0]) as IEquipoConsultor;
   }
 
   async eliminar(id: string): Promise<IEquipoConsultor> {
@@ -113,7 +113,7 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
       RETURNING *;
     `;
     const result = await ejecutarConsulta(query, [id]);
-    return toCamelCase(result.rows[0]);
+    return toCamelCase(result.rows[0]) as IEquipoConsultor;
   }
 
   async eliminarPorConsultor(idConsultor: string): Promise<void> {

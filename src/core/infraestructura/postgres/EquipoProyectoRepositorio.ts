@@ -21,7 +21,7 @@ export class EquipoProyectoRepositorio implements IEquipoProyectoRepositorio {
     `;
 
     const resultado = await ejecutarConsulta(query, valores);
-    return toCamelCase(resultado.rows[0]);
+    return toCamelCase(resultado.rows[0]) as IEquipoProyecto;
   }
 
   async obtenerTodos(): Promise<IEquipoProyecto[]> {
@@ -44,7 +44,7 @@ export class EquipoProyectoRepositorio implements IEquipoProyectoRepositorio {
       LIMIT 1;
     `;
     const resultado = await ejecutarConsulta(query, [idEquipoProyecto]);
-    return resultado.rows[0] ? toCamelCase(resultado.rows[0]) : null;
+    return resultado.rows[0] ? (toCamelCase(resultado.rows[0]) as IEquipoProyecto) : null;
   }
 
   async obtenerPorProyecto(idProyecto: string): Promise<IEquipoProyecto | null> {
@@ -56,7 +56,7 @@ export class EquipoProyectoRepositorio implements IEquipoProyectoRepositorio {
       LIMIT 1;
     `;
     const resultado = await ejecutarConsulta(query, [idProyecto]);
-    return resultado.rows[0] ? toCamelCase(resultado.rows[0]) : null;
+    return resultado.rows[0] ? (toCamelCase(resultado.rows[0]) as IEquipoProyecto) : null;
   }
 
   async actualizar(idEquipoProyecto: string, datos: Partial<IEquipoProyecto>): Promise<IEquipoProyecto> {
@@ -82,7 +82,7 @@ export class EquipoProyectoRepositorio implements IEquipoProyectoRepositorio {
     `;
 
     const resultado = await ejecutarConsulta(query, valores);
-    return toCamelCase(resultado.rows[0]);
+    return toCamelCase(resultado.rows[0]) as IEquipoProyecto;
   }
 
   async eliminar(idEquipoProyecto: string): Promise<IEquipoProyecto> {
@@ -93,6 +93,6 @@ export class EquipoProyectoRepositorio implements IEquipoProyectoRepositorio {
       RETURNING *;
     `;
     const resultado = await ejecutarConsulta(query, [idEquipoProyecto]);
-    return toCamelCase(resultado.rows[0]);
+    return toCamelCase(resultado.rows[0]) as IEquipoProyecto;
   }
 }

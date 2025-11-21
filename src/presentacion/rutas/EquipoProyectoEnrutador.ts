@@ -4,7 +4,7 @@ import type { IEquipoProyectoRepositorio } from "../../core/dominio/equipo-proye
 import { EquipoProyectoRepositorio } from "../../core/infraestructura/postgres/EquipoProyectoRepositorio";
 import { EquipoProyectoCasosUso } from "../../core/aplicacion/casos-uso/Equipo-Proyecto/EquipoProyectoCasosUso";
 import { ProyectoRepositorio } from "../../core/infraestructura/postgres/ProyectoRepositorio";
-import { validarZod } from "../esquemas/middlewares/validarZod";
+import { validarZod } from "../esquemas/validarZod";
 import { EquipoProyectoCrearEsquema } from "../esquemas/EquipoProyecto/EquipoProyectoCrearEsquema";
 import { EquipoProyectoActualizarEsquema } from "../esquemas/EquipoProyecto/EquipoProyectoActualizarEsquema";
 import { EquipoConsultorRepositorio } from "../../core/infraestructura/postgres/EquipoConsultorRepositorio.js";
@@ -27,7 +27,7 @@ function equipoProyectoEnrutador(app: FastifyInstance, equipoController: EquipoP
   app.put("/equipo-proyecto/:idEquipoProyecto",{ preHandler: validarZod(EquipoProyectoActualizarEsquema, "body") },equipoController.actualizar.bind(equipoController));
 
   // Eliminar equipo (lógico)
-  app.put("/equipo-proyecto/eliminar/:idEquipoProyecto", equipoController.eliminar.bind(equipoController));
+  app.delete("/equipo-proyecto/eliminar/:idEquipoProyecto", equipoController.eliminar.bind(equipoController));
 }
 
 export async function construirEquipoProyectoEnrutador(app: FastifyInstance) {

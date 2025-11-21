@@ -7,8 +7,9 @@ import { construirTareaEnrutador } from "./rutas/enrutadorTarea";
 import { construirEquipoProyectoEnrutador } from "./rutas/EquipoProyectoEnrutador";
 import { construirEquipoConsultorEnrutador } from "./rutas/EquipoConsultorEnrutador";
 import { construirRolEnrutador } from "./rutas/RolEnrutador";
-import { ManejadorErrores } from "./esquemas/middlewares/ManejadorErrores";
+import { ManejadorErrores } from "../common/middlewares/ManejadorErrores";
 import { configuration } from "../common/configuracion";
+import { CodigosHttp } from "../common/codigosHttp";
 
 const app = Fastify({ logger: true });
 app.setErrorHandler(ManejadorErrores);
@@ -38,7 +39,7 @@ export const startServer = async (): Promise<void> => {
     const serverError: FastifyError = {
       code: "FST_ERR_INIT_SERVER",
       name: "ServidorError",
-      statusCode: 500,
+      statusCode: CodigosHttp.ERROR_INTERNO,
       message: `El servidor no se pudo iniciar: ${(err as Error).message}`,
     };
 

@@ -4,7 +4,7 @@ import { IProyectoRepositorio } from "../../core/dominio/proyecto/repositorio/IP
 import { ProyectoRepositorio } from "../../core/infraestructura/postgres/ProyectoRepositorio";
 import { ProyectoCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ProyectoCasosUso";
 import { ClienteRepositorio } from "../../core/infraestructura/postgres/ClienteRepositorio";
-import { validarZod } from "../esquemas/middlewares/validarZod";
+import { validarZod } from "../esquemas/validarZod";
 import { ProyectoCrearEsquema } from "../esquemas/Proyectos/proyectoCrearEsquema";
 import { ProyectoActualizarEsquema } from "../esquemas/Proyectos/ProyectoActualizarEsquema";
 import { EquipoProyectoRepositorio } from "../../core/infraestructura/postgres/EquipoProyectoRepositorio";
@@ -14,7 +14,7 @@ function proyectoEnrutador(app: FastifyInstance, proyectoController: ProyectoCon
   app.get("/proyecto/:idProyecto", proyectoController.obtenerProyectoPorId.bind(proyectoController));
   app.post("/proyecto",{ preHandler: validarZod(ProyectoCrearEsquema, "body") },proyectoController.registrarProyecto.bind(proyectoController));
   app.put("/proyecto/:idProyecto",{ preHandler: validarZod(ProyectoActualizarEsquema, "body") },proyectoController.actualizarProyecto.bind(proyectoController));
-  app.put("/proyecto/eliminar/:idProyecto", proyectoController.eliminarProyecto.bind(proyectoController));
+  app.delete("/proyecto/eliminar/:idProyecto", proyectoController.eliminarProyecto.bind(proyectoController));
 }
 
 export async function construirProyectoEnrutador(app: FastifyInstance) {

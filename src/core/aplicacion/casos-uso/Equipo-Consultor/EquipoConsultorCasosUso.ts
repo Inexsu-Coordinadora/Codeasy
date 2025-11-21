@@ -3,7 +3,7 @@ import { EquipoConsultor } from "../../../dominio/equipos-consultores/EquipoCons
 import type { IEquipoConsultorRepositorio } from "../../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio";
 import type { IConsultorRepositorio } from "../../../dominio/consultor/repositorio/IConsultorRepositorio";
 import type { IEquipoProyectoRepositorio } from "../../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio";
-import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
+import { AppError } from "../../../../common/middlewares/AppError";
 
 export class EquipoConsultorCasosUso {
   constructor(

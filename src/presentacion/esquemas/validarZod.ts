@@ -1,8 +1,7 @@
 import {  ZodError, ZodType } from "zod";
 import { FastifyReply, FastifyRequest } from "fastify";
-
+import { CodigosHttp } from "../../common/codigosHttp";
 type TipoValidacion = "body" | "params" | "query";
-
 
 export function validarZod<T>(
   esquema: ZodType<T>,
@@ -24,7 +23,7 @@ export function validarZod<T>(
     } catch (error) {
      
       if (error instanceof ZodError) {
-        return reply.code(400).send({
+        return reply.code(CodigosHttp.SOLICITUD_INCORRECTA).send({
           mensaje: " Error de validación",
           errores: error.issues.map((issue) => ({
             campo: issue.path.join("."),
@@ -33,7 +32,7 @@ export function validarZod<T>(
         });
       }
 
-      return reply.code(500).send({
+      return reply.code(CodigosHttp.ERROR_INTERNO).send({
         mensaje: "Error interno del servidor",
       });
     }

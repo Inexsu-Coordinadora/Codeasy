@@ -4,7 +4,7 @@ import { EquipoConsultorRepositorio } from "../../core/infraestructura/postgres/
 import { ConsultorRepositorio } from "../../core/infraestructura/postgres/ConsultorRepository";
 import { EquipoProyectoRepositorio } from "../../core/infraestructura/postgres/EquipoProyectoRepositorio";
 import { EquipoConsultorCasosUso } from "../../core/aplicacion/casos-uso/Equipo-Consultor/EquipoConsultorCasosUso";
-import { validarZod } from "../esquemas/middlewares/validarZod";
+import { validarZod } from "../esquemas/validarZod";
 import { EquipoConsultorCrearEsquema } from "../esquemas/EquipoConsultor/EquipoConsultorCrearEsquema";
 import { EquipoConsultorActualizarEsquema } from "../esquemas/EquipoConsultor/EquipoConsultorActualizarEsquema";
 
@@ -16,7 +16,7 @@ function equipoConsultorEnrutador(app: FastifyInstance, controller: EquipoConsul
   app.get("/equipo-consultor/equipo/:idEquipoProyecto",controller.obtenerPorEquipo.bind(controller));
   app.get("/equipo-consultor/consultor/:idConsultor",controller.obtenerPorConsultor.bind(controller));
   app.put("/equipo-consultor/:idAsignacion",{ preHandler: validarZod(EquipoConsultorActualizarEsquema, "body") },controller.actualizar.bind(controller));
-  app.put("/equipo-consultor/eliminar/:idAsignacion",controller.eliminar.bind(controller));
+  app.delete("/equipo-consultor/eliminar/:idAsignacion",controller.eliminar.bind(controller));
 }
 
 export async function construirEquipoConsultorEnrutador(app: FastifyInstance) {

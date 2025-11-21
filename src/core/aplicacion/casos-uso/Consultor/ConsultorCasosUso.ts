@@ -4,7 +4,7 @@ import  { IConsultorRepositorio } from "./IConsultorCasosUso";
 import type { IEquipoConsultorRepositorio } from "../../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio";
 import  { ConsultorCrearDTO } from "../../../../presentacion/esquemas/Consultores/consultorCrearEsquema";
 import  { ConsultorActualizarDTO } from "../../../../presentacion/esquemas/Consultores/consultorActualizarEsquema";
-import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
+import { AppError } from "../../../../common/middlewares/AppError";
 
 export class ConsultorCasosUso {
   constructor(private consultorRepositorio: IConsultorRepositorio, private equipoConsultorRepositorio: IEquipoConsultorRepositorio) {}

@@ -1,11 +1,9 @@
 import { IProyecto } from "../../../dominio/proyecto/IProyecto";
 import { Proyecto } from "../../../dominio/proyecto/Proyecto";
 import { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IProyectoRepositorio";
-import { ProyectoCrearDTO } from "../../../../presentacion/esquemas/Proyectos/proyectoCrearEsquema";
-import { ProyectoActualizarDTO } from "../../../../presentacion/esquemas/Proyectos/ProyectoActualizarEsquema";
 import type { IClienteRepositorio } from "../../../dominio/cliente/repositorio/IClienteRepositorio";
 import type { IEquipoProyectoRepositorio } from "../../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio";
-import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
+import { AppError } from "../../../../common/middlewares/AppError";
 
 export class ProyectoCasosUso {
   constructor(
@@ -14,7 +12,7 @@ export class ProyectoCasosUso {
     private equipoProyectoRepositorio: IEquipoProyectoRepositorio
   ) {}
 
-  async crear(datos: ProyectoCrearDTO): Promise<IProyecto> {
+  async crear(datos: IProyecto): Promise<IProyecto> {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
 
@@ -80,7 +78,7 @@ export class ProyectoCasosUso {
     return proyecto;
   }
 
-  async actualizar(idProyecto: string, datos: ProyectoActualizarDTO): Promise<IProyecto> {
+  async actualizar(idProyecto: string, datos: IProyecto): Promise<IProyecto> {
     const proyectoExistente = await this.proyectoRepositorio.obtenerPorId(idProyecto);
     if (!proyectoExistente) {
       throw new AppError(`No se encontró el proyecto con ID ${idProyecto}`);

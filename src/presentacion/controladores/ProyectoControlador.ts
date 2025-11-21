@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { ProyectoCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ProyectoCasosUso";
 import type { ProyectoCrearDTO } from "../esquemas/proyectoCrearEsquema";
 import type { ProyectoActualizarDTO } from "../esquemas/proyectoActualizarEsquema";
+import { CodigosHttp } from "../../common/codigosHttp";
 
 export class ProyectoControlador {
   constructor(private casosUso: ProyectoCasosUso) {}
@@ -11,7 +12,7 @@ export class ProyectoControlador {
     const datos = req.body as ProyectoCrearDTO;
     const nuevoProyecto = await this.casosUso.crear(datos);
 
-    return reply.code(201).send({
+    return reply.code(CodigosHttp.CREADO).send({
       exito: true,
       mensaje: "Proyecto creado correctamente",
       data: nuevoProyecto,
@@ -22,7 +23,7 @@ export class ProyectoControlador {
   async listarTodosProyectos(_req: FastifyRequest, reply: FastifyReply) {
     const proyectos = await this.casosUso.obtenerTodos();
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Proyectos obtenidos correctamente",
       data: proyectos,
@@ -34,7 +35,7 @@ export class ProyectoControlador {
     const { idProyecto } = req.params as { idProyecto: string };
     const proyecto = await this.casosUso.obtenerPorId(idProyecto);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Proyecto obtenido correctamente",
       data: proyecto,
@@ -48,7 +49,7 @@ export class ProyectoControlador {
 
     const proyectoActualizado = await this.casosUso.actualizar(idProyecto, datos);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Proyecto actualizado correctamente",
       data: proyectoActualizado,
@@ -60,7 +61,7 @@ export class ProyectoControlador {
     const { idProyecto } = req.params as { idProyecto: string };
     await this.casosUso.eliminar(idProyecto);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Proyecto eliminado correctamente",
     });

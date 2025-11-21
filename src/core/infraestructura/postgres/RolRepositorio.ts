@@ -22,7 +22,7 @@ export class RolRepositorio implements IRolRepositorio {
         `;
 
         const result = await ejecutarConsulta(query, valores);
-        return toCamelCase(result.rows[0]);
+        return toCamelCase(result.rows[0]) as IRol;
     }
 
     // LISTAR ROLES ACTIVOS
@@ -47,7 +47,7 @@ export class RolRepositorio implements IRolRepositorio {
         `;
         const result = await ejecutarConsulta(query, [idRol]);
         const rol = result.rows[0];
-        return rol ? toCamelCase(rol) : null;
+        return rol ? (toCamelCase(rol) as IRol) : null;
     }
 
     // ACTUALIZAR ROL
@@ -72,7 +72,7 @@ export class RolRepositorio implements IRolRepositorio {
         `;
 
         const result = await ejecutarConsulta(query, valores);
-        return toCamelCase(result.rows[0]);
+        return toCamelCase(result.rows[0]) as IRol;
     }
 
     // ELIMINACIÓN LÓGICA DEL ROL
@@ -85,6 +85,6 @@ export class RolRepositorio implements IRolRepositorio {
         `;
 
         const result = await ejecutarConsulta(query, [idRol]);
-        return toCamelCase(result.rows[0]);
+        return toCamelCase(result.rows[0]) as IRol;
     }
 }
