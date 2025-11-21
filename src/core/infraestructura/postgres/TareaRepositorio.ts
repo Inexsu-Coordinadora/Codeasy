@@ -146,7 +146,7 @@ export class TareaRepositorio implements ITareaRepositorio {
       fechaFinalizacion: row.fecha_limite,
       asignadoA: row.id_equipos_consultores,
       estado: row.estado,
-    };
+    } as ITarea;
   }
 
   /**
@@ -171,7 +171,7 @@ export class TareaRepositorio implements ITareaRepositorio {
       fechaFinalizacion: row.fecha_limite,
       asignadoA: row.id_equipos_consultores,
       estado: row.estado,
-    }));
+    })) as ITarea[];
   }
 
   /**
@@ -199,7 +199,7 @@ export class TareaRepositorio implements ITareaRepositorio {
       fechaFinalizacion: row.fecha_limite,
       asignadoA: row.id_equipos_consultores,
       estado: row.estado,
-    };
+    } as ITarea;
   }
 
   /**
@@ -264,7 +264,7 @@ export class TareaRepositorio implements ITareaRepositorio {
       fechaFinalizacion: row.fecha_limite,
       asignadoA: row.id_equipos_consultores,
       estado: row.estado,
-    };
+    } as ITarea;
   }
 
   /**

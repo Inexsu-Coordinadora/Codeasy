@@ -4,6 +4,7 @@ import { TareaRepositorio } from "../../../infraestructura/postgres/TareaReposit
 import { TareaValidaciones } from "./TareaValidaciones.js";
 import { ITareaCasosUso } from "./ITareaCasosUso.js";
 import { AppError } from "../../../../common/middlewares/AppError.js";
+import { CodigosHttp } from "../../../../common/codigosHttp.js";
 
 export class TareaCasosUso implements ITareaCasosUso {
   private validaciones: TareaValidaciones;
@@ -74,7 +75,7 @@ export class TareaCasosUso implements ITareaCasosUso {
     // 1️⃣ Obtener la tarea existente
     const tareaExistente = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
     if (!tareaExistente) {
-      throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, 404);
+      throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, CodigosHttp.NO_ENCONTRADO);
     }
 
     // 2️⃣ Validar si se intenta marcar como completada una tarea que ya está completada
@@ -136,7 +137,7 @@ export class TareaCasosUso implements ITareaCasosUso {
     const tareaActualizada = await this.tareaRepositorio.actualizarTarea(idTarea, actualizacion);
     
     if (!tareaActualizada) {
-      throw new AppError(`No se pudo actualizar la tarea con ID ${idTarea}`, 400);
+      throw new AppError(`No se pudo actualizar la tarea con ID ${idTarea}`, CodigosHttp.SOLICITUD_INCORRECTA);
     }
 
     return tareaActualizada;
@@ -147,12 +148,12 @@ export class TareaCasosUso implements ITareaCasosUso {
     const tareaExistente = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
 
     if (!tareaExistente) {
-      throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, 404);
+      throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, CodigosHttp.NO_ENCONTRADO);
     }
 
     // 2️⃣ Verificar que no esté ya eliminada
     if (tareaExistente.estado === "Eliminado") {
-      throw new AppError(`La tarea con ID ${idTarea} ya está eliminada.`, 400);
+      throw new AppError(`La tarea con ID ${idTarea} ya está eliminada.`, CodigosHttp.SOLICITUD_INCORRECTA);
     }
 
     // 3️⃣ Eliminar la tarea
