@@ -8,40 +8,28 @@ export class TareaRepositorio implements ITareaRepositorio {
   /**
    * Obtiene el id_proyecto asociado a un equipo_consultor
    */
-  private async obtenerIdProyecto(idEquipoConsultor: string): Promise<string> {
+  async obtenerIdProyecto(idEquipoConsultor: string): Promise<string | null> {
     const query = `
       SELECT ep.id_proyecto 
       FROM equipos_consultores ec
       INNER JOIN equipos_proyectos ep ON ec.id_equipo_proyecto = ep.id_equipo_proyecto
       WHERE ec.id_equipo_consultores = $1
-       AND ep.estado = 'Activo';
+        AND ep.estado = 'Activo';
     `;
     const result = await ejecutarConsulta(query, [idEquipoConsultor]);
     
-    if ((result.rowCount ?? 0) === 0) {
-      throw new AppError(
-        'El equipo_consultor especificado no existe o no está asociado a un proyecto.', 
-        404, 
-        { idEquipoConsultor }
-      );
-    }
-    
-    return result.rows[0].id_proyecto;
+    return result.rows.length > 0 ? result.rows[0].id_proyecto : null;
   }
 
   /**
-   * Valida que no exista una tarea con el mismo título en el proyecto
+   * Verifica si existe una tarea con el mismo título en el proyecto
    */
-  private async validarDuplicidadPorProyecto(
-    idEquipoConsultor: string,
+  async existeTituloEnProyecto(
+    idProyecto: string,
     titulo: string,
     idTareaExcluir?: string
-  ): Promise<void> {
-    // Obtener id_proyecto a través de equipos_consultores -> equipos_proyectos
-    const idProyecto = await this.obtenerIdProyecto(idEquipoConsultor);
-
-    // Validar duplicidad por proyecto
-    const dupQuery = idTareaExcluir
+  ): Promise<boolean> {
+    const query = idTareaExcluir
       ? `
         SELECT 1
         FROM tareas t
@@ -68,94 +56,57 @@ export class TareaRepositorio implements ITareaRepositorio {
       ? [idProyecto, titulo, idTareaExcluir] 
       : [idProyecto, titulo];
     
-    const dup = await ejecutarConsulta(dupQuery, params);
+    const result = await ejecutarConsulta(query, params);
     
-    if ((dup.rowCount ?? 0) > 0) {
-      throw new AppError(
-        `Ya existe una tarea con el título '${titulo}' en el proyecto asociado.`,
-        409,
-        { idProyecto, titulo }
-      );
-    }
+    return (result.rowCount ?? 0) > 0;
   }
 
   /**
-   * Valida que la fecha límite esté dentro del rango de la asignación del consultor
+   * Obtiene el rango de fechas de asignación de un consultor
    */
-  private async validarFechaLimiteConsultor(
-    idEquipoConsultor: string,
-    fechaLimite: Date | null
-  ): Promise<void> {
-    if (!fechaLimite) return;
-
-    // Obtener fechas de la asignación del consultor
-    const equipoConsultorRes = await ejecutarConsulta(
-      `SELECT fecha_inicio, fecha_fin FROM equipos_consultores WHERE id_equipo_consultores = $1`,
-      [idEquipoConsultor]
-    );
+  async obtenerRangoFechasConsultor(
+    idEquipoConsultor: string
+  ): Promise<{ fechaInicio: Date | null; fechaFin: Date | null } | null> {
+    const query = `
+      SELECT fecha_inicio, fecha_fin 
+      FROM equipos_consultores 
+      WHERE id_equipo_consultores = $1;
+    `;
     
-    if ((equipoConsultorRes.rowCount ?? 0) === 0) {
-      throw new AppError(
-        'El equipo_consultor especificado no existe.', 
-        404, 
-        { idEquipoConsultor }
-      );
+    const result = await ejecutarConsulta(query, [idEquipoConsultor]);
+    
+    if (result.rows.length === 0) {
+      return null;
     }
 
-    const fechaInicioConsultor = equipoConsultorRes.rows[0].fecha_inicio 
-      ? new Date(equipoConsultorRes.rows[0].fecha_inicio) 
-      : null;
-    const fechaFinConsultor = equipoConsultorRes.rows[0].fecha_fin 
-      ? new Date(equipoConsultorRes.rows[0].fecha_fin) 
-      : null;
+    const row = result.rows[0];
+    return {
+      fechaInicio: row.fecha_inicio ? new Date(row.fecha_inicio) : null,
+      fechaFin: row.fecha_fin ? new Date(row.fecha_fin) : null,
+    };
+  }
 
-    // Validar contra fecha_inicio del consultor (si existe)
-    if (fechaInicioConsultor && fechaLimite < fechaInicioConsultor) {
-      throw new AppError(
-        'La fecha límite de la tarea no puede ser anterior a la fecha de inicio de la asignación del consultor.', 
-        400, 
-        { fechaLimite: fechaLimite.toISOString(), fechaInicioConsultor: fechaInicioConsultor.toISOString() }
-      );
-    }
-
-    // Validar contra fecha_fin del consultor (si existe)
-    if (fechaFinConsultor && fechaLimite > fechaFinConsultor) {
-      throw new AppError(
-        'La fecha límite de la tarea no puede superar la fecha fin de la asignación del consultor.', 
-        400, 
-        { fechaLimite: fechaLimite.toISOString(), fechaFinConsultor: fechaFinConsultor.toISOString() }
-      );
-    }
+  /**
+   * Verifica si un equipo consultor existe y está activo
+   */
+  async equipoConsultorEstaActivo(idEquipoConsultor: string): Promise<boolean> {
+    const query = `
+      SELECT 1
+      FROM equipos_consultores 
+      WHERE id_equipo_consultores = $1 
+        AND estado = 'Activo'
+      LIMIT 1;
+    `;
+    
+    const result = await ejecutarConsulta(query, [idEquipoConsultor]);
+    
+    return (result.rowCount ?? 0) > 0;
   }
 
   /**
    * Registra una nueva tarea en el sistema
    */
   async registrarTarea(tarea: ITarea): Promise<ITarea> {
-    // 1️⃣ Validar que el equipo_consultor exista y esté activo
-    const validarEquipoQuery = `
-      SELECT id_equipo_consultores 
-      FROM equipos_consultores 
-      WHERE id_equipo_consultores = $1 
-        AND estado = 'Activo';
-    `;
-    const equipoConsultor = await ejecutarConsulta(validarEquipoQuery, [tarea.asignadoA]);
-
-    if ((equipoConsultor.rowCount ?? 0) === 0) {
-      throw new AppError(
-        'El consultor no está asignado o no está activo en el equipo.', 
-        404, 
-        { idEquipoConsultor: tarea.asignadoA }
-      );
-    }
-
-    // 2️⃣ Validar duplicidad por proyecto
-    await this.validarDuplicidadPorProyecto(tarea.asignadoA, tarea.titulo);
-
-    // 3️⃣ Validar fecha límite dentro del rango del consultor
-    await this.validarFechaLimiteConsultor(tarea.asignadoA, tarea.fechaFinalizacion);
-
-    // 4️⃣ Insertar la tarea
     const insertQuery = `
       INSERT INTO tareas (
         titulo, 
@@ -185,8 +136,7 @@ export class TareaRepositorio implements ITareaRepositorio {
     const insertResult = await ejecutarConsulta(insertQuery, insertParams);
     const row = insertResult.rows[0];
 
-    // Mapear fila BD -> ITarea (camelCase)
-    const tareaCreada: ITarea = {
+    return {
       idTarea: row.id_tarea,
       titulo: row.titulo,
       descripcion: row.descripcion,
@@ -197,8 +147,6 @@ export class TareaRepositorio implements ITareaRepositorio {
       asignadoA: row.id_equipos_consultores,
       estado: row.estado,
     };
-
-    return tareaCreada;
   }
 
   /**
@@ -257,50 +205,12 @@ export class TareaRepositorio implements ITareaRepositorio {
   /**
    * Actualiza una tarea existente
    */
-  async actualizarTarea(idTarea: string, datos: Partial<ITarea>): Promise<ITarea> {
-    // Obtener tarea existente
-    const tareaExistente = await this.obtenerTareaPorId(idTarea);
-    if (!tareaExistente) {
-      throw new AppError(`Tarea con ID ${idTarea} no encontrada`, 404);
+  async actualizarTarea(idTarea: string, datos: Partial<ITarea> | null): Promise<ITarea | null> {
+    // Si no hay datos para actualizar, retornar la tarea actual
+    if (!datos) {
+      return await this.obtenerTareaPorId(idTarea);
     }
 
-    // Calcular valores efectivos después de la actualización
-    const effTitulo = datos.titulo ?? tareaExistente.titulo;
-    const effAsignadoA = datos.asignadoA ?? tareaExistente.asignadoA;
-    const effFechaFinalizacion = datos.fechaFinalizacion !== undefined 
-      ? datos.fechaFinalizacion 
-      : tareaExistente.fechaFinalizacion;
-
-    // Validar que el equipo_consultor existe si se está cambiando
-    if (datos.asignadoA) {
-      const validarEquipoQuery = `
-        SELECT id_equipo_consultores 
-        FROM equipos_consultores 
-        WHERE id_equipo_consultores = $1 
-          AND estado = 'Activo';
-      `;
-      const equipoConsultor = await ejecutarConsulta(validarEquipoQuery, [datos.asignadoA]);
-
-      if ((equipoConsultor.rowCount ?? 0) === 0) {
-        throw new AppError(
-          'El consultor no está asignado o no está activo en el equipo.', 
-          404, 
-          { idEquipoConsultor: datos.asignadoA }
-        );
-      }
-    }
-
-    // Validar duplicidad si se cambió título o asignadoA
-    if (datos.titulo !== undefined || datos.asignadoA !== undefined) {
-      await this.validarDuplicidadPorProyecto(effAsignadoA, effTitulo, idTarea);
-    }
-
-    // Validar fecha límite si se cambió fechaFinalizacion o asignadoA
-    if (datos.fechaFinalizacion !== undefined || datos.asignadoA !== undefined) {
-      await this.validarFechaLimiteConsultor(effAsignadoA, effFechaFinalizacion);
-    }
-
-    // Mapear camelCase -> snake_case
     const fieldMap: Record<string, string> = {
       titulo: 'titulo',
       descripcion: 'descripcion',
@@ -326,7 +236,7 @@ export class TareaRepositorio implements ITareaRepositorio {
     }
 
     if (columnas.length === 0) {
-      return tareaExistente;
+      return await this.obtenerTareaPorId(idTarea);
     }
 
     parametros.push(idTarea);
@@ -342,9 +252,7 @@ export class TareaRepositorio implements ITareaRepositorio {
     const result = await ejecutarConsulta(query, parametros);
     const row = result.rows[0];
     
-    if (!row) {
-      throw new AppError(`No se pudo actualizar la tarea con ID ${idTarea}`, 400);
-    }
+    if (!row) return null;
 
     return {
       idTarea: row.id_tarea,
@@ -366,16 +274,8 @@ export class TareaRepositorio implements ITareaRepositorio {
     const query = `
       UPDATE tareas
       SET estado = 'Eliminado'
-      WHERE id_tarea = $1
-        AND estado != 'Eliminado';
+      WHERE id_tarea = $1;
     `;
-    const result = await ejecutarConsulta(query, [idTarea]);
-    
-    if ((result.rowCount ?? 0) === 0) {
-      throw new AppError(
-        `No se encontró la tarea con ID ${idTarea} para eliminar`, 
-        404
-      );
-    }
+    await ejecutarConsulta(query, [idTarea]);
   }
 }

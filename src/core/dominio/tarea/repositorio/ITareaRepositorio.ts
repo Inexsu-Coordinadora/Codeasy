@@ -5,6 +5,6 @@ export interface ITareaRepositorio {
   registrarTarea(tarea: Tarea): Promise<ITarea>;
   listarTodasTareas(): Promise<ITarea[]>;
   obtenerTareaPorId(idTarea: string): Promise<ITarea | null>;
-  actualizarTarea(idTarea: string, datosTarea: Partial<ITarea>): Promise<ITarea>;
+  actualizarTarea(idTarea: string, datosTarea: Partial<ITarea> | null): Promise<ITarea| null>;
   eliminarTarea(idTarea: string): Promise<void>;
 }

@@ -20,7 +20,7 @@ function tareaEnrutador(
 }
 
 export async function construirTareaEnrutador(app: FastifyInstance) {
-  const tareaRepositorio: ITareaRepositorio = new TareaRepositorio();
+  const tareaRepositorio: TareaRepositorio = new TareaRepositorio();
   const tareaCasosUso = new TareaCasosUso(tareaRepositorio);
   const tareaController = new TareaControlador(tareaCasosUso);
 
