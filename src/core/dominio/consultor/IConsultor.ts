@@ -3,8 +3,8 @@ export interface IConsultor {
   nombre: string;
   identificacion: string;
   correo: string;
-  telefono: string | null;
+  telefono?: string | null;
   especialidad?: string | null;
-  nivelExperiencia: "Junior" | "Semi-Senior" | "Senior" | "Experto";
+  nivelExperiencia?: "Junior" | "Semi-Senior" | "Senior" | "Experto";
   estado?: "Activo" | "Eliminado";
 }

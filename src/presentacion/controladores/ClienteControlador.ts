@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { ClienteCasosUso } from "../../core/aplicacion/casos-uso/Cliente/ClienteCasosUso";
 import { ClienteActualizarDTO } from "../esquemas/clienteActualizarEsquema";
 import { ClienteCrearDTO } from "../esquemas/clienteCrearEsquema";
+import { CodigosHttp } from "../../common/codigosHttp";
 
 export class ClienteControlador {
   constructor(private casosUso: ClienteCasosUso) {}
@@ -10,7 +11,7 @@ export class ClienteControlador {
     const datos = req.body as ClienteCrearDTO;
     const nuevoCliente = await this.casosUso.registrarCliente(datos);
 
-    return reply.code(201).send({
+    return reply.code(CodigosHttp.CREADO).send({
       exito: true,
       mensaje: "Cliente creado exitosamente",
       data: nuevoCliente,
@@ -20,18 +21,18 @@ export class ClienteControlador {
   async listarTodosClientes(_req: FastifyRequest, reply: FastifyReply) {
     const clientes = await this.casosUso.listarTodosClientes();
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Clientes obtenidos correctamente",
       data: clientes,
     });
   }
 
-  async obtenerClientePorId(req: FastifyRequest, reply: FastifyReply) {
+  async buscarPorIdCliente(req: FastifyRequest, reply: FastifyReply) {
     const { idCliente } = req.params as { idCliente: string };
-    const cliente = await this.casosUso.obtenerClientePorId(idCliente);
+    const cliente = await this.casosUso.buscarPorIdCliente(idCliente);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Cliente obtenido correctamente",
       data: cliente,
@@ -47,7 +48,7 @@ export class ClienteControlador {
       datos
     );
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Cliente actualizado exitosamente",
       data: clienteActualizado,
@@ -58,7 +59,7 @@ export class ClienteControlador {
     const { idCliente } = req.params as { idCliente: string };
     await this.casosUso.eliminarCliente(idCliente);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Cliente eliminado correctamente",
     });

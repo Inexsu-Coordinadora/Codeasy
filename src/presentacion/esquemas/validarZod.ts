@@ -9,7 +9,7 @@ export function validarZod<T>(
 ) {
   return async (req: FastifyRequest, reply: FastifyReply) => {
     try {
-      // Validación según tipo
+     
       switch (tipo) {
         case "body":
           req.body = esquema.parse(req.body);
@@ -23,7 +23,7 @@ export function validarZod<T>(
       }
     } catch (error) {
       if (error instanceof ZodError) {
-        // Agrupar y mostrar solo un error por campo
+       
         const erroresUnicos = Object.values(
           error.issues.reduce((acc, issue) => {
             const campo = issue.path.join(".");

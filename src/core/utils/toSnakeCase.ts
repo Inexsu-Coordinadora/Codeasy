@@ -16,7 +16,7 @@ export function toSnakeCase(input: any): any {
         .replace(/([A-Z])/g, "_$1") // agrega _
         .toLowerCase();
 
-      // Evita guardar undefined en la BD
+      
       if (value !== undefined) {
         newObj[snakeKey] = toSnakeCase(value);
       }
@@ -25,5 +25,5 @@ export function toSnakeCase(input: any): any {
     return newObj;
   }
 
-  return input; // valores primitivos
+  return input; 
 }

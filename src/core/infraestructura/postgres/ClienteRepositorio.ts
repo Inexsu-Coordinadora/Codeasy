@@ -32,10 +32,11 @@ export class ClienteRepositorio implements IClienteRepositorio {
 
 
   async buscarPorIdCliente(idCliente: string): Promise<ICliente | null> {
-    const query = `SELECT * FROM clientes WHERE id_cliente = $1;`;
+    const query = `SELECT * FROM clientes WHERE id_cliente = $1 AND estado != 'Eliminado';`;
     const result = await ejecutarConsulta(query, [idCliente]);
-    return (result.rows[0] as ICliente) || null;
+    return (result.rows[0]) || null;
   }
+
 
 
   async buscarPorIdentificacionCliente(identificacion: string): Promise<ICliente | null> {

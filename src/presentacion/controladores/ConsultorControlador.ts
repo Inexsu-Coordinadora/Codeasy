@@ -2,6 +2,7 @@ import { FastifyReply, FastifyRequest } from "fastify";
 import { ConsultorCasosUso } from "../../core/aplicacion/casos-uso/Consultor/ConsultorCasosUso.js";
 import type { ConsultorCrearDTO } from "../esquemas/Consultores/consultorCrearEsquema";
 import type { ConsultorActualizarDTO } from "../esquemas/Consultores/consultorActualizarEsquema";
+import { CodigosHttp } from "../../common/codigosHttp";
 
 export class ConsultorControlador {
   constructor(private casosUso: ConsultorCasosUso) {}
@@ -10,7 +11,7 @@ export class ConsultorControlador {
     const datos = req.body as ConsultorCrearDTO;
     const nuevoConsultor = await this.casosUso.registrarConsultor(datos);
 
-    return reply.code(201).send({
+    return reply.code(CodigosHttp.CREADO).send({
       exito: true,
       mensaje: "Consultor creado correctamente",
       data: nuevoConsultor,
@@ -20,7 +21,7 @@ export class ConsultorControlador {
   async listarTodosConsultores(_req: FastifyRequest, reply: FastifyReply) {
     const consultores = await this.casosUso.listarTodosConsultores();
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Consultores activos obtenidos correctamente",
       data: consultores,
@@ -31,7 +32,7 @@ export class ConsultorControlador {
     const { idConsultor } = req.params as { idConsultor: string };
     const consultor = await this.casosUso.obtenerConsultorPorId(idConsultor);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Consultor obtenido correctamente",
       data: consultor,
@@ -47,7 +48,7 @@ export class ConsultorControlador {
       datos
     );
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Consultor actualizado correctamente",
       data: consultorActualizado,
@@ -58,7 +59,7 @@ export class ConsultorControlador {
     const { idConsultor } = req.params as { idConsultor: string };
     await this.casosUso.eliminarConsultor(idConsultor);
 
-    return reply.code(200).send({
+    return reply.code(CodigosHttp.OK).send({
       exito: true,
       mensaje: "Consultor eliminado correctamente",
     });

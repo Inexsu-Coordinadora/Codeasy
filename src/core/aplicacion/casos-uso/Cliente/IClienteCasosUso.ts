@@ -1,7 +1,7 @@
 import { ICliente } from '../../../dominio/cliente/ICliente';
 export interface IClientesCasosUso {
     obtenerClientes(limite?: string): Promise<ICliente[]>;
-    obtenerClientePorId(idCliente: string): Promise<ICliente | null>;
+    buscarPorIdCliente(idCliente: string): Promise<ICliente | null>;
     registrarCliente(
         data: Omit<ICliente, 'idCliente' | 'estatus'>
     ): Promise<ICliente>;

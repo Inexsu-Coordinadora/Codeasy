@@ -1,9 +1,7 @@
 import { ICliente } from "../../../dominio/cliente/ICliente"
 import { Cliente } from "../../../dominio/cliente/Cliente";
 import { IClienteRepositorio } from "../../../dominio/cliente/repositorio/IClienteRepositorio";
-import { ClienteCrearDTO } from "../../../presentacion/esquemas/clienteCrearEsquema";
-import { ClienteActualizarDTO} from "../../../presentacion/esquemas/clienteActualizarEsquema";
-import { AppError } from "../../../../presentacion/esquemas/middlewares/AppError";
+import { AppError } from "../../../../common/middlewares/AppError";
 
 
 //Logica de negocio para gestionar los clientes
@@ -12,7 +10,7 @@ export class ClienteCasosUso {
   constructor(private clienteRepositorio: IClienteRepositorio) {}
 
   
-  async registrarCliente(datos: ClienteCrearDTO): Promise<ICliente> {
+  async registrarCliente(datos: ICliente): Promise<ICliente> {
     const existentePorIdentificacion = await this.clienteRepositorio.buscarPorIdentificacionCliente(
       datos.identificacion,
       datos.correo
@@ -37,7 +35,7 @@ export class ClienteCasosUso {
     return await this.clienteRepositorio.buscarTodosCliente();
   }
 
-  async obtenerClientePorId(idCliente: string): Promise<ICliente | null> {
+  async buscarPorIdCliente(idCliente: string): Promise<ICliente | null> {
     return await this.clienteRepositorio.buscarPorIdCliente(idCliente);
   }
 
@@ -45,7 +43,7 @@ export class ClienteCasosUso {
     return await this.clienteRepositorio.buscarPorIdentificacionCliente(identificacion);
   }
 
-  async actualizarCliente(idCliente: string, datos: ClienteActualizarDTO): Promise<ICliente> {
+  async actualizarCliente(idCliente: string, datos: ICliente): Promise<ICliente> {
 
     const clienteExistente = await this.clienteRepositorio.buscarPorIdCliente(idCliente);
 
