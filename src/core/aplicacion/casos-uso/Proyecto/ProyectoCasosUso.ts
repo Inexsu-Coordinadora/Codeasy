@@ -52,7 +52,7 @@ export class ProyectoCasosUso {
     }
 
     const nuevoProyecto = new Proyecto(
-      0,
+      undefined,
       datos.nombre,
       datos.descripcion,
       datos.estadoProyecto || "Creado",

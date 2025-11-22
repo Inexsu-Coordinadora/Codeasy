@@ -13,7 +13,7 @@
     
     // For nodejs:
     //"lib": ["esnext"],
-    "types": [],
+    "types": ["jest"],
     // and npm install -D @types/node
 
     // Other Outputs
@@ -24,7 +24,7 @@
     // Stricter Typechecking Options
     "noUncheckedIndexedAccess": true,
     "exactOptionalPropertyTypes": true,
-
+    "isolatedModules": true,
     // Style Options
     // "noImplicitReturns": true,
     // "noImplicitOverride": true,
