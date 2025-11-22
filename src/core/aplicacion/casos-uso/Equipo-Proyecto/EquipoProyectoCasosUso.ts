@@ -1,8 +1,8 @@
-import type { IEquipoProyecto } from "../../../dominio/equipo-proyecto/IEquipoProyecto";
-import { EquipoProyecto } from "../../../dominio/equipo-proyecto/EquipoProyecto";
-import type { IEquipoProyectoRepositorio } from "../../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio";
-import type { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IProyectoRepositorio";
-import type { IEquipoConsultorRepositorio } from "../../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio";
+import type { IEquipoProyecto } from "../../../dominio/equipo-proyecto/IEquipoProyecto.js";
+import { EquipoProyecto } from "../../../dominio/equipo-proyecto/EquipoProyecto.js";
+import type { IEquipoProyectoRepositorio } from "../../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio.js";
+import type { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IProyectoRepositorio.js";
+import type { IEquipoConsultorRepositorio } from "../../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio.js";
 import { AppError } from "../../../../common/middlewares/AppError";
 
 export class EquipoProyectoCasosUso {

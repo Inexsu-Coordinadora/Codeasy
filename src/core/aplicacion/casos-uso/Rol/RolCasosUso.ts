@@ -1,6 +1,6 @@
-import type { IRol } from "../../../dominio/rol/IRol";
-import { Rol } from "../../../dominio/rol/Rol";
-import type { IRolRepositorio } from "../../../dominio/rol/repositorio/IRolRepositorio";
+import type { IRol } from "../../../dominio/rol/IRol.js";
+import { Rol } from "../../../dominio/rol/Rol.js";
+import type { IRolRepositorio } from "../../../dominio/rol/repositorio/IRolRepositorio.js";
 import { AppError } from "../../../../common/middlewares/AppError";
 
 export class RolCasosUso {

@@ -1,8 +1,8 @@
-import { ejecutarConsulta } from "./clientepostgres";
-import type { IEquipoProyecto } from "../../dominio/equipo-proyecto/IEquipoProyecto";
-import type { IEquipoProyectoRepositorio } from "../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio";
-import { toSnakeCase } from "../../utils/toSnakeCase";
-import { toCamelCase } from "../../utils/toCamelCase";
+import { ejecutarConsulta } from "./clientepostgres.js";
+import type { IEquipoProyecto } from "../../dominio/equipo-proyecto/IEquipoProyecto.js";
+import type { IEquipoProyectoRepositorio } from "../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio.js";
+import { toSnakeCase } from "../../utils/toSnakeCase.js";
+import { toCamelCase } from "../../utils/toCamelCase.js";
 
 export class EquipoProyectoRepositorio implements IEquipoProyectoRepositorio {
 

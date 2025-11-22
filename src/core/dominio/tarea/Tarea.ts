@@ -1,4 +1,4 @@
-import { ITarea } from "./ITarea";
+import { ITarea } from "./ITarea.js";
 
 export class Tarea implements ITarea {
   // Required by ITarea

@@ -1,8 +1,8 @@
-import { ejecutarConsulta } from "./clientepostgres";
-import type { IEquipoConsultor } from "../../dominio/equipos-consultores/IEquipoConsultor";
-import type { IEquipoConsultorRepositorio } from "../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio";
-import { toSnakeCase } from "../../utils/toSnakeCase";
-import { toCamelCase } from "../../utils/toCamelCase";
+import { ejecutarConsulta } from "./clientepostgres.js";
+import type { IEquipoConsultor } from "../../dominio/equipos-consultores/IEquipoConsultor.js";
+import type { IEquipoConsultorRepositorio } from "../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio.js";
+import { toSnakeCase } from "../../utils/toSnakeCase.js";
+import { toCamelCase } from "../../utils/toCamelCase.js";
 
 export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
 

@@ -1,4 +1,4 @@
-import type { IProyecto } from "./IProyecto";
+import type { IProyecto } from "./IProyecto.js";
 
 export class Proyecto implements IProyecto {
   constructor(

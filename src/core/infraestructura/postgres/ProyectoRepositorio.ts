@@ -1,8 +1,8 @@
-import { ejecutarConsulta } from './clientepostgres';
-import type { IProyecto } from '../../dominio/proyecto/IProyecto';
-import type { IProyectoRepositorio } from '../../dominio/proyecto/repositorio/IProyectoRepositorio';
-import { toSnakeCase } from "../../utils/toSnakeCase";
-import { toCamelCase } from "../../utils/toCamelCase";
+import { ejecutarConsulta } from './clientepostgres.js';
+import type { IProyecto } from '../../dominio/proyecto/IProyecto.js';
+import type { IProyectoRepositorio } from '../../dominio/proyecto/repositorio/IProyectoRepositorio.js';
+import { toSnakeCase } from "../../utils/toSnakeCase.js";
+import { toCamelCase } from "../../utils/toCamelCase.js";
 
 export class ProyectoRepositorio implements IProyectoRepositorio {
 

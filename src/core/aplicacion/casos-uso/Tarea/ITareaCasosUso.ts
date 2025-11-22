@@ -1,5 +1,5 @@
-import { ITarea } from '../../../dominio/tarea/ITarea';
-import { Tarea } from '../../../dominio/tarea/Tarea';
+import { ITarea } from '../../../dominio/tarea/ITarea.js';
+import { Tarea } from '../../../dominio/tarea/Tarea.js';
 
 export interface ITareaRepositorio {
   registrarTarea(tarea: Tarea): Promise<ITarea>;

@@ -1,4 +1,4 @@
-import { ICliente } from '../ICliente'; 
+import { ICliente } from '../ICliente.js'; 
 import { Pool } from 'pg';
 
 export interface IClienteRepositorio {

@@ -1,5 +1,5 @@
-import  { ITarea } from "../../../dominio/tarea/ITarea";
-import  { Tarea } from "../../../dominio/tarea/Tarea";
+import  { ITarea } from "../../../dominio/tarea/ITarea.js";
+import  { Tarea } from "../../../dominio/tarea/Tarea.js";
 import  { ITareaRepositorio } from "../../../dominio/tarea/repositorio/ITareaRepositorio.js";
 import  { TareaCrearDTO } from "../../../../presentacion/esquemas/EsquemaTareas";
 import  { TareaActualizarDTO } from "../../../../presentacion/esquemas/EsquemaTareas";

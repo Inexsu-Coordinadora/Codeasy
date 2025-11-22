@@ -1,7 +1,7 @@
-import  {IConsultor} from "../../../dominio/consultor/IConsultor";
-import  {Consultor} from "../../../dominio/consultor/Consultor";
-import  { IConsultorRepositorio } from "./IConsultorCasosUso";
-import type { IEquipoConsultorRepositorio } from "../../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio";
+import  {IConsultor} from "../../../dominio/consultor/IConsultor.js";
+import  {Consultor} from "../../../dominio/consultor/Consultor.js";
+import  { IConsultorRepositorio } from "./IConsultorCasosUso.js";
+import type { IEquipoConsultorRepositorio } from "../../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio.js";
 import  { ConsultorCrearDTO } from "../../../../presentacion/esquemas/Consultores/consultorCrearEsquema";
 import  { ConsultorActualizarDTO } from "../../../../presentacion/esquemas/Consultores/consultorActualizarEsquema";
 import { AppError } from "../../../../common/middlewares/AppError";

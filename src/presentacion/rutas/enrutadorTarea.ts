@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { TareaControlador } from "../controladores/TareaControlador";
+import { TareaControlador } from "../controladores/TareaControlador.js";
 import { ITareaRepositorio } from "../../core/dominio/tarea/repositorio/ITareaRepositorio";
 import { TareaCasosUso } from "../../core/aplicacion/casos-uso/Tarea/TareaCasosUso";
 import { TareaRepositorio } from "../../core/infraestructura/postgres/TareaRepository";

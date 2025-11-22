@@ -7,7 +7,7 @@ import { validarZod } from "../esquemas/validarZod.js";
 import { ConsultorCrearEsquema } from "../esquemas/Consultores/consultorCrearEsquema.js";
 import { ConsultorActualizarEsquema } from "../esquemas/Consultores/consultorActualizarEsquema.js";
 import { EquipoConsultorRepositorio } from "../../core/infraestructura/postgres/EquipoConsultorRepositorio.js";
-import type { IEquipoConsultorRepositorio } from "../../../src/core/dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio.js";
+import type { IEquipoConsultorRepositorio } from "../../core/dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio.js";
 
 
 function consultorEnrutador(

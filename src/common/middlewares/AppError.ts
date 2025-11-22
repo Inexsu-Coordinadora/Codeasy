@@ -1,4 +1,4 @@
-import { CodigosHttp } from "../../common/codigosHttp";
+import { CodigosHttp } from "../codigosHttp.js";
 
 export class AppError extends Error {
   public readonly statusCode: number;

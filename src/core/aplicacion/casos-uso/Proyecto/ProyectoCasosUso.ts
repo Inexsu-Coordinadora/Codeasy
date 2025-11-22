@@ -1,8 +1,8 @@
-import { IProyecto } from "../../../dominio/proyecto/IProyecto";
-import { Proyecto } from "../../../dominio/proyecto/Proyecto";
-import { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IProyectoRepositorio";
-import type { IClienteRepositorio } from "../../../dominio/cliente/repositorio/IClienteRepositorio";
-import type { IEquipoProyectoRepositorio } from "../../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio";
+import { IProyecto } from "../../../dominio/proyecto/IProyecto.js";
+import { Proyecto } from "../../../dominio/proyecto/Proyecto.js";
+import { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IProyectoRepositorio.js";
+import type { IClienteRepositorio } from "../../../dominio/cliente/repositorio/IClienteRepositorio.js";
+import type { IEquipoProyectoRepositorio } from "../../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio.js";
 import { AppError } from "../../../../common/middlewares/AppError";
 
 export class ProyectoCasosUso {

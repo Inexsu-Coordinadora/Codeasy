@@ -1,8 +1,8 @@
-import { ejecutarConsulta } from "./clientepostgres";
-import type { IRol } from "../../dominio/rol/IRol";
-import type { IRolRepositorio } from "../../dominio/rol/repositorio/IRolRepositorio";
-import { toSnakeCase } from "../../utils/toSnakeCase";
-import { toCamelCase } from "../../utils/toCamelCase";
+import { ejecutarConsulta } from "./clientepostgres.js";
+import type { IRol } from "../../dominio/rol/IRol.js";
+import type { IRolRepositorio } from "../../dominio/rol/repositorio/IRolRepositorio.js";
+import { toSnakeCase } from "../../utils/toSnakeCase.js";
+import { toCamelCase } from "../../utils/toCamelCase.js";
 
 export class RolRepositorio implements IRolRepositorio {
   

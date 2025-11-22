@@ -1,5 +1,5 @@
-import  { Consultor } from "../Consultor";
-import  { IConsultor} from "../IConsultor";
+import  { Consultor } from "../Consultor.js";
+import  { IConsultor} from "../IConsultor.js";
 
 export interface IConsultorRepositorio {
   registrarConsultor(consultor: Consultor): Promise<IConsultor>; 

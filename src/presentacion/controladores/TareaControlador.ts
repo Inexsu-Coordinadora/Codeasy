@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { TareaCasosUso } from "../../core/aplicacion/casos-uso/Tarea/TareaCasosUso";
-import { TareaActualizarEsquema } from "../esquemas/EsquemaTareas";
-import { TareaCrearEsquema } from "../esquemas/EsquemaTareas";
+import { TareaActualizarEsquema } from "../esquemas/EsquemaTareas.js";
+import { TareaCrearEsquema } from "../esquemas/EsquemaTareas.js";
 import { ZodError } from "zod";
 import { CodigosHttp } from "../../common/codigosHttp";
 

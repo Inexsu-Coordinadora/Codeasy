@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ProyectoCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ProyectoCasosUso";
-import type { ProyectoCrearDTO } from "../esquemas/proyectoCrearEsquema";
-import type { ProyectoActualizarDTO } from "../esquemas/proyectoActualizarEsquema";
+import type { ProyectoCrearDTO } from "../esquemas/proyectoCrearEsquema.js";
+import type { ProyectoActualizarDTO } from "../esquemas/proyectoActualizarEsquema.js";
 import { CodigosHttp } from "../../common/codigosHttp";
 
 export class ProyectoControlador {

@@ -1,12 +1,12 @@
 import { FastifyInstance } from "fastify";
-import { EquipoProyectoControlador } from "../controladores/EquipoProyectoControlador";
+import { EquipoProyectoControlador } from "../controladores/EquipoProyectoControlador.js";
 import type { IEquipoProyectoRepositorio } from "../../core/dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio";
 import { EquipoProyectoRepositorio } from "../../core/infraestructura/postgres/EquipoProyectoRepositorio";
 import { EquipoProyectoCasosUso } from "../../core/aplicacion/casos-uso/Equipo-Proyecto/EquipoProyectoCasosUso";
 import { ProyectoRepositorio } from "../../core/infraestructura/postgres/ProyectoRepositorio";
-import { validarZod } from "../esquemas/validarZod";
-import { EquipoProyectoCrearEsquema } from "../esquemas/EquipoProyecto/EquipoProyectoCrearEsquema";
-import { EquipoProyectoActualizarEsquema } from "../esquemas/EquipoProyecto/EquipoProyectoActualizarEsquema";
+import { validarZod } from "../esquemas/validarZod.js";
+import { EquipoProyectoCrearEsquema } from "../esquemas/EquipoProyecto/EquipoProyectoCrearEsquema.js";
+import { EquipoProyectoActualizarEsquema } from "../esquemas/EquipoProyecto/EquipoProyectoActualizarEsquema.js";
 import { EquipoConsultorRepositorio } from "../../core/infraestructura/postgres/EquipoConsultorRepositorio.js";
 
 function equipoProyectoEnrutador(app: FastifyInstance, equipoController: EquipoProyectoControlador) {

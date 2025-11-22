@@ -1,12 +1,12 @@
 import { FastifyInstance } from "fastify";
-import { EquipoConsultorControlador } from "../controladores/EquipoConsultorControlador";
+import { EquipoConsultorControlador } from "../controladores/EquipoConsultorControlador.js";
 import { EquipoConsultorRepositorio } from "../../core/infraestructura/postgres/EquipoConsultorRepositorio";
 import { ConsultorRepositorio } from "../../core/infraestructura/postgres/ConsultorRepository";
 import { EquipoProyectoRepositorio } from "../../core/infraestructura/postgres/EquipoProyectoRepositorio";
 import { EquipoConsultorCasosUso } from "../../core/aplicacion/casos-uso/Equipo-Consultor/EquipoConsultorCasosUso";
-import { validarZod } from "../esquemas/validarZod";
-import { EquipoConsultorCrearEsquema } from "../esquemas/EquipoConsultor/EquipoConsultorCrearEsquema";
-import { EquipoConsultorActualizarEsquema } from "../esquemas/EquipoConsultor/EquipoConsultorActualizarEsquema";
+import { validarZod } from "../esquemas/validarZod.js";
+import { EquipoConsultorCrearEsquema } from "../esquemas/EquipoConsultor/EquipoConsultorCrearEsquema.js";
+import { EquipoConsultorActualizarEsquema } from "../esquemas/EquipoConsultor/EquipoConsultorActualizarEsquema.js";
 
 function equipoConsultorEnrutador(app: FastifyInstance, controller: EquipoConsultorControlador) {
 

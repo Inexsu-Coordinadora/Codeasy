@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { EquipoConsultorCasosUso } from "../../core/aplicacion/casos-uso/EquipoConsultor/EquipoConsultorCasosUso";
-import type { AsignacionCrearDTO } from "../esquemas/EquipoConsultor/EquipoConsultorCrearEsquema";
-import type { AsignacionActualizarDTO } from "../esquemas/EquipoConsultor/EquipoConsultorActualizarEsquema";
+import type { AsignacionCrearDTO } from "../esquemas/EquipoConsultor/EquipoConsultorCrearEsquema.js";
+import type { AsignacionActualizarDTO } from "../esquemas/EquipoConsultor/EquipoConsultorActualizarEsquema.js";
 import { CodigosHttp } from "../../common/codigosHttp";
 
 export class EquipoConsultorControlador {

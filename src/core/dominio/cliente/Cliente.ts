@@ -1,4 +1,4 @@
-import { ICliente, EstatusCliente } from './ICliente';
+import { ICliente } from './ICliente.js';
 
 export class Cliente implements ICliente {
     idCliente?: string;

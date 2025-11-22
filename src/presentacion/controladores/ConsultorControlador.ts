@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ConsultorCasosUso } from "../../core/aplicacion/casos-uso/Consultor/ConsultorCasosUso.js";
-import type { ConsultorCrearDTO } from "../esquemas/Consultores/consultorCrearEsquema";
-import type { ConsultorActualizarDTO } from "../esquemas/Consultores/consultorActualizarEsquema";
+import type { ConsultorCrearDTO } from "../esquemas/Consultores/consultorCrearEsquema.js";
+import type { ConsultorActualizarDTO } from "../esquemas/Consultores/consultorActualizarEsquema.js";
 import { CodigosHttp } from "../../common/codigosHttp";
 
 export class ConsultorControlador {

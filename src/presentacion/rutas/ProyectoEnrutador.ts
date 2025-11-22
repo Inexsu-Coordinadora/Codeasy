@@ -1,12 +1,12 @@
 import { FastifyInstance } from "fastify";
-import { ProyectoControlador } from "../controladores/ProyectoControlador";
+import { ProyectoControlador } from "../controladores/ProyectoControlador.js";
 import { IProyectoRepositorio } from "../../core/dominio/proyecto/repositorio/IProyectoRepositorio";
 import { ProyectoRepositorio } from "../../core/infraestructura/postgres/ProyectoRepositorio";
 import { ProyectoCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ProyectoCasosUso";
 import { ClienteRepositorio } from "../../core/infraestructura/postgres/ClienteRepositorio";
-import { validarZod } from "../esquemas/validarZod";
-import { ProyectoCrearEsquema } from "../esquemas/Proyectos/proyectoCrearEsquema";
-import { ProyectoActualizarEsquema } from "../esquemas/Proyectos/ProyectoActualizarEsquema";
+import { validarZod } from "../esquemas/validarZod.js";
+import { ProyectoCrearEsquema } from "../esquemas/Proyectos/proyectoCrearEsquema.js";
+import { ProyectoActualizarEsquema } from "../esquemas/Proyectos/ProyectoActualizarEsquema.js";
 import { EquipoProyectoRepositorio } from "../../core/infraestructura/postgres/EquipoProyectoRepositorio";
 
 function proyectoEnrutador(app: FastifyInstance, proyectoController: ProyectoControlador) {
