@@ -13,7 +13,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     const columnas = Object.keys(proyectoBD);
     const valores = Object.values(proyectoBD).map((v) =>
       v === null || v === undefined ? null : v
-    ) as (string | Date | number | null)[];
+    ) as (string | Date | number)[];
 
     const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
 
@@ -49,19 +49,6 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     return proyecto ? (toCamelCase(proyecto) as IProyecto) : null;
   }
 
-  async obtenerPorCliente(idCliente: string): Promise<IProyecto[]> {
-    const query = `
-      SELECT *
-      FROM proyectos
-      WHERE id_cliente = $1
-      AND estado = 'Activo'
-      ORDER BY fecha_creacion DESC;
-    `;
-
-    const resultado = await ejecutarConsulta(query, [idCliente]);
-    return toCamelCase(resultado.rows);
-  }
-
   async actualizar(idProyecto: string, datos: Partial<IProyecto>): Promise<IProyecto> {
     const datosBD = toSnakeCase(
       Object.fromEntries(
@@ -70,7 +57,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     );
 
     const columnas = Object.keys(datosBD);
-    const parametros = Object.values(datosBD);
+    const parametros = Object.values(datosBD) as (string | Date | number)[];
     const setClause = columnas.map((col, i) => `${col} = $${i + 1}`).join(", ");
     parametros.push(idProyecto);
 
@@ -95,4 +82,76 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     const resultado = await ejecutarConsulta(query, [idProyecto]);
     return toCamelCase(resultado.rows[0]) as IProyecto;
   }
+
+
+  // Listar proyectos por cliente:
+  async obtenerPorCliente(
+  id_cliente: string,
+  filtros?: { estadoProyecto?: string; fechaInicio?: Date; }
+): Promise<any[]> {
+
+  let query = `
+    SELECT 
+      p.id_proyecto,
+      p.nombre,
+      p.estado_proyecto,
+      p.fecha_inicio,
+      p.fecha_entrega
+    FROM proyectos p
+    WHERE p.id_cliente = $1
+  `;
+
+  const params: any[] = [id_cliente];
+  let index = 2;
+
+  
+  if (filtros?.estadoProyecto) {
+    query += ` AND p.estado_proyecto = $${index}`;
+    params.push(filtros.estadoProyecto);
+    index++;
+  }
+
+  if (filtros?.fechaInicio) {
+    const fecha = new Date(filtros.fechaInicio).toISOString().slice(0, 10);
+    query += ` AND DATE(p.fecha_inicio) = $${index}::date`;
+    params.push(fecha);
+    index++;
+  }
+
+ 
+
+  const result = await ejecutarConsulta(query, params);
+
+  if (result.rows.length === 0) {
+    return [];
+  }
+
+ 
+  const proyectos = await Promise.all(
+    result.rows.map(async (p: any) => {
+      const consultaEquipo = `
+        SELECT 
+          c.nombre AS consultor,
+          r.nombre_rol AS rol
+        FROM equipos_proyectos ep
+        JOIN equipos_consultores ec ON ec.id_equipo_proyecto = ep.id_equipo_proyecto
+        JOIN consultores c ON c.id_consultor = ec.id_consultor
+        JOIN roles r ON r.id_rol = ec.id_rol
+        WHERE ep.id_proyecto = $1
+      `;
+
+      const consultoresQuery = await ejecutarConsulta(consultaEquipo, [
+        p.id_proyecto,
+      ]);
+
+      return {
+        ...p,
+        consultores: consultoresQuery.rows,
+      };
+    })
+  );
+
+  return proyectos;
+}
+
 }

@@ -24,20 +24,14 @@ export class ConsultorRepositorio implements IConsultorRepositorio {
     RETURNING *;
   `;
 
-
   const resultado = await ejecutarConsulta(query, valores);
 
-  return toCamelCase(resultado.rows[0]);
+  return toCamelCase(resultado.rows[0]) as IConsultor;
 }
-
-
-
-
-
   async listarTodosConsultores(): Promise<IConsultor[]> {
     const query = `SELECT * FROM consultores WHERE estado != 'Eliminado';`;
     const result = await ejecutarConsulta(query, []);
-    return result.rows;
+    return result.rows ;
   }
 
 
@@ -66,7 +60,7 @@ export class ConsultorRepositorio implements IConsultorRepositorio {
   `;
 
   const result = await ejecutarConsulta(query, parametros);
-  return result.rows[0];
+  return result.rows[0] as IConsultor;
 }
 
   
@@ -87,6 +81,6 @@ export class ConsultorRepositorio implements IConsultorRepositorio {
       LIMIT 1;
     `;
     const result = await ejecutarConsulta(query, [correo, identificacion]);
-    return result.rows[0] || null;
+    return result.rows[0] as IConsultor;
   }
 }

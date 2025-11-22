@@ -3,14 +3,7 @@ export function toSnakeCase(input: any): any {
     return input.map((item) => toSnakeCase(item));
   }
 
-  // NO tratar strings ni fechas como objetos
-  if (
-    input !== null &&
-    typeof input === "object" &&
-    !Array.isArray(input) &&
-    !(input instanceof Date) &&
-    typeof input !== "string"
-  ) {
+  if (input !== null && typeof input === "object") {
     const newObj: any = {};
 
     for (const key in input) {
@@ -18,10 +11,12 @@ export function toSnakeCase(input: any): any {
 
       const value = input[key];
 
+      // Convierte camelCase → snake_case
       const snakeKey = key
-        .replace(/([A-Z])/g, "_$1")
+        .replace(/([A-Z])/g, "_$1") // agrega _
         .toLowerCase();
 
+      
       if (value !== undefined) {
         newObj[snakeKey] = toSnakeCase(value);
       }
@@ -30,6 +25,5 @@ export function toSnakeCase(input: any): any {
     return newObj;
   }
 
-  // Las fechas y strings llegan aquí SIN romperse
-  return input;
+  return input; 
 }

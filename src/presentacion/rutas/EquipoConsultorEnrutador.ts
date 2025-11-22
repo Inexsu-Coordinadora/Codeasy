@@ -1,7 +1,7 @@
 import { FastifyInstance } from "fastify";
 import { EquipoConsultorControlador } from "../controladores/EquipoConsultorControlador";
 import { EquipoConsultorRepositorio } from "../../core/infraestructura/postgres/EquipoConsultorRepositorio";
-import { ConsultorRepositorio } from "../../core/infraestructura/postgres/ConsultorRepository";
+import { ConsultorRepositorio } from "../../core/infraestructura/postgres/ConsultorRepositorio";
 import { EquipoProyectoRepositorio } from "../../core/infraestructura/postgres/EquipoProyectoRepositorio";
 import { EquipoConsultorCasosUso } from "../../core/aplicacion/casos-uso/Equipo-Consultor/EquipoConsultorCasosUso";
 import { validarZod } from "../esquemas/validarZod";

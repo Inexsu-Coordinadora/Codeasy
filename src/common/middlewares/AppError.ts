@@ -13,13 +13,12 @@ export class AppError extends Error {
   }
 }
 
-
 export class NoEncontradoError extends AppError {
   constructor(entidad: string, id?: number | string) {
     const mensaje = id 
       ? `${entidad} con ID ${id} no encontrado`
       : `${entidad} no encontrado`;
-    super(mensaje, CodigosHttp.NO_ENCONTRADO);
+    super(mensaje, CodigosHttp.SOLICITUD_INCORRECTA);
     this.name = 'NoEncontradoError';
   }
 }
@@ -29,7 +28,7 @@ export class YaExisteError extends AppError {
     const mensaje = campo 
       ? `Ya existe un ${entidad} con ${campo}: ${valor}`
       : `${entidad} ya existe`;
-    super(mensaje, CodigosHttp.CONFLICTO);
+    super(mensaje, CodigosHttp.SOLICITUD_INCORRECTA);
     this.name = 'YaExisteError';
   }
 }

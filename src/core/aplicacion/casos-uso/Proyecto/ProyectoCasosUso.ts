@@ -15,7 +15,6 @@ export class ProyectoCasosUso {
   async crear(datos: IProyecto): Promise<IProyecto> {
     const hoy = new Date();
     hoy.setHours(0, 0, 0, 0);
-
     const fechaInicio = new Date(datos.fechaInicio);
     const fechaEntrega = new Date(datos.fechaEntrega);
     fechaInicio.setHours(0, 0, 0, 0);
@@ -52,7 +51,7 @@ export class ProyectoCasosUso {
     }
 
     const nuevoProyecto = new Proyecto(
-      0,
+      undefined,
       datos.nombre,
       datos.descripcion,
       datos.estadoProyecto || "Creado",
@@ -123,7 +122,7 @@ export class ProyectoCasosUso {
 
     const equipo = await this.equipoProyectoRepositorio.obtenerPorProyecto(idProyecto);
     if (equipo && equipo.estado === "Activo") {
-      await this.equipoProyectoRepositorio.eliminarEquipoProyecto(equipo.idEquipoProyecto!);
+      await this.equipoProyectoRepositorio.eliminar(equipo.idEquipoProyecto!);
     }
 
     proyecto.estado = "Eliminado";

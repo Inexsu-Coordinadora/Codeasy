@@ -2,14 +2,14 @@ import Fastify from "fastify";
 import { FastifyError } from "fastify";
 import { construirProyectoEnrutador } from "./rutas/ProyectoEnrutador";
 import { construirClienteEnrutador } from "./rutas/ClienteEnrutador";
-import { construirConsultorEnrutador } from "./rutas/ConsultorEnrutador";
-import { construirTareaEnrutador } from "./rutas/enrutadorTarea";
+import { construirConsultorEnrutador } from "./rutas/consultorEnrutador";
 import { construirEquipoProyectoEnrutador } from "./rutas/EquipoProyectoEnrutador";
 import { construirEquipoConsultorEnrutador } from "./rutas/EquipoConsultorEnrutador";
 import { construirRolEnrutador } from "./rutas/RolEnrutador";
 import { ManejadorErrores } from "../common/middlewares/ManejadorErrores";
 import { configuration } from "../common/configuracion";
 import { CodigosHttp } from "../common/codigosHttp";
+import { construirTareaEnrutador } from "./rutas/TareaEnrutador";
 
 const app = Fastify({ logger: true });
 app.setErrorHandler(ManejadorErrores);

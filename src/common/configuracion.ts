@@ -1,7 +1,6 @@
 import dotenv from "dotenv";
 dotenv.config();
 
-// Función genérica para obligar variables requeridas
 function requireEnv(nombre: string): string {
   const valor = process.env[nombre];
   if (!valor || valor.trim() === "") {
@@ -10,7 +9,6 @@ function requireEnv(nombre: string): string {
   return valor;
 }
 
-// Función para validar números
 function requireNumberEnv(nombre: string): number {
   const valor = requireEnv(nombre);
   const numero = Number(valor);

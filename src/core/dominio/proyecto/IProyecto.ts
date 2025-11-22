@@ -1,5 +1,5 @@
 export interface IProyecto {
-  idProyecto?: string; 
+  idProyecto: string | undefined,
   nombre: string;
   descripcion: string;
   estadoProyecto?: 'Creado' | 'En proceso' | 'Finalizado'; 

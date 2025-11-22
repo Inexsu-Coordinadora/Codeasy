@@ -11,22 +11,19 @@ export function toCamelCase(input: any): any {
     !(input instanceof Date) &&
     typeof input !== "string"
   ) {
+  if (input !== null && typeof input === "object") {
     const newObj: any = {};
 
     for (const key in input) {
       if (!Object.prototype.hasOwnProperty.call(input, key)) continue;
 
-      // convierte snake_case → camelCase
-      const camelKey = key.replace(/_([a-z])/g, (_, char) =>
-        char.toUpperCase()
-      );
-
+      const camelKey = key.replace(/_([a-z])/g, (_, char) => char.toUpperCase());
       newObj[camelKey] = toCamelCase(input[key]);
     }
 
     return newObj;
   }
 
-  // Las fechas y strings llegan aquí intactas
   return input;
+  }
 }

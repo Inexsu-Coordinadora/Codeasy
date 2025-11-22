@@ -1,12 +1,13 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ProyectoCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ProyectoCasosUso";
-import type { ProyectoCrearDTO } from "../esquemas/proyectoCrearEsquema";
-import type { ProyectoActualizarDTO } from "../esquemas/proyectoActualizarEsquema";
+import type { ProyectoCrearDTO } from "../esquemas/Proyectos/proyectoCrearEsquema";
+import type { ProyectoActualizarDTO } from "../esquemas/Proyectos/proyectoActualizarEsquema";
+import { ConsultarProyectosPorClienteCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ConsultarProyectosPorClienteCasosUso";
 import { CodigosHttp } from "../../common/codigosHttp";
-
 export class ProyectoControlador {
-  constructor(private casosUso: ProyectoCasosUso) {}
+  constructor(private casosUso: ProyectoCasosUso, private  consultarProyectosPorClienteCasosUso: ConsultarProyectosPorClienteCasosUso) {}
 
+  // Registrar un nuevo proyecto
   // Crear
   async registrarProyecto(req: FastifyRequest, reply: FastifyReply) {
     const datos = req.body as ProyectoCrearDTO;
@@ -66,4 +67,30 @@ export class ProyectoControlador {
       mensaje: "Proyecto eliminado correctamente",
     });
   }
+async consultarProyectosPorCliente(req: FastifyRequest, reply: FastifyReply) {
+  const { idCliente } = req.params as { idCliente: string };
+  const { estado, fechaInicio } = req.query as {
+    estado?: string;
+    fechaInicio?: string;
+
+  };
+
+  const filtros = {
+    estadoProyecto: estado,
+    fechaInicio: fechaInicio ? fechaInicio : undefined,
+    
+  };
+
+  const resultado = await this.consultarProyectosPorClienteCasosUso.ejecutar(
+    idCliente,
+    filtros
+  );
+
+  return reply.code(CodigosHttp.OK).send({
+    exito: true,
+    mensaje: resultado.mensaje,
+    data: resultado.proyectos,
+  });
+}
+
 }

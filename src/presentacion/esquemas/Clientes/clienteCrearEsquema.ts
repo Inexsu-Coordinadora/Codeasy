@@ -15,7 +15,7 @@ export const ClienteCrearEsquema = z.object({
     .min(5, "La identificación debe tener al menos 5 caracteres")
     .max(20, "La identificación no puede exceder los 20 caracteres"),
 
-  correo: z
+  email: z
     .email("El correo es obligatorio y debe tener un formato válido")
     .max(100, "El correo no puede tener más de 100 caracteres"),
   

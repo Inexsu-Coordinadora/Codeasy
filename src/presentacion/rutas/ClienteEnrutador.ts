@@ -14,7 +14,7 @@ function clienteEnrutador(
   app.get("/cliente", ClienteController.listarTodosClientes.bind(ClienteController));
   
   // GET: Obtener un cliente por su ID
-  app.get("/cliente/:idCliente", ClienteController.obtenerClientePorId.bind(ClienteController));
+  app.get("/cliente/:idCliente", ClienteController.buscarPorIdCliente.bind(ClienteController));
   
   //Registrar un nuevo cliente
   app.post("/cliente", ClienteController.registrarCliente.bind(ClienteController));

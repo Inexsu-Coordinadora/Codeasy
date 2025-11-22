@@ -1,4 +1,4 @@
-import { ICliente, EstatusCliente } from './ICliente';
+import { ICliente } from './ICliente';
 
 export class Cliente implements ICliente {
     idCliente?: string;
@@ -12,4 +12,4 @@ export class Cliente implements ICliente {
     {
         Object.assign(this,props);
     }
-}
+}   
