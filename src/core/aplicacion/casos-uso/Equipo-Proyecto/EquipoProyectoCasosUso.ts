@@ -10,7 +10,7 @@ export class EquipoProyectoCasosUso {
     private equipoProyectoRepositorio: IEquipoProyectoRepositorio,
     private proyectoRepositorio: IProyectoRepositorio,
     private equipoConsultorRepositorio: IEquipoConsultorRepositorio
-  ) {}
+  ) { }
 
   async crear(datos: IEquipoProyecto): Promise<IEquipoProyecto> {
     const proyectoExiste = await this.proyectoRepositorio.obtenerPorId(datos.idProyecto);
@@ -45,7 +45,15 @@ export class EquipoProyectoCasosUso {
       "Activo"
     );
 
-    return await this.equipoProyectoRepositorio.crear(nuevoEquipo);
+    const equipoCreado = await this.equipoProyectoRepositorio.crear(nuevoEquipo);
+
+    // Update project status to "En proceso"
+    if (proyectoExiste.estadoProyecto !== "En proceso") {
+      proyectoExiste.estadoProyecto = "En proceso";
+      await this.proyectoRepositorio.actualizar(datos.idProyecto, proyectoExiste);
+    }
+
+    return equipoCreado;
   }
 
   async obtenerPorId(idEquipoProyecto: string): Promise<IEquipoProyecto> {
