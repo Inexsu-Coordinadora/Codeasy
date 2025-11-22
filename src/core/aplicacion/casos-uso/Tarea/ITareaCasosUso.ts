@@ -1,10 +1,10 @@
-import { ITarea } from '../../../dominio/tarea/ITarea';
-import { Tarea } from '../../../dominio/tarea/Tarea';
+import { ITarea } from '../../../dominio/tarea/ITarea.js';
+import { Tarea } from '../../../dominio/tarea/Tarea.js';
 
-export interface ITareaRepositorio {
+export interface ITareaCasosUso {
   registrarTarea(tarea: Tarea): Promise<ITarea>;
   listarTodasTareas(): Promise<ITarea[]>;
-  obtenerTareaPorId(idTarea: number): Promise<ITarea | null>;
-  actualizarTarea(idTarea: number, datosTarea: ITarea): Promise<ITarea>;
-  eliminarTarea(idTarea: number): Promise<void>;
+  obtenerTareaPorId(idTarea: string): Promise<ITarea | null>;
+  actualizarTarea(idTarea: string, datosTarea: ITarea): Promise<ITarea | null>;
+  eliminarTarea(idTarea: string): Promise<void>;
 }

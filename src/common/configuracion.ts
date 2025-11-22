@@ -30,8 +30,6 @@ export const configuration = {
     contrasena: requireEnv("PGPASSWORD"),
     nombreDb: requireEnv("PGDBNAME"),
   },
-<<<<<<< HEAD
+
 };
-=======
-};
->>>>>>> 3263375dae408c532ae6f18dfc9897e9206913b7
+

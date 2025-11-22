@@ -1,14 +1,8 @@
-<<<<<<< HEAD:src/core/infraestructura/postgres/ConsultorRepository.ts
 import { IConsultorRepositorio } from "../../dominio/consultor/repositorio/IConsultorRepositorio";
 import { IConsultor } from "../../dominio/consultor/IConsultor";
 import { ejecutarConsulta } from "./clientepostgres";
-=======
-import { IConsultorRepositorio } from "../../dominio/consultor/repositorio/IConsultorRepositorio.js";
-import { IConsultor } from "../../dominio/consultor/IConsultor.js";
-import { ejecutarConsulta } from "./clientepostgres.js";
 import { toSnakeCase } from "../../utils/toSnakeCase.js";
-import { toCamelCase } from "../../utils/toCamelCase.js";
->>>>>>> 3263375dae408c532ae6f18dfc9897e9206913b7:src/core/infraestructura/postgres/ConsultorRepositorio.ts
+import { toCamelCase } from "../../utils/toCamelCase.js"; 
 
 export class ConsultorRepositorio implements IConsultorRepositorio {
 
