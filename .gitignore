@@ -137,7 +137,11 @@ secrets/
 private_keys/
 
 <<<<<<< HEAD
+<<<<<<< HEAD
 .env
 =======
 .env
 >>>>>>> feature/CRUD-Tareas
+=======
+.env
+>>>>>>> 3263375dae408c532ae6f18dfc9897e9206913b7

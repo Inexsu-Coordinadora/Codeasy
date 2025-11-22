@@ -1,85 +1,66 @@
 import  {IConsultor} from "../../../dominio/consultor/IConsultor";
 import  {Consultor} from "../../../dominio/consultor/Consultor";
 import  { IConsultorRepositorio } from "./IConsultorCasosUso";
-import  { ConsultorCrearDTO } from "../../../../presentacion/esquemas/consultorCrearEsquema";
-import  { ConsultorActualizarDTO } from "../../../../presentacion/esquemas/consultorActualizarEsquema";
+import type { IEquipoConsultorRepositorio } from "../../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio";
+import  { ConsultorCrearDTO } from "../../../../presentacion/esquemas/Consultores/consultorCrearEsquema";
+import  { ConsultorActualizarDTO } from "../../../../presentacion/esquemas/Consultores/consultorActualizarEsquema";
+import { AppError } from "../../../../common/middlewares/AppError";
+import { consultorEstado } from "../../../dominio/consultor/ConsultorEstado";
+import { ConsultorValidador } from "../Consultor/validadores/ConsultorValidador";
 
 export class ConsultorCasosUso {
-  constructor(private consultorRepositorio: IConsultorRepositorio) {}
+  constructor(private consultorRepositorio: IConsultorRepositorio, private equipoConsultorRepositorio: IEquipoConsultorRepositorio) {}
+  async registrarConsultor(datos: IConsultor): Promise<IConsultor> {
 
-
-  async registrarConsultor(datos: ConsultorCrearDTO): Promise<IConsultor> {
-   
-    const existente = await this.consultorRepositorio.buscarPorCorreoOIdentificacion(
+    const consultorExistente = await this.consultorRepositorio.buscarPorCorreoOIdentificacion(
       datos.correo,
       datos.identificacion
     );
 
-    if (existente) {
-      throw new Error("Ya existe un consultor con ese correo o identificación");
-    }
-
+    ConsultorValidador.validarDuplicado(consultorExistente);
 
     const nuevoConsultor = new Consultor({
       ...datos,
-      estado: "Activo",
-      disponibilidad: "Disponible",
+      estado: consultorEstado.ACTIVO
     });
 
-
-    const consultorCreado = await this.consultorRepositorio.registrarConsultor(nuevoConsultor);
-
-    return consultorCreado; 
+    return await this.consultorRepositorio.registrarConsultor(nuevoConsultor);
   }
-
 
   async listarTodosConsultores(): Promise<IConsultor[]> {
     return await this.consultorRepositorio.listarTodosConsultores();
   }
 
- 
-  async obtenerConsultorPorId(idConsultor: number): Promise<IConsultor | null> {
+  async obtenerConsultorPorId(idConsultor: string): Promise<IConsultor> {
     const consultor = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
-    if (!consultor) {
-    throw new Error(`No se encontró un consultor con el ID ${idConsultor}`);
-  }
-    return consultor;
-  }
 
+    ConsultorValidador.validarExistencia(consultor, idConsultor);
 
-  async actualizarConsultor(idConsultor: number, datos: ConsultorActualizarDTO): Promise<IConsultor> {
-  const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
-
-  if (!consultorExistente) {
-    throw new Error(`No se encontró el consultor con ID ${idConsultor}`);
+    return consultor as IConsultor;
   }
 
-
-  const consultorActualizado = {
-  ...consultorExistente,
-  ...datos,
-}as IConsultor;
-
-
-  const resultado = await this.consultorRepositorio.actualizarConsultor(
-    idConsultor,
-    consultorActualizado as IConsultor
-  );
-
-  return resultado;
-}
-
-
-
-  async eliminarConsultor(idConsultor: number): Promise<void> {
+  async actualizarConsultor(idConsultor: string, datos: Partial<IConsultor>): Promise<IConsultor> {
     const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
 
-     if (!consultorExistente || consultorExistente.estado === "Eliminado") {
-    throw new Error(`No se encontró el consultor con ID ${idConsultor}`);
+    ConsultorValidador.validarExistencia(consultorExistente, idConsultor);
+
+    const consultorActualizado = {
+      ...consultorExistente,
+      ...datos
+    } as IConsultor;
+
+    return await this.consultorRepositorio.actualizarConsultor(idConsultor, consultorActualizado);
   }
 
-    consultorExistente.estado = "Eliminado";
+  async eliminarConsultor(idConsultor: string): Promise<void> {
 
-    await this.consultorRepositorio.actualizarConsultor(idConsultor, consultorExistente);
+    const consultorExistente = await this.consultorRepositorio.obtenerConsultorPorId(idConsultor);
+
+    ConsultorValidador.validarExistencia(consultorExistente, idConsultor);
+    ConsultorValidador.validarNoEliminado(consultorExistente!, idConsultor);
+
+    consultorExistente!.estado = consultorEstado.ELIMINADO;
+
+    await this.consultorRepositorio.actualizarConsultor(idConsultor, consultorExistente!);
   }
 }

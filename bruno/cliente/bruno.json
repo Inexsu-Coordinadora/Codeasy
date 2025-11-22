@@ -1,6 +1,6 @@
 {
   "version": "1",
-  "name": "cliente",
+  "name": "Cliente",
   "type": "collection",
   "ignore": [
     "node_modules",

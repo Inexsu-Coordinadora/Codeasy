@@ -1,42 +1,47 @@
 import { IClienteRepositorio } from "../../dominio/cliente/repositorio/IClienteRepositorio";
 import { ICliente } from "../../dominio/cliente/ICliente";
 import { ejecutarConsulta } from "./clientePostgres";
+import { toSnakeCase } from "../../utils/toSnakeCase.js";
+import { toCamelCase } from "../../utils/toCamelCase.js";
 
 export class ClienteRepositorio implements IClienteRepositorio {
 
-  async crearCliente(cliente: ICliente): Promise<string> {
-    const clienteSinId = { ...cliente };
-    delete clienteSinId.idCliente;
+  async registrarCliente(cliente: ICliente): Promise<ICliente> {
+    const { idCliente, ...clienteSinId } = cliente;
+      const clienteBD = toSnakeCase(cliente);
 
     const columnas = Object.keys(clienteSinId);
-    const valores = Object.values(clienteSinId).filter(v => v !== undefined && v !== null);
+
+     const valores = Object.values(clienteBD).map(v =>
+    v === null ? "" : v
+  ) as (string | Date)[];
+
     const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
 
     const query = `
       INSERT INTO clientes (${columnas.join(", ")})
       VALUES (${placeholders})
-      RETURNING idcliente;
+      RETURNING *;
     `;
 
     const resultado = await ejecutarConsulta(query, valores);
-    return String(resultado.rows[0].idcliente);
+    return resultado.rows[0] as ICliente;
   }
 
-
-  async buscarTodosCliente(): Promise<ICliente[]> {
-
-    const query = `SELECT * FROM clientes WHERE estatus = 'Activo';`;
+  async obtenerClientes(): Promise<ICliente[]> {
+    const query = `SELECT * FROM clientes WHERE estado = 'Activo';`;
     const result = await ejecutarConsulta(query, []);
     return result.rows as ICliente[];
   }
 
-
-  async buscarPorIdCliente(idCliente: number): Promise<ICliente | null> {
-    const query = `SELECT * FROM clientes WHERE idcliente = $1;`;
+  async buscarPorIdCliente(idCliente: string): Promise<ICliente | null> {
+    const query = `
+      SELECT * FROM clientes 
+      WHERE id_cliente = $1 AND estado != 'Eliminado';
+    `;
     const result = await ejecutarConsulta(query, [idCliente]);
-    return (result.rows[0] as ICliente) || null;
+    return result.rows[0] || null;
   }
-
 
   async buscarPorIdentificacionCliente(identificacion: string): Promise<ICliente | null> {
     const query = `
@@ -48,34 +53,39 @@ export class ClienteRepositorio implements IClienteRepositorio {
     return (result.rows[0] as ICliente) || null;
   }
 
-
-  async ActualizarCliente(idCliente: number, datos: ICliente): Promise<ICliente | null> {
+  async actualizarCliente(idCliente: string, datos: ICliente): Promise<ICliente | null> {
     const datosLimpios = Object.fromEntries(
       Object.entries(datos).filter(([_, v]) => v !== null && v !== undefined)
     );
 
+    const columnas = Object.keys(datosLimpios).map(key => key.toLowerCase());
+    const valores = Object.values(datosLimpios);
 
-    const columnas = Object.keys(datosLimpios).map((key) => key.toLowerCase());
-    const parametros = Object.values(datosLimpios);
-    const setClause = columnas.map((col, i) => `${col}=$${i + 1}`).join(", ");
+    const setClause = columnas.map((col, i) => `${col} = $${i + 1}`).join(", ");
 
-    parametros.push(idCliente);
+    valores.push(idCliente); // último parámetro
+
     const query = `
       UPDATE clientes
       SET ${setClause}
-      WHERE idcliente=$${parametros.length}
+      WHERE id_cliente = $${valores.length}
       RETURNING *;
     `;
 
-    const result = await ejecutarConsulta(query, parametros);
+    const result = await ejecutarConsulta(query, valores);
     return (result.rows[0] as ICliente) || null;
   }
 
-  async EliminarCliente(idCliente: number): Promise<void> {
+  async eliminarCliente(idCliente: string): Promise<void> {
     const query = `
+<<<<<<< HEAD
      UPDATE clientes
       SET estatus = 'Eliminado'
       WHERE idcliente=$1;
+=======
+      DELETE FROM clientes 
+      WHERE id_cliente = $1;
+>>>>>>> 3263375dae408c532ae6f18dfc9897e9206913b7
     `;
     await ejecutarConsulta(query, [idCliente]);
   }

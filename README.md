@@ -43,9 +43,18 @@ git clone https://github.com/Inexsu-Coordinadora/Codeasy.git
 
 ---
 
+## Documentacion
+[Codeasy-Documentacion.pdf](https://github.com/user-attachments/files/23348849/Codeasy-Documentacion.pdf)
 
-# Video demostrativo 
-https://www.youtube.com/watch?v=AmeaxzkaRTs
+## Documentacion entrega 2
+[Segunda-Entrega-Documentacion.pdf](https://github.com/user-attachments/files/23516341/Segunda-Entrega-Documentacion.pdf)
+
+## Video
+https://www.youtube.com/watch?v=AmeaxzkaRTs&feature=youtu.be
+
+# Video entrega 2
+https://youtu.be/C-5-RTqcazo
+
 
 ## 🧑🏼‍💻 Integrantes
 
