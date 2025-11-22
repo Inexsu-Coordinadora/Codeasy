@@ -6,5 +6,5 @@ export class Rol implements IRol {
     public nombreRol: string,
     public descripcion: string,
     public estado: "Activo" | "Eliminado" = "Activo"
-  ) {}
+  ) { }
 }

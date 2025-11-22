@@ -3,14 +3,10 @@ export function toCamelCase(input: any): any {
     return input.map((item) => toCamelCase(item));
   }
 
-  // NO procesar como objeto si es string, Date u otro tipo primitivo
-  if (
-    input !== null &&
-    typeof input === "object" &&
-    !Array.isArray(input) &&
-    !(input instanceof Date) &&
-    typeof input !== "string"
-  ) {
+  if (input instanceof Date) {
+    return input;
+  }
+
   if (input !== null && typeof input === "object") {
     const newObj: any = {};
 
@@ -25,5 +21,4 @@ export function toCamelCase(input: any): any {
   }
 
   return input;
-  }
 }

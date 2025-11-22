@@ -3,6 +3,10 @@ export function toSnakeCase(input: any): any {
     return input.map((item) => toSnakeCase(item));
   }
 
+  if (input instanceof Date) {
+    return input;
+  }
+
   if (input !== null && typeof input === "object") {
     const newObj: any = {};
 
@@ -16,7 +20,7 @@ export function toSnakeCase(input: any): any {
         .replace(/([A-Z])/g, "_$1") // agrega _
         .toLowerCase();
 
-      
+
       if (value !== undefined) {
         newObj[snakeKey] = toSnakeCase(value);
       }
@@ -25,5 +29,5 @@ export function toSnakeCase(input: any): any {
     return newObj;
   }
 
-  return input; 
+  return input;
 }

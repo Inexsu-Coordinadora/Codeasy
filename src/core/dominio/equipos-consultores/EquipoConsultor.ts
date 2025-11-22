@@ -10,5 +10,5 @@ export class EquipoConsultor implements IEquipoConsultor {
     public porcentajeDedicacion: number,
     public fechaInicio: Date,
     public fechaFin: Date
-  ) {}
+  ) { }
 }

@@ -8,13 +8,13 @@ export class ClienteRepositorio implements IClienteRepositorio {
 
   async registrarCliente(cliente: ICliente): Promise<ICliente> {
     const { idCliente, ...clienteSinId } = cliente;
-      const clienteBD = toSnakeCase(cliente);
+    const clienteBD = toSnakeCase(cliente);
 
     const columnas = Object.keys(clienteSinId);
 
-     const valores = Object.values(clienteBD).map(v =>
-    v === null ? "" : v
-  ) as (string | Date)[];
+    const valores = Object.values(clienteBD).map(v =>
+      v === null ? "" : v
+    ) as (string | Date)[];
 
     const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
 
@@ -78,14 +78,9 @@ export class ClienteRepositorio implements IClienteRepositorio {
 
   async eliminarCliente(idCliente: string): Promise<void> {
     const query = `
-<<<<<<< HEAD
-     UPDATE clientes
-      SET estatus = 'Eliminado'
-      WHERE idcliente=$1;
-=======
-      DELETE FROM clientes 
+      UPDATE clientes
+      SET estado = 'Eliminado'
       WHERE id_cliente = $1;
->>>>>>> 3263375dae408c532ae6f18dfc9897e9206913b7
     `;
     await ejecutarConsulta(query, [idCliente]);
   }

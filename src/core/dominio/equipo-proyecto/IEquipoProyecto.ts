@@ -1,5 +1,5 @@
 export interface IEquipoProyecto {
-  idEquipoProyecto?: string;
+  idEquipoProyecto: string | undefined;
   idProyecto: string;
   nombre: string;
   fechaInicio: Date;

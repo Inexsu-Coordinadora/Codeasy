@@ -11,5 +11,5 @@ export class Proyecto implements IProyecto {
     public fechaInicio: Date,
     public fechaEntrega: Date,
     public fechaCreacion: Date = new Date()
-  ) {}
+  ) { }
 }

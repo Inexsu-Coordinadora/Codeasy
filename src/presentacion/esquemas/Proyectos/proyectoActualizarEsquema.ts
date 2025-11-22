@@ -56,8 +56,8 @@ export const ProyectoActualizarEsquema = z
     nombre: data.nombre,
     descripcion: data.descripcion,
     idCliente: data.id_cliente,
-    fechaInicio: data.fecha_inicio,
-    fechaEntrega: data.fecha_entrega,
+    fechaInicio: data.fecha_inicio ? new Date(data.fecha_inicio) : undefined,
+    fechaEntrega: data.fecha_entrega ? new Date(data.fecha_entrega) : undefined,
     estadoProyecto: data.estado_proyecto,
     estado: data.estado,
   }));

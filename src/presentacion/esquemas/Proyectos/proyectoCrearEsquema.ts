@@ -52,8 +52,8 @@ export const ProyectoCrearEsquema = z
     nombre: data.nombre,
     descripcion: data.descripcion,
     idCliente: data.id_cliente,
-    fechaInicio: data.fecha_inicio,
-    fechaEntrega: data.fecha_entrega,
+    fechaInicio: new Date(data.fecha_inicio),
+    fechaEntrega: new Date(data.fecha_entrega),
     estadoProyecto: data.estado_proyecto,
     estado: data.estado,
   }));

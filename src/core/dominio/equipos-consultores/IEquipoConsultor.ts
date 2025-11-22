@@ -1,5 +1,5 @@
 export interface IEquipoConsultor {
-  idEquipoConsultores?: string;
+  idEquipoConsultores: string | undefined;
   idConsultor: string;
   idEquipoProyecto: string;
   idRol: string;
@@ -8,4 +8,3 @@ export interface IEquipoConsultor {
   fechaInicio: Date;
   fechaFin: Date;
 }
-    
