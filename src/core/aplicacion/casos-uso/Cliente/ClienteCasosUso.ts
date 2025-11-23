@@ -42,7 +42,7 @@ export class ClienteCasosUso {
     );
   }
 
-  async actualizarCliente(idCliente: string, datos: ICliente): Promise<ICliente> {
+  async actualizarCliente(idCliente: string, datos: Partial<ICliente>): Promise<ICliente> {
 
     const clienteExistente = await this.clienteRepositorio.buscarPorIdCliente(idCliente);
 
@@ -50,7 +50,9 @@ export class ClienteCasosUso {
     const clienteParaActualizar: ICliente = {
       ...clienteExistente,
       ...datos,
-    };
+    } as ICliente;
+
+   
 
     const resultado = await this.clienteRepositorio.actualizarCliente(
   idCliente,

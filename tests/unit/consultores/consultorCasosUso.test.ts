@@ -6,7 +6,6 @@ import { ConsultorValidador } from "../../../src/core/aplicacion/casos-uso/Consu
 import { IConsultorRepositorio } from "../../../src/core/dominio/consultor/repositorio/IConsultorRepositorio";
 import { IConsultor } from "../../../src/core/dominio/consultor/IConsultor";
 
-// Evita ejecutar validadores reales
 jest.mock("../../../src/core/aplicacion/casos-uso/Consultor/validadores/ConsultorValidador");
 
 describe("ConsultorCasosUso - Pruebas unitarias", () => {
@@ -32,48 +31,56 @@ describe("ConsultorCasosUso - Pruebas unitarias", () => {
     (ConsultorValidador.validarNoEliminado as jest.Mock).mockImplementation(() => {});
   });
 
-  // -------------------------------------------------------
-  // 1. Registrar consultor - ÉXITO
-  // -------------------------------------------------------
-  test("Registrar consultor - éxito", async () => {
-    const datos = {
-      nombre: "Dina",
-      correo: "dina@example.com",
-      identificacion: "123",
-    };
 
-    repoMock.buscarPorCorreoOIdentificacion.mockResolvedValue(null);
+test("debería registrar un consultor cuando no existe - éxito", async () => {
+  const datos = {
+    nombre: "Dina",
+    correo: "dina@example.com",
+    identificacion: "123",
+  };
 
-    const consultorCreado: IConsultor = {
-      idConsultor: "uuid-123",
-      ...datos,
-      estado: consultorEstado.ACTIVO,
-    };
 
-    repoMock.registrarConsultor.mockResolvedValue(consultorCreado);
+  repoMock.buscarPorCorreoOIdentificacion.mockResolvedValue(null);
 
-    const resultado = await casosUso.registrarConsultor(datos);
+  const consultorCreado: IConsultor = {
+    idConsultor: "uuid-123",
+    ...datos,
+    estado: consultorEstado.ACTIVO,
+  };
 
-    expect(repoMock.buscarPorCorreoOIdentificacion).toHaveBeenCalled();
-    expect(repoMock.registrarConsultor).toHaveBeenCalled();
-    expect(resultado).toEqual(consultorCreado);
+  repoMock.registrarConsultor.mockResolvedValue(consultorCreado);
+
+  const resultado = await casosUso.registrarConsultor(datos);
+
+  expect(repoMock.buscarPorCorreoOIdentificacion).toHaveBeenCalled();
+  expect(repoMock.registrarConsultor).toHaveBeenCalled();
+  expect(resultado).toEqual(consultorCreado);
+});
+
+test("debería lanzar error si el consultor ya existe - duplicado", async () => {
+  const datos = {
+    nombre: "Dina",
+    correo: "dina@example.com",
+    identificacion: "123",
+  };
+
+
+  const consultorExistente: IConsultor = {
+    idConsultor: "uuid-existe",
+    nombre: "Dina",
+    correo: "dina@example.com",
+    identificacion: "123",
+    estado: consultorEstado.ACTIVO,
+  };
+
+  repoMock.buscarPorCorreoOIdentificacion.mockResolvedValue(consultorExistente);
+
+  (ConsultorValidador.validarDuplicado as jest.Mock).mockImplementation(() => {
+    throw new Error("Consultor ya existe");
   });
 
-  test("Registrar consultor - error por duplicado", async () => {
-    const datos = {
-      nombre: "Dina",
-      correo: "dina@example.com",
-      identificacion: "123",
-    };
-
-    repoMock.buscarPorCorreoOIdentificacion.mockResolvedValue({ id: "existe" } as any);
-
-    (ConsultorValidador.validarDuplicado as jest.Mock).mockImplementation(() => {
-      throw new Error("Consultor ya existe");
-    });
-
-    await expect(casosUso.registrarConsultor(datos)).rejects.toThrow("Consultor ya existe");
-  });
+  await expect(casosUso.registrarConsultor(datos)).rejects.toThrow("Consultor ya existe");
+});
 
 
   test("Obtener consultor - éxito", async () => {

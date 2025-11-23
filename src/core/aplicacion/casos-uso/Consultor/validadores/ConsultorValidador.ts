@@ -1,15 +1,16 @@
 import { IConsultor } from "../../../dominio/consultor/IConsultor";
 import { AppError } from "../../../../../common/middlewares/AppError"
+import { CodigosHttp } from "../../../../../common/codigosHttp";
 import { consultorEstado } from "../../../../dominio/consultor/ConsultorEstado";
 
 
 import { consultorMensajes } from "../../Consultor/constantes/ConsultorMensajes";
 
 export class ConsultorValidador {
-  
+
   static validarExistencia(consultor: IConsultor | null, idConsultor?: string) {
     if (!consultor) {
-      throw new AppError(`${consultorMensajes.consultorNoEncontrado} ${idConsultor}`);
+      throw new AppError(`${consultorMensajes.consultorNoEncontrado} ${idConsultor}`, CodigosHttp.NO_ENCONTRADO);
     }
   }
 
@@ -24,5 +25,6 @@ export class ConsultorValidador {
       throw new AppError(consultorMensajes.consultorestadoEliminado(idConsultor));
     }
 
-}}
+  }
+}
 

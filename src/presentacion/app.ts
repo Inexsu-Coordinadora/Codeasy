@@ -5,7 +5,7 @@ import { construirClienteEnrutador } from "./rutas/ClienteEnrutador";
 import { construirConsultorEnrutador } from "./rutas/ConsultorEnrutador";
 import { construirTareaEnrutador } from "./rutas/TareaEnrutador";
 
-const app = Fastify({ logger: true });
+export const app = Fastify({ logger: true });
 
 app.register(
   async (appInstance) => {

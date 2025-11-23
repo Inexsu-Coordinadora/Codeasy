@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ClienteCasosUso } from "../../core/aplicacion/casos-uso/Cliente/ClienteCasosUso";
-import { ClienteActualizarDTO } from "../esquemas/clienteActualizarEsquema";
-import { ClienteCrearDTO } from "../esquemas/clienteCrearEsquema";
+import { ClienteActualizarDTO } from "../esquemas/Clientes/clienteActualizarEsquema";
+import { ClienteCrearDTO } from "../esquemas/Clientes/clienteCrearEsquema";
 import { CodigosHttp } from "../../common/codigosHttp";
 
 export class ClienteControlador {

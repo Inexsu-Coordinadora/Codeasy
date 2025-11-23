@@ -1,21 +1,20 @@
+
 import { ejecutarConsulta } from './clientepostgres';
 import type { IProyecto } from '../../dominio/proyecto/IProyecto';
 import type { IProyectoRepositorio } from '../../dominio/proyecto/repositorio/IProyectoRepositorio';
 import { toSnakeCase } from "../../utils/toSnakeCase";
 import { toCamelCase } from "../../utils/toCamelCase";
 
-
 export class ProyectoRepositorio implements IProyectoRepositorio {
-  // Crear un nuevo proyecto
-  async registrarProyecto(proyecto: IProyecto): Promise<IProyecto> {
-    // Convertir claves a snake_case para BD
+
+  async crear(proyecto: IProyecto): Promise<IProyecto> {
     const proyectoBD = toSnakeCase(proyecto);
     delete (proyectoBD as any).id_proyecto;
 
     const columnas = Object.keys(proyectoBD);
     const valores = Object.values(proyectoBD).map((v) =>
       v === null || v === undefined ? null : v
-    ) as (string | Date | number | null)[];
+    ) as (string | Date | number)[];
 
     const placeholders = columnas.map((_, i) => `$${i + 1}`).join(", ");
 
@@ -26,11 +25,10 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     `;
 
     const resultado = await ejecutarConsulta(query, valores);
-    return toCamelCase(resultado.rows[0]);
+    return toCamelCase(resultado.rows[0]) as IProyecto;
   }
 
-  // Listar todos los proyectos activos
-  async listarTodosProyectos(): Promise<IProyecto[]> {
+  async obtenerTodos(): Promise<IProyecto[]> {
     const query = `
       SELECT * FROM proyectos
       WHERE estado = 'Activo'
@@ -40,8 +38,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     return toCamelCase(resultado.rows);
   }
 
-  // Obtener un proyecto por su ID
-  async obtenerProyectoPorId(idProyecto: string): Promise<IProyecto | null> {
+  async obtenerPorId(idProyecto: string): Promise<IProyecto | null> {
     const query = `
       SELECT * FROM proyectos
       WHERE id_proyecto = $1
@@ -50,12 +47,10 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     `;
     const resultado = await ejecutarConsulta(query, [idProyecto]);
     const proyecto = resultado.rows[0];
-    return proyecto ? toCamelCase(proyecto) : null;
+    return proyecto ? (toCamelCase(proyecto) as IProyecto) : null;
   }
 
-  // Actualizar un proyecto
-  async actualizarProyecto(idProyecto: string, datos: Partial<IProyecto>): Promise<IProyecto> {
-    // Convertir datos a snake_case para SQL
+  async actualizar(idProyecto: string, datos: Partial<IProyecto>): Promise<IProyecto> {
     const datosBD = toSnakeCase(
       Object.fromEntries(
         Object.entries(datos).filter(([_, v]) => v !== null && v !== undefined)
@@ -63,7 +58,7 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     );
 
     const columnas = Object.keys(datosBD);
-    const parametros = Object.values(datosBD);
+    const parametros = Object.values(datosBD) as (string | Date | number)[];
     const setClause = columnas.map((col, i) => `${col} = $${i + 1}`).join(", ");
     parametros.push(idProyecto);
 
@@ -75,11 +70,10 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
     `;
 
     const resultado = await ejecutarConsulta(query, parametros);
-    return toCamelCase(resultado.rows[0]);
+    return toCamelCase(resultado.rows[0]) as IProyecto;
   }
 
-  // Eliminación lógica del proyecto
-  async eliminarProyecto(idProyecto: string): Promise<IProyecto> {
+  async eliminar(idProyecto: string): Promise<IProyecto> {
     const query = `
       UPDATE proyectos
       SET estado = 'Eliminado'
@@ -87,11 +81,8 @@ export class ProyectoRepositorio implements IProyectoRepositorio {
       RETURNING *;
     `;
     const resultado = await ejecutarConsulta(query, [idProyecto]);
-    return toCamelCase(resultado.rows[0]);
+    return toCamelCase(resultado.rows[0]) as IProyecto;
   }
-
-
-
 
 
   // Listar proyectos por cliente:

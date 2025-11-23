@@ -1,6 +1,6 @@
 export interface ICliente {
     idCliente?: string;
-    nombre: string;
+    nombre?: string;
     identificacion: string;
     email: string;         
     telefono: string | null;
