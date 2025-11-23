@@ -4,7 +4,7 @@ export class AppError extends Error {
   public readonly statusCode: number;
   public readonly detalles?: any;
 
-  constructor(mensaje: string, statusCode = CodigosHttp.SOLICITUD_INCORRECTA, detalles?: any) {
+  constructor(mensaje: string, statusCode: number = CodigosHttp.SOLICITUD_INCORRECTA, detalles?: any) {
     super(mensaje);
     this.statusCode = statusCode;
     this.detalles = detalles;
@@ -15,17 +15,17 @@ export class AppError extends Error {
 
 export class NoEncontradoError extends AppError {
   constructor(entidad: string, id?: number | string) {
-    const mensaje = id 
+    const mensaje = id
       ? `${entidad} con ID ${id} no encontrado`
       : `${entidad} no encontrado`;
-    super(mensaje, CodigosHttp.SOLICITUD_INCORRECTA);
+    super(mensaje, CodigosHttp.NO_ENCONTRADO);
     this.name = 'NoEncontradoError';
   }
 }
 
 export class YaExisteError extends AppError {
   constructor(entidad: string, campo?: string, valor?: any) {
-    const mensaje = campo 
+    const mensaje = campo
       ? `Ya existe un ${entidad} con ${campo}: ${valor}`
       : `${entidad} ya existe`;
     super(mensaje, CodigosHttp.SOLICITUD_INCORRECTA);

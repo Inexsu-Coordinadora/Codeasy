@@ -14,8 +14,6 @@ import { construirTareaEnrutador } from "./rutas/TareaEnrutador";
 const app = Fastify({ logger: true });
 app.setErrorHandler(ManejadorErrores);
 
-app.setErrorHandler(ManejadorErrores);
-
 app.register(
   async (appInstance) => {
     construirProyectoEnrutador(appInstance);

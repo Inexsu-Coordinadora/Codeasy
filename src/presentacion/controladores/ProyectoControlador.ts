@@ -1,10 +1,12 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ProyectoCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ProyectoCasosUso";
 import type { ProyectoCrearDTO } from "../esquemas/Proyectos/proyectoCrearEsquema.js";
-import type { ProyectoActualizarDTO } from "../esquemas/Proyectos/ProyectoActualizarEsquema.js";
+import type { ProyectoActualizarDTO } from "../esquemas/Proyectos/proyectoActualizarEsquema";
 import { CodigosHttp } from "../../common/codigosHttp";
+import {ConsultarProyectosPorClienteCasosUso} from "../../core/aplicacion/casos-uso/Proyecto/ConsultarProyectosPorClienteCasosUso"
+
 export class ProyectoControlador {
-  constructor(private casosUso: ProyectoCasosUso) { }
+  constructor(private casosUso: ProyectoCasosUso, private consultarProyectosPorClienteCasosUso: ConsultarProyectosPorClienteCasosUso) { }
 
   // Registrar un nuevo proyecto
   // Crear
@@ -78,30 +80,32 @@ export class ProyectoControlador {
       mensaje: "Proyecto eliminado correctamente",
     });
   }
-async consultarProyectosPorCliente(req: FastifyRequest, reply: FastifyReply) {
-  const { idCliente } = req.params as { idCliente: string };
-  const { estado, fechaInicio } = req.query as {
-    estado?: string;
-    fechaInicio?: string;
 
-  };
 
-  const filtros = {
-    estadoProyecto: estado,
-    fechaInicio: fechaInicio ? fechaInicio : undefined,
-    
-  };
+  async consultarProyectosPorCliente(req: FastifyRequest, reply: FastifyReply) {
+    const { idCliente } = req.params as { idCliente: string };
+    const { estado, fechaInicio } = req.query as {
+      estado?: string;
+      fechaInicio?: string;
 
-  const resultado = await this.consultarProyectosPorClienteCasosUso.ejecutar(
-    idCliente,
-    filtros
-  );
+    };
 
-  return reply.code(CodigosHttp.OK).send({
-    exito: true,
-    mensaje: resultado.mensaje,
-    data: resultado.proyectos,
-  });
-}
+    const filtros = {
+      estadoProyecto: estado,
+      fechaInicio: fechaInicio ? fechaInicio : undefined,
+
+    };
+
+    const resultado = await this.consultarProyectosPorClienteCasosUso.ejecutar(
+      idCliente,
+      filtros
+    );
+
+    return reply.code(CodigosHttp.OK).send({
+      exito: true,
+      mensaje: resultado.mensaje,
+      data: resultado.proyectos,
+    });
+  }
 
 }

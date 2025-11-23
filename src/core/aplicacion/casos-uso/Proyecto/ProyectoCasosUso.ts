@@ -32,7 +32,6 @@ export class ProyectoCasosUso {
     if (fechaEntrega <= fechaInicio) {
       throw new AppError("La fecha de entrega debe ser posterior a la fecha de inicio.");
     }
-
     const cliente = await this.clienteRepositorio.buscarPorIdCliente(datos.idCliente);
     if (!cliente) {
       throw new AppError("El cliente especificado no existe.");

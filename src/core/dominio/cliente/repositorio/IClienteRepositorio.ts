@@ -19,4 +19,8 @@ export interface IClienteRepositorio {
     eliminarCliente(idCliente: string): Promise<void>;
 
     obtenerClientes(limite?: number): Promise<ICliente[]>;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> feature/consulta-proyectos-clientev2

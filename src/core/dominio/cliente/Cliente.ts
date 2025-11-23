@@ -2,7 +2,7 @@ import { ICliente } from './ICliente';
 
 export class Cliente implements ICliente {
     idCliente?: string;
-    nombre!: string;
+    nombre?: string;
     identificacion!: string;
     email!: string;
     telefono!: string | null; 
