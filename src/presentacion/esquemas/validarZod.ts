@@ -1,4 +1,4 @@
-import {  ZodError, ZodType } from "zod";
+import { ZodError, ZodType } from "zod";
 import { FastifyReply, FastifyRequest } from "fastify";
 import { CodigosHttp } from "../../common/codigosHttp";
 type TipoValidacion = "body" | "params" | "query";
@@ -21,7 +21,7 @@ export function validarZod<T>(
           break;
       }
     } catch (error) {
-     
+
       if (error instanceof ZodError) {
         return reply.code(CodigosHttp.SOLICITUD_INCORRECTA).send({
           mensaje: " Error de validación",

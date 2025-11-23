@@ -46,3 +46,4 @@ export const startServer = async (): Promise<void> => {
     throw serverError;
   }
 };
+export { app };
