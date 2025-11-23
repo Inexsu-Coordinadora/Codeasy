@@ -131,9 +131,9 @@ describe("Pruebas de integración - API Clientes", () => {
         });
     });
 
-    describe("PUT /api/cliente/eliminar/:idCliente", () => {
+    describe("DELETE /api/cliente/eliminar/:idCliente", () => {
         test("debería eliminar un cliente exitosamente", async () => {
-            const response = await request(app.server).put(
+            const response = await request(app.server).delete(
                 "/api/cliente/eliminar/mock-1"
             );
 

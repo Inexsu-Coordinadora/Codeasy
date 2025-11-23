@@ -5,7 +5,7 @@ import type { ProyectoActualizarDTO } from "../esquemas/proyectoActualizarEsquem
 import { ConsultarProyectosPorClienteCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ConsultarProyectosPorClienteCasosUso";
 import { CodigosHttp } from "../../common/codigosHttp";
 export class ProyectoControlador {
-  constructor(private casosUso: ProyectoCasosUso, private  consultarProyectosPorClienteCasosUso: ConsultarProyectosPorClienteCasosUso) {}
+  constructor(private casosUso: ProyectoCasosUso, private consultarProyectosPorClienteCasosUso: ConsultarProyectosPorClienteCasosUso) { }
 
   // Registrar un nuevo proyecto
   // Crear
@@ -69,30 +69,30 @@ export class ProyectoControlador {
   }
 
 
-async consultarProyectosPorCliente(req: FastifyRequest, reply: FastifyReply) {
-  const { idCliente } = req.params as { idCliente: string };
-  const { estado, fechaInicio } = req.query as {
-    estado?: string;
-    fechaInicio?: string;
+  async consultarProyectosPorCliente(req: FastifyRequest, reply: FastifyReply) {
+    const { idCliente } = req.params as { idCliente: string };
+    const { estado, fechaInicio } = req.query as {
+      estado?: string;
+      fechaInicio?: string;
 
-  };
+    };
 
-  const filtros = {
-    estadoProyecto: estado,
-    fechaInicio: fechaInicio ? fechaInicio : undefined,
-    
-  };
+    const filtros = {
+      estadoProyecto: estado,
+      fechaInicio: fechaInicio ? fechaInicio : undefined,
 
-  const resultado = await this.consultarProyectosPorClienteCasosUso.ejecutar(
-    idCliente,
-    filtros
-  );
+    };
 
-  return reply.code(CodigosHttp.OK).send({
-    exito: true,
-    mensaje: resultado.mensaje,
-    data: resultado.proyectos,
-  });
-}
+    const resultado = await this.consultarProyectosPorClienteCasosUso.ejecutar(
+      idCliente,
+      filtros
+    );
+
+    return reply.code(CodigosHttp.OK).send({
+      exito: true,
+      mensaje: resultado.mensaje,
+      data: resultado.proyectos,
+    });
+  }
 
 }

@@ -9,10 +9,10 @@ import { AppError } from "../../../../common/middlewares/AppError";
 
 export class ProyectoCasosUso {
   constructor(
-    private proyectoRepositorio: IProyectoRepositorio,     
+    private proyectoRepositorio: IProyectoRepositorio,
     private clienteRepositorio: IClienteRepositorio,
     private equipoProyectoRepositorio: IEquipoProyectoRepositorio
-) {}
+  ) { }
 
   // Registrar un nuevo proyecto
   async registrarProyecto(datos: ProyectoCrearDTO): Promise<IProyecto> {
@@ -36,8 +36,8 @@ export class ProyectoCasosUso {
     if (fechaEntrega <= fechaInicio) {
       throw new AppError("La fecha de entrega debe ser posterior a la fecha de inicio.");
     }
-      // Validar existencia del cliente
-      const cliente = await this.clienteRepositorio.buscarPorIdCliente(datos.idCliente);
+    // Validar existencia del cliente
+    const cliente = await this.clienteRepositorio.buscarPorIdCliente(datos.idCliente);
     if (!cliente) {
       throw new AppError("El cliente especificado no existe.");
     }
@@ -67,18 +67,18 @@ export class ProyectoCasosUso {
       new Date()
     );
 
-    const proyectoCreado = await this.proyectoRepositorio.registrarProyecto(nuevoProyecto);
+    const proyectoCreado = await this.proyectoRepositorio.crear(nuevoProyecto);
     return proyectoCreado;
   }
 
   // Listar todos los proyectos activos
   async listarTodosProyectos(): Promise<IProyecto[]> {
-    return await this.proyectoRepositorio.listarTodosProyectos();
+    return await this.proyectoRepositorio.obtenerTodos();
   }
 
   // Obtener un proyecto por ID
   async obtenerProyectoPorId(idProyecto: string): Promise<IProyecto | null> {
-    const proyecto = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
+    const proyecto = await this.proyectoRepositorio.obtenerPorId(idProyecto);
     if (!proyecto) {
       throw new AppError(`No se encontró el proyecto con ID ${idProyecto}`);
     }
@@ -87,7 +87,7 @@ export class ProyectoCasosUso {
 
   // Actualizar un proyecto existente
   async actualizarProyecto(idProyecto: string, datos: ProyectoActualizarDTO): Promise<IProyecto> {
-    const proyectoExistente = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
+    const proyectoExistente = await this.proyectoRepositorio.obtenerPorId(idProyecto);
     if (!proyectoExistente) {
       throw new AppError(`No se encontró el proyecto con ID ${idProyecto}`);
     }
@@ -123,13 +123,13 @@ export class ProyectoCasosUso {
     }
 
     const proyectoActualizado = { ...proyectoExistente, ...datos } as IProyecto;
-    const resultado = await this.proyectoRepositorio.actualizarProyecto(idProyecto, proyectoActualizado);
+    const resultado = await this.proyectoRepositorio.actualizar(idProyecto, proyectoActualizado);
     return resultado;
   }
 
   // Eliminar (lógicamente) un proyecto
   async eliminarProyecto(idProyecto: string): Promise<void> {
-    const proyecto = await this.proyectoRepositorio.obtenerProyectoPorId(idProyecto);
+    const proyecto = await this.proyectoRepositorio.obtenerPorId(idProyecto);
 
     if (!proyecto || proyecto.estado === "Eliminado") {
       throw new AppError(`No se encontró el proyecto con ID ${idProyecto}`);
@@ -146,6 +146,6 @@ export class ProyectoCasosUso {
     // 3. Eliminar lógicamente el proyecto
     proyecto.estado = "Eliminado";
 
-    await this.proyectoRepositorio.actualizarProyecto(idProyecto, proyecto);
+    await this.proyectoRepositorio.actualizar(idProyecto, proyecto);
   }
 }
