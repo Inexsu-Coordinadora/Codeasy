@@ -1,15 +1,22 @@
-import { ICliente } from '../ICliente'; 
-import { Pool } from 'pg';
+import { ICliente } from '../ICliente';
 
 export interface IClienteRepositorio {
 
-    // Operaciones CRUD
-    crearCliente(datosCliente: ICliente): Promise<string>;
-    buscarTodosCliente(): Promise<ICliente[]>;
-    buscarPorIdCliente(idCliente: number): Promise<ICliente | null>; 
-    ActualizarCliente(idCliente: number, datosCliente: ICliente): Promise<ICliente | null>;
-    buscarPorIdentificacionCliente(idCliente: string): Promise<ICliente | null>;
-    EliminarCliente(idCliente: number): Promise<void>;
+    registrarCliente(datosCliente: ICliente): Promise<ICliente>;
 
+    buscarPorIdentificacionCliente(
+        identificacion: string,
+        email: string
+    ): Promise<ICliente | null>;
+
+    buscarPorIdCliente(idCliente: string): Promise<ICliente | null>;
+
+    actualizarCliente(
+        idCliente: string,
+        datosCliente: Partial<ICliente>
+    ): Promise<ICliente | null>;
+
+    eliminarCliente(idCliente: string): Promise<void>;
+
+    obtenerClientes(limite?: number): Promise<ICliente[]>;
 }
-

@@ -10,6 +10,8 @@ export class Tarea implements ITarea {
   fechaFinalizacion!: Date;
   prioridad!: 'Baja' | 'Media' | 'Alta';
   asignadoA!: string;
+  nombreConsultor?: string;
+  idConsultor?: string;
 
   constructor(props: Partial<ITarea>) {
     Object.assign(this, props);

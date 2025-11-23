@@ -17,7 +17,7 @@ export class TareaRepositorio implements ITareaRepositorio {
         AND ep.estado = 'Activo';
     `;
     const result = await ejecutarConsulta(query, [idEquipoConsultor]);
-    
+
     return result.rows.length > 0 ? result.rows[0].id_proyecto : null;
   }
 
@@ -52,12 +52,12 @@ export class TareaRepositorio implements ITareaRepositorio {
         LIMIT 1;
       `;
 
-    const params = idTareaExcluir 
-      ? [idProyecto, titulo, idTareaExcluir] 
+    const params = idTareaExcluir
+      ? [idProyecto, titulo, idTareaExcluir]
       : [idProyecto, titulo];
-    
+
     const result = await ejecutarConsulta(query, params);
-    
+
     return (result.rowCount ?? 0) > 0;
   }
 
@@ -72,9 +72,9 @@ export class TareaRepositorio implements ITareaRepositorio {
       FROM equipos_consultores 
       WHERE id_equipo_consultores = $1;
     `;
-    
+
     const result = await ejecutarConsulta(query, [idEquipoConsultor]);
-    
+
     if (result.rows.length === 0) {
       return null;
     }
@@ -97,10 +97,32 @@ export class TareaRepositorio implements ITareaRepositorio {
         AND estado = 'Activo'
       LIMIT 1;
     `;
-    
+
     const result = await ejecutarConsulta(query, [idEquipoConsultor]);
-    
+
     return (result.rowCount ?? 0) > 0;
+  }
+
+  /**
+   * Obtiene los datos del consultor asociado a un equipo_consultor
+   */
+  private async obtenerDatosConsultor(idEquipoConsultor: string): Promise<{ nombre: string; idConsultor: string } | null> {
+    const query = `
+      SELECT c.nombre, c.id_consultor
+      FROM equipos_consultores ec
+      INNER JOIN consultores c ON ec.id_consultor = c.id_consultor
+      WHERE ec.id_equipo_consultores = $1;
+    `;
+    const result = await ejecutarConsulta(query, [idEquipoConsultor]);
+
+    if (result.rows.length === 0) {
+      return null;
+    }
+
+    return {
+      nombre: result.rows[0].nombre,
+      idConsultor: result.rows[0].id_consultor
+    };
   }
 
   /**
@@ -121,7 +143,7 @@ export class TareaRepositorio implements ITareaRepositorio {
         $1, $2, $3, $4, $5, $6, $7, $8
       ) RETURNING *;
     `;
-    
+
     const insertParams = [
       tarea.titulo,
       tarea.descripcion,
@@ -136,6 +158,8 @@ export class TareaRepositorio implements ITareaRepositorio {
     const insertResult = await ejecutarConsulta(insertQuery, insertParams);
     const row = insertResult.rows[0];
 
+    const datosConsultor = await this.obtenerDatosConsultor(row.id_equipos_consultores);
+
     return {
       idTarea: row.id_tarea,
       titulo: row.titulo,
@@ -146,6 +170,8 @@ export class TareaRepositorio implements ITareaRepositorio {
       fechaFinalizacion: row.fecha_limite,
       asignadoA: row.id_equipos_consultores,
       estado: row.estado,
+      nombreConsultor: datosConsultor?.nombre,
+      idConsultor: datosConsultor?.idConsultor
     } as ITarea;
   }
 
@@ -160,7 +186,7 @@ export class TareaRepositorio implements ITareaRepositorio {
       ORDER BY fecha_creacion DESC;
     `;
     const result = await ejecutarConsulta(query, []);
-    
+
     return result.rows.map(row => ({
       idTarea: row.id_tarea,
       titulo: row.titulo,
@@ -186,7 +212,7 @@ export class TareaRepositorio implements ITareaRepositorio {
     `;
     const result = await ejecutarConsulta(query, [idTarea]);
     const row = result.rows[0];
-    
+
     if (!row) return null;
 
     return {
@@ -251,8 +277,10 @@ export class TareaRepositorio implements ITareaRepositorio {
 
     const result = await ejecutarConsulta(query, parametros);
     const row = result.rows[0];
-    
+
     if (!row) return null;
+
+    const datosConsultor = await this.obtenerDatosConsultor(row.id_equipos_consultores);
 
     return {
       idTarea: row.id_tarea,
@@ -264,6 +292,8 @@ export class TareaRepositorio implements ITareaRepositorio {
       fechaFinalizacion: row.fecha_limite,
       asignadoA: row.id_equipos_consultores,
       estado: row.estado,
+      nombreConsultor: datosConsultor?.nombre,
+      idConsultor: datosConsultor?.idConsultor
     } as ITarea;
   }
 

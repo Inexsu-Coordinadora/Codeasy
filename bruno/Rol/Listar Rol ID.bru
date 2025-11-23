@@ -1,0 +1,24 @@
+meta {
+  name: Listar Rol ID
+  type: http
+  seq: 4
+}
+
+get {
+  url: http://localhost:3000/api/rol/17606713-7f1b-4302-903c-0eb5f0c1802c
+  body: none
+  auth: inherit
+}
+
+body:json {
+  {
+    "nombre_rol": "Desarrollador Backend",
+    "descripcion": "Encargado del desarrollo backend"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

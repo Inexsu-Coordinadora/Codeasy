@@ -1,6 +1,6 @@
   import { FastifyReply, FastifyRequest } from "fastify";
-  import { AppError } from "./AppError.js";
-  import { CodigosHttp } from "../../common/codigosHttp.js";
+  import { AppError } from "./AppError";
+  import { CodigosHttp } from "../../common/codigosHttp";
 
   export function ManejadorErrores(
     error: unknown,

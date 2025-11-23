@@ -1,0 +1,31 @@
+meta {
+  name: Listar Asignaciones Por Equipo
+  type: http
+  seq: 2
+}
+
+get {
+  url: {
+  "id_consultor": "UUID_DEL_CONSULTOR",
+  "id_equipo_proyecto": "UUID_DEL_EQUIPO_PROYECTO",
+  "id_rol": "UUID_DEL_ROL",
+  "porcentaje_dedicacion": 40,
+  "fecha_inicio": "2025-03-01",
+  "fecha_fin": "2025-05-30"
+}
+{
+  "id_consultor": "UUID_DEL_CONSULTOR",
+  "id_equipo_proyecto": "UUID_DEL_EQUIPO_PROYECTO",
+  "id_rol": "UUID_DEL_ROL",
+  "porcentaje_dedicacion": 40,
+  "fecha_inicio": "2025-03-01",
+  "fecha_fin": "2025-05-30"
+}
+
+  body: none
+  auth: inherit
+}
+
+settings {
+  encodeUrl: true
+}

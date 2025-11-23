@@ -13,7 +13,7 @@ export class TareaCasosUso implements ITareaCasosUso {
     this.validaciones = new TareaValidaciones();
   }
 
-  async registrarTarea(datos: ITarea): Promise<ITarea> {
+  async registrarTarea(datos:ITarea): Promise<ITarea> {
     const fechaActual = new Date();
 
     // 1️⃣ Validar que el equipo_consultor exista y esté activo (repo call stays here)
@@ -75,7 +75,7 @@ export class TareaCasosUso implements ITareaCasosUso {
     // 1️⃣ Obtener la tarea existente
     const tareaExistente = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
     if (!tareaExistente) {
-      throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, CodigosHttp.NO_ENCONTRADO);
+      throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, CodigosHttp.SOLICITUD_INCORRECTA);
     }
 
     // 2️⃣ Validar si se intenta marcar como completada una tarea que ya está completada
@@ -148,7 +148,7 @@ export class TareaCasosUso implements ITareaCasosUso {
     const tareaExistente = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
 
     if (!tareaExistente) {
-      throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, CodigosHttp.NO_ENCONTRADO);
+      throw new AppError(`Tarea con el ID ${idTarea} no encontrada`, CodigosHttp.SOLICITUD_INCORRECTA);
     }
 
     // 2️⃣ Verificar que no esté ya eliminada

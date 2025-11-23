@@ -14,9 +14,9 @@ function tareaEnrutador(
 ) {
   app.get("/tarea", TareaController.listarTodasTareas.bind(TareaController));
   app.get("/tarea/:idTarea", TareaController.obtenerTareaPorId.bind(TareaController));
-  app.post("/tarea",{ preHandler: validarZod(TareaCrearEsquema, "body") }, TareaController.registrarTarea.bind(TareaController));
-  app.put("/tarea/:idTarea",{ preHandler: validarZod(TareaActualizarEsquema, "body") }, TareaController.actualizarTarea.bind(TareaController));
-  app.put("/tarea/eliminar/:idTarea", TareaController.eliminarTarea.bind(TareaController));
+  app.post("/tarea", { preHandler: validarZod(TareaCrearEsquema, "body") }, TareaController.registrarTarea.bind(TareaController));
+  app.put("/tarea/:idTarea", { preHandler: validarZod(TareaActualizarEsquema, "body") }, TareaController.actualizarTarea.bind(TareaController));
+  app.delete("/tarea/eliminar/:idTarea", TareaController.eliminarTarea.bind(TareaController));
 }
 
 export async function construirTareaEnrutador(app: FastifyInstance) {
