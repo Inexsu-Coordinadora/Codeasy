@@ -1,5 +1,5 @@
-import { IConsultor } from "../../../dominio/consultor/IConsultor";
-import { Consultor } from "../../../dominio/consultor/Consultor"; 
+import { IConsultor } from "../../../dominio/consultor/IConsultor.js";
+import { Consultor } from "../../../dominio/consultor/Consultor.js"; 
 
 
 export interface IConsultorCasosuso {

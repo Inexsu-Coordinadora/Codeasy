@@ -1,5 +1,5 @@
 import { FastifyInstance } from "fastify";
-import { ClienteControlador } from "../controladores/ClienteControlador";
+import { ClienteControlador } from "../controladores/ClienteControlador.js";
 import { IClienteRepositorio } from "../../core/dominio/cliente/repositorio/IClienteRepositorio";
 import { ClienteCasosUso } from "../../core/aplicacion/casos-uso/Cliente/ClienteCasosUso";
 import { ClienteRepositorio } from "../../core/infraestructura/postgres/ClienteRepositorio";

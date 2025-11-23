@@ -1,4 +1,4 @@
-import { IConsultor } from "./IConsultor";
+import { IConsultor } from "./IConsultor.js";
 
 export class Consultor implements IConsultor {
   idConsultor?: string;

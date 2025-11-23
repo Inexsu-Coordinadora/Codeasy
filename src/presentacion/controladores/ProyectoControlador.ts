@@ -1,11 +1,10 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { ProyectoCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ProyectoCasosUso";
-import type { ProyectoCrearDTO } from "../esquemas/Proyectos/proyectoCrearEsquema";
-import type { ProyectoActualizarDTO } from "../esquemas/Proyectos/proyectoActualizarEsquema";
-import { ConsultarProyectosPorClienteCasosUso } from "../../core/aplicacion/casos-uso/Proyecto/ConsultarProyectosPorClienteCasosUso";
+import type { ProyectoCrearDTO } from "../esquemas/Proyectos/proyectoCrearEsquema.js";
+import type { ProyectoActualizarDTO } from "../esquemas/Proyectos/ProyectoActualizarEsquema.js";
 import { CodigosHttp } from "../../common/codigosHttp";
 export class ProyectoControlador {
-  constructor(private casosUso: ProyectoCasosUso, private  consultarProyectosPorClienteCasosUso: ConsultarProyectosPorClienteCasosUso) {}
+  constructor(private casosUso: ProyectoCasosUso) { }
 
   // Registrar un nuevo proyecto
   // Crear
@@ -40,6 +39,18 @@ export class ProyectoControlador {
       exito: true,
       mensaje: "Proyecto obtenido correctamente",
       data: proyecto,
+    });
+  }
+
+  // Obtener por Cliente
+  async obtenerProyectosPorCliente(req: FastifyRequest, reply: FastifyReply) {
+    const { idCliente } = req.params as { idCliente: string };
+    const proyectos = await this.casosUso.obtenerPorCliente(idCliente);
+
+    return reply.code(CodigosHttp.OK).send({
+      exito: true,
+      mensaje: "Proyectos del cliente obtenidos correctamente",
+      data: proyectos,
     });
   }
 

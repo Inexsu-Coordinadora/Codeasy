@@ -13,7 +13,7 @@ export class TareaCasosUso implements ITareaCasosUso {
     this.validaciones = new TareaValidaciones();
   }
 
-  async registrarTarea(datos:ITarea): Promise<ITarea> {
+  async registrarTarea(datos: ITarea): Promise<ITarea> {
     const fechaActual = new Date();
 
     // 1️⃣ Validar que el equipo_consultor exista y esté activo (repo call stays here)
@@ -63,7 +63,7 @@ export class TareaCasosUso implements ITareaCasosUso {
     return await this.tareaRepositorio.listarTodasTareas();
   }
 
-  async obtenerTareaPorId(idTarea: string): Promise<ITarea | null > {
+  async obtenerTareaPorId(idTarea: string): Promise<ITarea | null> {
     const tarea = await this.tareaRepositorio.obtenerTareaPorId(idTarea);
 
     this.validaciones.validarTareaPorId(tarea, idTarea);
@@ -135,7 +135,7 @@ export class TareaCasosUso implements ITareaCasosUso {
 
     // 9️⃣ Realizar la actualización
     const tareaActualizada = await this.tareaRepositorio.actualizarTarea(idTarea, actualizacion);
-    
+
     if (!tareaActualizada) {
       throw new AppError(`No se pudo actualizar la tarea con ID ${idTarea}`, CodigosHttp.SOLICITUD_INCORRECTA);
     }
@@ -158,6 +158,6 @@ export class TareaCasosUso implements ITareaCasosUso {
 
     // 3️⃣ Eliminar la tarea
     await this.tareaRepositorio.eliminarTarea(idTarea);
-    
-    }
+
   }
+}

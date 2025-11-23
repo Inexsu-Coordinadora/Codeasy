@@ -1,8 +1,8 @@
-import type { IEquipoProyecto } from "../../../dominio/equipo-proyecto/IEquipoProyecto";
-import { EquipoProyecto } from "../../../dominio/equipo-proyecto/EquipoProyecto";
-import type { IEquipoProyectoRepositorio } from "../../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio";
-import type { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IProyectoRepositorio";
-import type { IEquipoConsultorRepositorio } from "../../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio";
+import type { IEquipoProyecto } from "../../../dominio/equipo-proyecto/IEquipoProyecto.js";
+import { EquipoProyecto } from "../../../dominio/equipo-proyecto/EquipoProyecto.js";
+import type { IEquipoProyectoRepositorio } from "../../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio.js";
+import type { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IProyectoRepositorio.js";
+import type { IEquipoConsultorRepositorio } from "../../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio.js";
 import { AppError } from "../../../../common/middlewares/AppError";
 
 export class EquipoProyectoCasosUso {
@@ -10,7 +10,7 @@ export class EquipoProyectoCasosUso {
     private equipoProyectoRepositorio: IEquipoProyectoRepositorio,
     private proyectoRepositorio: IProyectoRepositorio,
     private equipoConsultorRepositorio: IEquipoConsultorRepositorio
-  ) {}
+  ) { }
 
   async crear(datos: IEquipoProyecto): Promise<IEquipoProyecto> {
     const proyectoExiste = await this.proyectoRepositorio.obtenerPorId(datos.idProyecto);
@@ -45,7 +45,15 @@ export class EquipoProyectoCasosUso {
       "Activo"
     );
 
-    return await this.equipoProyectoRepositorio.crear(nuevoEquipo);
+    const equipoCreado = await this.equipoProyectoRepositorio.crear(nuevoEquipo);
+
+    // Update project status to "En proceso"
+    if (proyectoExiste.estadoProyecto !== "En proceso") {
+      proyectoExiste.estadoProyecto = "En proceso";
+      await this.proyectoRepositorio.actualizar(datos.idProyecto, proyectoExiste);
+    }
+
+    return equipoCreado;
   }
 
   async obtenerPorId(idEquipoProyecto: string): Promise<IEquipoProyecto> {

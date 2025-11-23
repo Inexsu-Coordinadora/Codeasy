@@ -1,8 +1,8 @@
-import { ejecutarConsulta } from "./clientepostgres";
-import type { IEquipoConsultor } from "../../dominio/equipos-consultores/IEquipoConsultor";
-import type { IEquipoConsultorRepositorio } from "../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio";
-import { toSnakeCase } from "../../utils/toSnakeCase";
-import { toCamelCase } from "../../utils/toCamelCase";
+import { ejecutarConsulta } from "./clientepostgres.js";
+import type { IEquipoConsultor } from "../../dominio/equipos-consultores/IEquipoConsultor.js";
+import type { IEquipoConsultorRepositorio } from "../../dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio.js";
+import { toSnakeCase } from "../../utils/toSnakeCase.js";
+import { toCamelCase } from "../../utils/toCamelCase.js";
 
 export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
 
@@ -20,6 +20,11 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
   async crear(asignacion: IEquipoConsultor): Promise<IEquipoConsultor> {
     const data = toSnakeCase(asignacion);
     delete (data as any).id_equipo_consultores;
+    delete (data as any).nombre_consultor;
+    delete (data as any).nombre_equipo_proyecto;
+    delete (data as any).nombre_rol;
+    delete (data as any).nombre_proyecto;
+    delete (data as any).id_proyecto;
 
     const columnas = Object.keys(data);
     const valores = Object.values(data).map(v => (v === undefined ? null : v));
@@ -32,15 +37,69 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
     `;
 
     const result = await ejecutarConsulta(query, valores);
-    return toCamelCase(result.rows[0]) as IEquipoConsultor;
+    const nuevaAsignacion = toCamelCase(result.rows[0]) as IEquipoConsultor;
+
+    // Fetch additional details
+    const queryDetalles = `
+      SELECT 
+        c.nombre as nombre_consultor,
+        ep.nombre as nombre_equipo_proyecto,
+        p.id_proyecto,
+        p.nombre as nombre_proyecto,
+        r.nombre_rol
+      FROM consultores c
+      JOIN equipos_proyectos ep ON ep.id_equipo_proyecto = $1
+      JOIN proyectos p ON ep.id_proyecto = p.id_proyecto
+      JOIN roles r ON r.id_rol = $3
+      WHERE c.id_consultor = $2
+    `;
+    const resDetalles = await ejecutarConsulta(queryDetalles, [nuevaAsignacion.idEquipoProyecto, nuevaAsignacion.idConsultor, nuevaAsignacion.idRol]);
+
+    let detalles: any = {};
+    if (resDetalles.rows.length > 0) {
+      detalles = resDetalles.rows[0];
+    }
+
+    return {
+      idEquipoConsultores: nuevaAsignacion.idEquipoConsultores,
+      idConsultor: nuevaAsignacion.idConsultor,
+      nombreConsultor: detalles.nombre_consultor,
+      idEquipoProyecto: nuevaAsignacion.idEquipoProyecto,
+      nombreEquipoProyecto: detalles.nombre_equipo_proyecto,
+      idRol: nuevaAsignacion.idRol,
+      nombreRol: detalles.nombre_rol,
+      porcentajeDedicacion: nuevaAsignacion.porcentajeDedicacion,
+      fechaInicio: nuevaAsignacion.fechaInicio,
+      fechaFin: nuevaAsignacion.fechaFin,
+      estado: nuevaAsignacion.estado,
+      idProyecto: detalles.id_proyecto,
+      nombreProyecto: detalles.nombre_proyecto
+    };
   }
 
   async obtenerTodos(): Promise<IEquipoConsultor[]> {
     const query = `
-      SELECT *
-      FROM equipos_consultores
-      WHERE estado = 'Activo'
-      ORDER BY fecha_inicio ASC;
+      SELECT 
+        ec.id_equipo_consultores,
+        ec.id_consultor,
+        c.nombre as nombre_consultor,
+        ec.id_equipo_proyecto,
+        ep.nombre as nombre_equipo_proyecto,
+        ec.id_rol,
+        r.nombre_rol,
+        ec.porcentaje_dedicacion,
+        ec.fecha_inicio,
+        ec.fecha_fin,
+        ec.estado,
+        p.id_proyecto,
+        p.nombre as nombre_proyecto
+      FROM equipos_consultores ec
+      JOIN consultores c ON ec.id_consultor = c.id_consultor
+      JOIN equipos_proyectos ep ON ec.id_equipo_proyecto = ep.id_equipo_proyecto
+      JOIN proyectos p ON ep.id_proyecto = p.id_proyecto
+      JOIN roles r ON ec.id_rol = r.id_rol
+      WHERE ec.estado = 'Activo'
+      ORDER BY ec.fecha_inicio ASC;
     `;
     const result = await ejecutarConsulta(query, []);
     return toCamelCase(result.rows);
@@ -48,9 +107,26 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
 
   async obtenerPorId(id: string): Promise<IEquipoConsultor | null> {
     const query = `
-      SELECT *
-      FROM equipos_consultores
-      WHERE id_equipo_consultores = $1
+      SELECT 
+        ec.id_equipo_consultores,
+        ec.id_consultor,
+        c.nombre as nombre_consultor,
+        ec.id_equipo_proyecto,
+        ep.nombre as nombre_equipo_proyecto,
+        ec.id_rol,
+        r.nombre_rol,
+        ec.porcentaje_dedicacion,
+        ec.fecha_inicio,
+        ec.fecha_fin,
+        ec.estado,
+        p.id_proyecto,
+        p.nombre as nombre_proyecto
+      FROM equipos_consultores ec
+      JOIN consultores c ON ec.id_consultor = c.id_consultor
+      JOIN equipos_proyectos ep ON ec.id_equipo_proyecto = ep.id_equipo_proyecto
+      JOIN proyectos p ON ep.id_proyecto = p.id_proyecto
+      JOIN roles r ON ec.id_rol = r.id_rol
+      WHERE ec.id_equipo_consultores = $1
       LIMIT 1;
     `;
     const result = await ejecutarConsulta(query, [id]);
@@ -59,11 +135,28 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
 
   async obtenerPorEquipo(idEquipoProyecto: string): Promise<IEquipoConsultor[]> {
     const query = `
-      SELECT *
-      FROM equipos_consultores
-      WHERE id_equipo_proyecto = $1
-      AND estado = 'Activo'
-      ORDER BY fecha_inicio ASC;
+      SELECT 
+        ec.id_equipo_consultores,
+        ec.id_consultor,
+        c.nombre as nombre_consultor,
+        ec.id_equipo_proyecto,
+        ep.nombre as nombre_equipo_proyecto,
+        ec.id_rol,
+        r.nombre_rol,
+        ec.porcentaje_dedicacion,
+        ec.fecha_inicio,
+        ec.fecha_fin,
+        ec.estado,
+        p.id_proyecto,
+        p.nombre as nombre_proyecto
+      FROM equipos_consultores ec
+      JOIN consultores c ON ec.id_consultor = c.id_consultor
+      JOIN equipos_proyectos ep ON ec.id_equipo_proyecto = ep.id_equipo_proyecto
+      JOIN proyectos p ON ep.id_proyecto = p.id_proyecto
+      JOIN roles r ON ec.id_rol = r.id_rol
+      WHERE ec.id_equipo_proyecto = $1
+      AND ec.estado = 'Activo'
+      ORDER BY ec.fecha_inicio ASC;
     `;
     const result = await ejecutarConsulta(query, [idEquipoProyecto]);
     return toCamelCase(result.rows);
@@ -71,11 +164,28 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
 
   async obtenerPorConsultor(idConsultor: string): Promise<IEquipoConsultor[]> {
     const query = `
-      SELECT *
-      FROM equipos_consultores
-      WHERE id_consultor = $1
-      AND estado = 'Activo'
-      ORDER BY fecha_inicio ASC;
+      SELECT 
+        ec.id_equipo_consultores,
+        ec.id_consultor,
+        c.nombre as nombre_consultor,
+        ec.id_equipo_proyecto,
+        ep.nombre as nombre_equipo_proyecto,
+        ec.id_rol,
+        r.nombre_rol,
+        ec.porcentaje_dedicacion,
+        ec.fecha_inicio,
+        ec.fecha_fin,
+        ec.estado,
+        p.id_proyecto,
+        p.nombre as nombre_proyecto
+      FROM equipos_consultores ec
+      JOIN consultores c ON ec.id_consultor = c.id_consultor
+      JOIN equipos_proyectos ep ON ec.id_equipo_proyecto = ep.id_equipo_proyecto
+      JOIN proyectos p ON ep.id_proyecto = p.id_proyecto
+      JOIN roles r ON ec.id_rol = r.id_rol
+      WHERE ec.id_consultor = $1
+      AND ec.estado = 'Activo'
+      ORDER BY ec.fecha_inicio ASC;
     `;
     const result = await ejecutarConsulta(query, [idConsultor]);
     return toCamelCase(result.rows);
@@ -87,6 +197,11 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
         Object.entries(datos).filter(([_, v]) => v !== undefined && v !== null)
       )
     );
+    delete (datosBD as any).nombre_consultor;
+    delete (datosBD as any).nombre_equipo_proyecto;
+    delete (datosBD as any).nombre_rol;
+    delete (datosBD as any).nombre_proyecto;
+    delete (datosBD as any).id_proyecto;
 
     const columnas = Object.keys(datosBD);
     const valores = Object.values(datosBD);
@@ -102,7 +217,44 @@ export class EquipoConsultorRepositorio implements IEquipoConsultorRepositorio {
     `;
 
     const result = await ejecutarConsulta(query, valores);
-    return toCamelCase(result.rows[0]) as IEquipoConsultor;
+    const asignacionActualizada = toCamelCase(result.rows[0]) as IEquipoConsultor;
+
+    // Fetch additional details
+    const queryDetalles = `
+      SELECT 
+        c.nombre as nombre_consultor,
+        ep.nombre as nombre_equipo_proyecto,
+        p.id_proyecto,
+        p.nombre as nombre_proyecto,
+        r.nombre_rol
+      FROM consultores c
+      JOIN equipos_proyectos ep ON ep.id_equipo_proyecto = $1
+      JOIN proyectos p ON ep.id_proyecto = p.id_proyecto
+      JOIN roles r ON r.id_rol = $3
+      WHERE c.id_consultor = $2
+    `;
+    const resDetalles = await ejecutarConsulta(queryDetalles, [asignacionActualizada.idEquipoProyecto, asignacionActualizada.idConsultor, asignacionActualizada.idRol]);
+
+    let detalles: any = {};
+    if (resDetalles.rows.length > 0) {
+      detalles = resDetalles.rows[0];
+    }
+
+    return {
+      idEquipoConsultores: asignacionActualizada.idEquipoConsultores,
+      idConsultor: asignacionActualizada.idConsultor,
+      nombreConsultor: detalles.nombre_consultor,
+      idEquipoProyecto: asignacionActualizada.idEquipoProyecto,
+      nombreEquipoProyecto: detalles.nombre_equipo_proyecto,
+      idRol: asignacionActualizada.idRol,
+      nombreRol: detalles.nombre_rol,
+      porcentajeDedicacion: asignacionActualizada.porcentajeDedicacion,
+      fechaInicio: asignacionActualizada.fechaInicio,
+      fechaFin: asignacionActualizada.fechaFin,
+      estado: asignacionActualizada.estado,
+      idProyecto: detalles.id_proyecto,
+      nombreProyecto: detalles.nombre_proyecto
+    };
   }
 
   async eliminar(id: string): Promise<IEquipoConsultor> {

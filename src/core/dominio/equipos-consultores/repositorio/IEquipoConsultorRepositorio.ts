@@ -1,4 +1,4 @@
-import type { IEquipoConsultor } from "../IEquipoConsultor";
+import type { IEquipoConsultor } from "../IEquipoConsultor.js";
 
 export interface IEquipoConsultorRepositorio {
   crear(asignacion: IEquipoConsultor): Promise<IEquipoConsultor>;

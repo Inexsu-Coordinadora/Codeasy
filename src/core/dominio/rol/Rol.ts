@@ -1,4 +1,4 @@
-import type { IRol } from "./IRol";
+import type { IRol } from "./IRol.js";
 
 export class Rol implements IRol {
   constructor(

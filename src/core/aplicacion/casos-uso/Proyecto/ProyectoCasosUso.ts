@@ -1,16 +1,16 @@
-import { IProyecto } from "../../../dominio/proyecto/IProyecto";
-import { Proyecto } from "../../../dominio/proyecto/Proyecto";
-import { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IProyectoRepositorio";
-import type { IClienteRepositorio } from "../../../dominio/cliente/repositorio/IClienteRepositorio";
-import type { IEquipoProyectoRepositorio } from "../../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio";
-import { AppError } from "../../../../common/middlewares/AppError";
+import { IProyecto } from "../../../dominio/proyecto/IProyecto.js";
+import { Proyecto } from "../../../dominio/proyecto/Proyecto.js";
+import { IProyectoRepositorio } from "../../../dominio/proyecto/repositorio/IProyectoRepositorio.js";
+import type { IClienteRepositorio } from "../../../dominio/cliente/repositorio/IClienteRepositorio.js";
+import type { IEquipoProyectoRepositorio } from "../../../dominio/equipo-proyecto/repositorio/IEquipoProyectoRepositorio.js";
+import { AppError } from "../../../../common/middlewares/AppError.js";
 
 export class ProyectoCasosUso {
   constructor(
-    private proyectoRepositorio: IProyectoRepositorio,     
+    private proyectoRepositorio: IProyectoRepositorio,
     private clienteRepositorio: IClienteRepositorio,
     private equipoProyectoRepositorio: IEquipoProyectoRepositorio
-  ) {}
+  ) { }
 
   async crear(datos: IProyecto): Promise<IProyecto> {
     const hoy = new Date();
@@ -75,6 +75,14 @@ export class ProyectoCasosUso {
       throw new AppError(`No se encontró el proyecto con ID ${idProyecto}`);
     }
     return proyecto;
+  }
+
+  async obtenerPorCliente(idCliente: string): Promise<IProyecto[]> {
+    const cliente = await this.clienteRepositorio.buscarPorIdCliente(idCliente);
+    if (!cliente) {
+      throw new AppError("El cliente especificado no existe.");
+    }
+    return await this.proyectoRepositorio.obtenerPorCliente(idCliente);
   }
 
   async actualizar(idProyecto: string, datos: IProyecto): Promise<IProyecto> {

@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { RolCasosUso } from "../../core/aplicacion/casos-uso/Rol/RolCasosUso";
-import type { RolCrearDTO } from "../esquemas/Roles/rolCrearEsquema";
-import type { RolActualizarDTO } from "../esquemas/Roles/rolActualizarEsquema";
+import type { RolCrearDTO } from "../esquemas/Roles/rolCrearEsquema.js";
+import type { RolActualizarDTO } from "../esquemas/Roles/rolActualizarEsquema.js";
 import { CodigosHttp } from "../../common/codigosHttp";
 
 export class RolControlador {

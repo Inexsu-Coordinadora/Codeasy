@@ -2,7 +2,6 @@ import { IClienteRepositorio } from "../../dominio/cliente/repositorio/IClienteR
 import { ICliente } from "../../dominio/cliente/ICliente";
 import { ejecutarConsulta } from "./clientepostgres";
 import { toSnakeCase } from "../../utils/toSnakeCase.js";
-import { toCamelCase } from "../../utils/toCamelCase.js";
 
 export class ClienteRepositorio implements IClienteRepositorio {
 

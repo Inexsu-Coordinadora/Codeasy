@@ -1,10 +1,10 @@
 import { FastifyInstance } from "fastify";
-import { RolControlador } from "../controladores/RolControlador";
+import { RolControlador } from "../controladores/RolControlador.js";
 import { RolRepositorio } from "../../core/infraestructura/postgres/RolRepositorio";
 import { RolCasosUso } from "../../core/aplicacion/casos-uso/Rol/RolCasosUso";
-import { validarZod } from "../esquemas/validarZod";
-import { RolCrearEsquema } from "../esquemas/Roles/rolCrearEsquema";
-import { RolActualizarEsquema } from "../esquemas/Roles/rolActualizarEsquema";
+import { validarZod } from "../esquemas/validarZod.js";
+import { RolCrearEsquema } from "../esquemas/Roles/rolCrearEsquema.js";
+import { RolActualizarEsquema } from "../esquemas/Roles/rolActualizarEsquema.js";
 
 function rolEnrutador(app: FastifyInstance, controller: RolControlador) {
 

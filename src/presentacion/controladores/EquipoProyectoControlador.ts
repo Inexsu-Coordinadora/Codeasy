@@ -1,7 +1,7 @@
 import { FastifyReply, FastifyRequest } from "fastify";
 import { EquipoProyectoCasosUso } from "../../core/aplicacion/casos-uso/EquipoProyecto/EquipoProyectoCasosUso";
-import type { EquipoProyectoCrearDTO } from "../esquemas/EquipoProyecto/EquipoProyectoCrearEsquema";
-import type { EquipoProyectoActualizarDTO } from "../esquemas/EquipoProyecto/EquipoProyectoActualizarEsquema";
+import type { EquipoProyectoCrearDTO } from "../esquemas/EquipoProyecto/EquipoProyectoCrearEsquema.js";
+import type { EquipoProyectoActualizarDTO } from "../esquemas/EquipoProyecto/EquipoProyectoActualizarEsquema.js";
 import { CodigosHttp } from "../../common/codigosHttp";
 
 export class EquipoProyectoControlador {
