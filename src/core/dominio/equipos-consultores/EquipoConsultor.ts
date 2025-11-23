@@ -1,4 +1,4 @@
-import type { IEquipoConsultor } from "./IEquipoConsultor.js";
+import type { IEquipoConsultor } from "./IEquipoConsultor";
 
 export class EquipoConsultor implements IEquipoConsultor {
   constructor(

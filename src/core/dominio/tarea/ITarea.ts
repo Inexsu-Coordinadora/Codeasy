@@ -4,8 +4,10 @@ export interface ITarea {
   descripcion: string;
   estadoTarea: 'pendiente' | 'en progreso' | 'bloqueada' | 'completada';
   fechaCreacion?: Date;
-  fechaFinalizacion: Date ;
+  fechaFinalizacion: Date;
   prioridad: 'Baja' | 'Media' | 'Alta';
   asignadoA: string;
   estado: 'Eliminado' | 'Activo';
+  nombreConsultor?: string;
+  idConsultor?: string;
 }

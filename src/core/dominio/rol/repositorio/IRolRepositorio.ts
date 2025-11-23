@@ -1,5 +1,5 @@
-import type { IRol } from "../IRol.js";
-import { Rol } from "../Rol.js";
+import type { IRol } from "../IRol";
+import { Rol } from "../Rol";
 
 export interface IRolRepositorio {
   crearRol(rol: Rol): Promise<IRol>;

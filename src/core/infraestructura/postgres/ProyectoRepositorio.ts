@@ -1,4 +1,4 @@
-import { ejecutarConsulta } from '../postgres/clientepostgres';
+import { ejecutarConsulta } from './clientepostgres';
 import type { IProyecto } from '../../dominio/proyecto/IProyecto.js';
 import type { IProyectoRepositorio } from '../../dominio/proyecto/repositorio/IProyectoRepositorio.js';
 import { toSnakeCase } from "../../utils/toSnakeCase.js";

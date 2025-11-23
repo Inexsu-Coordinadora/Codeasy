@@ -1,4 +1,4 @@
-import type { IEquipoProyecto } from "../IEquipoProyecto.js";
+import type { IEquipoProyecto } from "../IEquipoProyecto";
 
 export interface IEquipoProyectoRepositorio {
   crear(equipo: IEquipoProyecto): Promise<IEquipoProyecto>;

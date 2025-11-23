@@ -1,4 +1,4 @@
-import { AppError } from "../../../../common/middlewares/AppError.js";
+import { AppError } from "../../../../../common/middlewares/AppError.js";
 import {
   CONSULTOR_INACTIVO,
   EQUIPO_SIN_PROYECTO,
@@ -8,9 +8,9 @@ import {
   FECHA_ANTERIOR_A_INICIO_CONSULTOR,
   FECHA_SUPERA_FIN_CONSULTOR,
   TAREA_YA_COMPLETADA
-} from "./MensajesTarea.js";
+} from "../Constantes/MensajesTarea.js";
 
-import { CodigosHttp } from "../../../../common/codigosHttp.js";
+import { CodigosHttp } from "../../../../../common/codigosHttp.js";
 
 export class TareaValidaciones {
   validarEquipoActivo(equipoActivo: boolean, idEquipoConsultor: string) {

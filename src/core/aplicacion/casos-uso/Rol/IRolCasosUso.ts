@@ -1,4 +1,4 @@
-import type { IRol } from "../../../dominio/rol/IRol.js";
+import type { IRol } from "../../../dominio/rol/IRol";
 
 export interface IRolCasosUso {
     crearRol(datos: { nombreRol: string; descripcion: string }): Promise<IRol>;

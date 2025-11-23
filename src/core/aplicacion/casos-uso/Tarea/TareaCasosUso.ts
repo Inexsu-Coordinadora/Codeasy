@@ -1,7 +1,7 @@
 import { ITarea } from "../../../dominio/tarea/ITarea.js";
 import { Tarea } from "../../../dominio/tarea/Tarea.js";
 import { TareaRepositorio } from "../../../infraestructura/postgres/TareaRepositorio.js";
-import { TareaValidaciones } from "./TareaValidaciones.js";
+import { TareaValidaciones } from "./Validaciones/TareaValidaciones.js";
 import { ITareaCasosUso } from "./ITareaCasosUso.js";
 import { AppError } from "../../../../common/middlewares/AppError.js";
 import { CodigosHttp } from "../../../../common/codigosHttp.js";
@@ -13,7 +13,7 @@ export class TareaCasosUso implements ITareaCasosUso {
     this.validaciones = new TareaValidaciones();
   }
 
-  async registrarTarea(datos: ITarea): Promise<ITarea> {
+  async registrarTarea(datos:ITarea): Promise<ITarea> {
     const fechaActual = new Date();
 
     // 1️⃣ Validar que el equipo_consultor exista y esté activo (repo call stays here)
