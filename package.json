@@ -3,7 +3,6 @@
   "version": "1.0.0",
   "description": "*Sistema de gestión de proyectos colaborativo desarrollado con Fastify, TypeScript y PostgreSQL.*",
   "main": "index.js",
-  
   "scripts": {
     "build": "tsc",
     "start": "node ./dist/index.js",

@@ -11,7 +11,7 @@ import { configuration } from "../common/configuracion";
 import { CodigosHttp } from "../common/codigosHttp";
 import { construirTareaEnrutador } from "./rutas/TareaEnrutador";
 
-const app = Fastify({ logger: true });
+export const app = Fastify({ logger: true });
 app.setErrorHandler(ManejadorErrores);
 
 app.setErrorHandler(ManejadorErrores);
@@ -31,7 +31,7 @@ app.register(
 
 export const startServer = async (): Promise<void> => {
   try {
-    await app.listen({ port: configuration.httpPuerto }); 
+    await app.listen({ port: configuration.httpPuerto });
     app.log.info(
       `El servidor está corriendo en el puerto ${configuration.httpPuerto}...`
     );
