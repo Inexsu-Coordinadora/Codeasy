@@ -1,0 +1,573 @@
+﻿
+> codeasy@1.0.0 test
+> node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --coverage
+
+  console.log
+    [dotenv@17.2.3] injecting env (6) from .env -- tip: ­ƒæÑ sync secrets across teammates & machines: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+node.exe : (node:26900) 
+ExperimentalWarning: VM Modules is an 
+experimental feature and might change at 
+any time
+En línea: 1 Carácter: 1
++ & "C:\Program Files\nodejs/node.exe" 
+"C:\Program Files\nodejs/node_mo ...
++ ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    + CategoryInfo          : NotSp    
+ecified: ((node:26900) Ex...nge     at 
+any time:String) [], Remote    Exception
+    + FullyQualifiedErrorId : Nativ    
+eCommandError
+ 
+(Use `node --trace-warnings ...` to show 
+where the warning was created)
+{"level":30,"time":1763945607333,"pid":26900,"hostname":"Jose","reqId":"req-1","req":{"method":"GET","url":"/api/clientes/cliente-123/proyectos","host":"127.0.0.1:57138","remoteAddress":"::ffff:127.0.0.1","remotePort":57139},"msg":"incoming request"}
+{"level":30,"time":1763945607339,"pid":26900,"hostname":"Jose","reqId":"req-1","res":{"statusCode":200},"responseTime":5.559300005435944,"msg":"request completed"}
+{"level":30,"time":1763945607361,"pid":26900,"hostname":"Jose","reqId":"req-2","req":{"method":"GET","url":"/api/clientes/cliente-123/proyectos?estado=En%20proceso","host":"127.0.0.1:57140","remoteAddress":"::ffff:127.0.0.1","remotePort":57141},"msg":"incoming request"}
+{"level":30,"time":1763945607362,"pid":26900,"hostname":"Jose","reqId":"req-2","res":{"statusCode":200},"responseTime":0.645799994468689,"msg":"request completed"}
+{"level":30,"time":1763945607367,"pid":26900,"hostname":"Jose","reqId":"req-3","req":{"method":"GET","url":"/api/clientes/cliente-123/proyectos?fechaInicio=2025-01-01","host":"127.0.0.1:57142","remoteAddress":"::ffff:127.0.0.1","remotePort":57143},"msg":"incoming request"}
+{"level":30,"time":1763945607368,"pid":26900,"hostname":"Jose","reqId":"req-3","res":{"statusCode":200},"responseTime":0.4096999764442444,"msg":"request completed"}
+{"level":30,"time":1763945607372,"pid":26900,"hostname":"Jose","reqId":"req-4","req":{"method":"GET","url":"/api/clientes/cliente-sin-proyectos/proyectos","host":"127.0.0.1:57144","remoteAddress":"::ffff:127.0.0.1","remotePort":57145},"msg":"incoming request"}
+{"level":30,"time":1763945607372,"pid":26900,"hostname":"Jose","reqId":"req-4","res":{"statusCode":200},"responseTime":0.3296999931335449,"msg":"request completed"}
+{"level":30,"time":1763945607377,"pid":26900,"hostname":"Jose","reqId":"req-5","req":{"method":"GET","url":"/api/clientes/550e8400-e29b-41d4-a716-446655440099/proyectos","host":"127.0.0.1:57146","remoteAddress":"::ffff:127.0.0.1","remotePort":57147},"msg":"incoming request"}
+{"level":30,"time":1763945607378,"pid":26900,"hostname":"Jose","reqId":"req-5","res":{"statusCode":400},"responseTime":0.9756999611854553,"msg":"request completed"}
+{"level":30,"time":1763945607382,"pid":26900,"hostname":"Jose","reqId":"req-6","req":{"method":"GET","url":"/api/clientes/cliente-123/proyectos?estado=En%20proceso&fechaInicio=2025-01-01","host":"127.0.0.1:57148","remoteAddress":"::ffff:127.0.0.1","remotePort":57149},"msg":"incoming request"}
+{"level":30,"time":1763945607383,"pid":26900,"hostname":"Jose","reqId":"req-6","res":{"statusCode":200},"responseTime":0.29659998416900635,"msg":"request completed"}
+{"level":30,"time":1763945607387,"pid":26900,"hostname":"Jose","reqId":"req-7","req":{"method":"GET","url":"/api/clientes/cliente-123/proyectos","host":"127.0.0.1:57150","remoteAddress":"::ffff:127.0.0.1","remotePort":57151},"msg":"incoming request"}
+{"level":30,"time":1763945607387,"pid":26900,"hostname":"Jose","reqId":"req-7","res":{"statusCode":200},"responseTime":0.2556999921798706,"msg":"request completed"}
+PASS tests/integracion/ConsultarProyectos
+PorCliente.int.test.ts
+  Pruebas de integraci├│n - API 
+Proyectos por Cliente
+    GET 
+/api/clientes/:idCliente/proyectos
+      ÔêÜ deber├¡a retornar proyectos 
+del cliente cuando existe y tiene 
+proyectos (38 ms)
+      ÔêÜ deber├¡a retornar proyectos 
+filtrados por estado (15 ms)
+      ÔêÜ deber├¡a retornar proyectos 
+filtrados por fecha de inicio (5 ms)
+      ÔêÜ deber├¡a retornar mensaje 
+cuando el cliente no tiene proyectos (5 
+ms)
+      ÔêÜ deber├¡a retornar 404 cuando 
+el cliente no existe (6 ms)
+      ÔêÜ deber├¡a retornar proyectos 
+con m├║ltiples filtros combinados (4 ms)
+      ÔêÜ deber├¡a incluir informaci├│n 
+de consultores en los proyectos (5 ms)
+
+  console.log
+    [dotenv@17.2.3] injecting env (6) from .env -- tip: ÔÜÖ´©Å  load multiple .env files with { path: ['.env.local', '.env'] }
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+{"level":30,"time":1763945608133,"pid":26900,"hostname":"Jose","reqId":"req-1","req":{"method":"GET","url":"/api/tarea","host":"127.0.0.1:57152","remoteAddress":"::ffff:127.0.0.1","remotePort":57153},"msg":"incoming request"}
+{"level":30,"time":1763945608137,"pid":26900,"hostname":"Jose","reqId":"req-1","res":{"statusCode":200},"responseTime":2.6121999621391296,"msg":"request completed"}
+{"level":30,"time":1763945608150,"pid":26900,"hostname":"Jose","reqId":"req-2","req":{"method":"GET","url":"/api/tarea/tarea-mock-1","host":"127.0.0.1:57154","remoteAddress":"::ffff:127.0.0.1","remotePort":57155},"msg":"incoming request"}
+{"level":30,"time":1763945608150,"pid":26900,"hostname":"Jose","reqId":"req-2","res":{"statusCode":200},"responseTime":0.7630000114440918,"msg":"request completed"}
+{"level":30,"time":1763945608163,"pid":26900,"hostname":"Jose","reqId":"req-3","req":{"method":"GET","url":"/api/tarea/tarea-inexistente","host":"127.0.0.1:57156","remoteAddress":"::ffff:127.0.0.1","remotePort":57157},"msg":"incoming request"}
+{"level":30,"time":1763945608164,"pid":26900,"hostname":"Jose","reqId":"req-3","res":{"statusCode":404},"responseTime":1.6090999841690063,"msg":"request completed"}
+{"level":30,"time":1763945608172,"pid":26900,"hostname":"Jose","reqId":"req-4","req":{"method":"PUT","url":"/api/tarea/tarea-mock-1","host":"127.0.0.1:57158","remoteAddress":"::ffff:127.0.0.1","remotePort":57159},"msg":"incoming request"}
+{"level":30,"time":1763945608182,"pid":26900,"hostname":"Jose","reqId":"req-4","res":{"statusCode":200},"responseTime":10.496100008487701,"msg":"request completed"}
+{"level":30,"time":1763945608188,"pid":26900,"hostname":"Jose","reqId":"req-5","req":{"method":"DELETE","url":"/api/tarea/eliminar/tarea-mock-1","host":"127.0.0.1:57160","remoteAddress":"::ffff:127.0.0.1","remotePort":57161},"msg":"incoming request"}
+{"level":30,"time":1763945608189,"pid":26900,"hostname":"Jose","reqId":"req-5","res":{"statusCode":200},"responseTime":0.5827000141143799,"msg":"request completed"}
+PASS tests/integracion/tarea.int.test.ts
+  Pruebas de integraci├│n - API Tareas
+    ÔêÜ POST /api/tarea - debe crear una 
+tarea exitosamente (29 ms)
+    ÔêÜ GET /api/tarea/:idTarea - debe 
+obtener una tarea por ID (9 ms)
+    ÔêÜ GET /api/tarea/:idTarea - debe 
+retornar 404 si no existe (11 ms)
+    ÔêÜ PUT /api/tarea/:idTarea - debe 
+actualizar una tarea (17 ms)
+    ÔêÜ DELETE 
+/api/tarea/eliminar/:idTarea - debe 
+eliminar una tarea (6 ms)
+
+  console.log
+    [dotenv@17.2.3] injecting env (6) from .env -- tip: ÔÜÖ´©Å  enable debug logging with { debug: true }
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+{"level":30,"time":1763945609064,"pid":26900,"hostname":"Jose","reqId":"req-1","req":{"method":"GET","url":"/api/consultor","host":"127.0.0.1:57162","remoteAddress":"::ffff:127.0.0.1","remotePort":57163},"msg":"incoming request"}
+{"level":30,"time":1763945609066,"pid":26900,"hostname":"Jose","reqId":"req-1","res":{"statusCode":200},"responseTime":1.6127000451087952,"msg":"request completed"}
+{"level":30,"time":1763945609074,"pid":26900,"hostname":"Jose","reqId":"req-2","req":{"method":"GET","url":"/api/consultor/mock-1","host":"127.0.0.1:57164","remoteAddress":"::ffff:127.0.0.1","remotePort":57165},"msg":"incoming request"}
+{"level":30,"time":1763945609074,"pid":26900,"hostname":"Jose","reqId":"req-2","res":{"statusCode":200},"responseTime":0.5919000506401062,"msg":"request completed"}
+{"level":30,"time":1763945609078,"pid":26900,"hostname":"Jose","reqId":"req-3","req":{"method":"GET","url":"/api/consultor/999","host":"127.0.0.1:57166","remoteAddress":"::ffff:127.0.0.1","remotePort":57167},"msg":"incoming request"}
+{"level":30,"time":1763945609081,"pid":26900,"hostname":"Jose","reqId":"req-3","res":{"statusCode":404},"responseTime":2.33160001039505,"msg":"request completed"}
+{"level":30,"time":1763945609087,"pid":26900,"hostname":"Jose","reqId":"req-4","req":{"method":"DELETE","url":"/api/consultor/eliminar/mock-1","host":"127.0.0.1:57168","remoteAddress":"::ffff:127.0.0.1","remotePort":57169},"msg":"incoming request"}
+{"level":30,"time":1763945609087,"pid":26900,"hostname":"Jose","reqId":"req-4","res":{"statusCode":200},"responseTime":0.5088000297546387,"msg":"request completed"}
+{"level":30,"time":1763945609092,"pid":26900,"hostname":"Jose","reqId":"req-5","req":{"method":"DELETE","url":"/api/consultor/eliminar/999","host":"127.0.0.1:57170","remoteAddress":"::ffff:127.0.0.1","remotePort":57171},"msg":"incoming request"}
+{"level":30,"time":1763945609092,"pid":26900,"hostname":"Jose","reqId":"req-5","res":{"statusCode":404},"responseTime":0.7056000232696533,"msg":"request completed"}
+PASS 
+tests/integracion/consultores.int.test.ts
+  Pruebas de integraci├│n - API 
+Consultores
+    ÔêÜ GET /api/consultor - retorna 
+lista simulada (13 ms)
+    ÔêÜ GET /api/consultor/:id - retorna 
+consultor simulado (5 ms)
+    ÔêÜ GET /api/consultor/:id - 404 si 
+no existe (8 ms)
+    ÔêÜ DELETE 
+/api/consultor/eliminar/:id - elimina 
+correctamente (4 ms)
+    ÔêÜ DELETE 
+/api/consultor/eliminar/:id - retorna 
+404 si no existe (5 ms)
+
+  console.log
+    [dotenv@17.2.3] injecting env (6) from .env -- tip: ­ƒöÉ prevent building .env in docker: https://dotenvx.com/prebuild
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+{"level":30,"time":1763945609988,"pid":26900,"hostname":"Jose","reqId":"req-1","req":{"method":"POST","url":"/api/rol","host":"127.0.0.1:57172","remoteAddress":"::ffff:127.0.0.1","remotePort":57173},"msg":"incoming request"}
+{"level":30,"time":1763945609995,"pid":26900,"hostname":"Jose","reqId":"req-1","res":{"statusCode":201},"responseTime":6.62200003862381,"msg":"request completed"}
+{"level":30,"time":1763945610004,"pid":26900,"hostname":"Jose","reqId":"req-2","req":{"method":"GET","url":"/api/rol/R1","host":"127.0.0.1:57174","remoteAddress":"::ffff:127.0.0.1","remotePort":57175},"msg":"incoming request"}
+{"level":30,"time":1763945610006,"pid":26900,"hostname":"Jose","reqId":"req-2","res":{"statusCode":200},"responseTime":0.9254999756813049,"msg":"request completed"}
+{"level":30,"time":1763945610010,"pid":26900,"hostname":"Jose","reqId":"req-3","req":{"method":"PUT","url":"/api/rol/R1","host":"127.0.0.1:57176","remoteAddress":"::ffff:127.0.0.1","remotePort":57177},"msg":"incoming request"}
+{"level":30,"time":1763945610011,"pid":26900,"hostname":"Jose","reqId":"req-3","res":{"statusCode":200},"responseTime":1.3855000138282776,"msg":"request completed"}
+{"level":30,"time":1763945610015,"pid":26900,"hostname":"Jose","reqId":"req-4","req":{"method":"DELETE","url":"/api/rol/eliminar/R1","host":"127.0.0.1:57178","remoteAddress":"::ffff:127.0.0.1","remotePort":57179},"msg":"incoming request"}
+{"level":30,"time":1763945610016,"pid":26900,"hostname":"Jose","reqId":"req-4","res":{"statusCode":200},"responseTime":0.35329997539520264,"msg":"request completed"}
+PASS tests/integracion/roles/rol.test.ts
+  Integraci├│n - Roles
+    ÔêÜ POST /api/rol ÔåÆ crear rol (21 
+ms)
+    ÔêÜ GET /api/rol/:id (6 ms)
+    ÔêÜ PUT /api/rol/:id (6 ms)
+    ÔêÜ DELETE /api/rol/eliminar/:id (3 
+ms)
+
+  console.log
+    [dotenv@17.2.3] injecting env (6) from .env -- tip: Ô£à audit secrets and track compliance: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+{"level":30,"time":1763945610993,"pid":26900,"hostname":"Jose","reqId":"req-1","req":{"method":"POST","url":"/api/equipo-consultor","host":"127.0.0.1:57180","remoteAddress":"::ffff:127.0.0.1","remotePort":57181},"msg":"incoming request"}
+{"level":30,"time":1763945611000,"pid":26900,"hostname":"Jose","reqId":"req-1","res":{"statusCode":201},"responseTime":5.594000041484833,"msg":"request completed"}
+{"level":30,"time":1763945611006,"pid":26900,"hostname":"Jose","reqId":"req-2","req":{"method":"GET","url":"/api/equipo-consultor/EC1","host":"127.0.0.1:57182","remoteAddress":"::ffff:127.0.0.1","remotePort":57183},"msg":"incoming request"}
+{"level":30,"time":1763945611007,"pid":26900,"hostname":"Jose","reqId":"req-2","res":{"statusCode":200},"responseTime":0.6017999649047852,"msg":"request completed"}
+{"level":30,"time":1763945611011,"pid":26900,"hostname":"Jose","reqId":"req-3","req":{"method":"PUT","url":"/api/equipo-consultor/EC1","host":"127.0.0.1:57184","remoteAddress":"::ffff:127.0.0.1","remotePort":57185},"msg":"incoming request"}
+{"level":30,"time":1763945611013,"pid":26900,"hostname":"Jose","reqId":"req-3","res":{"statusCode":200},"responseTime":1.7922000288963318,"msg":"request completed"}
+{"level":30,"time":1763945611017,"pid":26900,"hostname":"Jose","reqId":"req-4","req":{"method":"DELETE","url":"/api/equipo-consultor/eliminar/EC1","host":"127.0.0.1:57186","remoteAddress":"::ffff:127.0.0.1","remotePort":57187},"msg":"incoming request"}
+{"level":30,"time":1763945611017,"pid":26900,"hostname":"Jose","reqId":"req-4","res":{"statusCode":200},"responseTime":0.3779999613761902,"msg":"request completed"}
+PASS tests/integracion/equipos-consultore
+s/equipo-consultor.test.ts
+  Integraci├│n ÔÇô Equipo Consultor
+    ÔêÜ POST /api/equipo-consultor (17 
+ms)
+    ÔêÜ GET /api/equipo-consultor/:id (5 
+ms)
+    ÔêÜ PUT /api/equipo-consultor/:id (6 
+ms)
+    ÔêÜ DELETE 
+/api/equipo-consultor/eliminar/:id (3 ms)
+
+  console.log
+    [dotenv@17.2.3] injecting env (6) from .env -- tip: ­ƒôí add observability to secrets: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+{"level":30,"time":1763945611927,"pid":26900,"hostname":"Jose","reqId":"req-1","req":{"method":"POST","url":"/api/proyecto","host":"127.0.0.1:57188","remoteAddress":"::ffff:127.0.0.1","remotePort":57189},"msg":"incoming request"}
+{"level":30,"time":1763945611937,"pid":26900,"hostname":"Jose","reqId":"req-1","res":{"statusCode":201},"responseTime":9.350600004196167,"msg":"request completed"}
+{"level":30,"time":1763945611976,"pid":26900,"hostname":"Jose","reqId":"req-2","req":{"method":"GET","url":"/api/proyecto/P1","host":"127.0.0.1:57190","remoteAddress":"::ffff:127.0.0.1","remotePort":57191},"msg":"incoming request"}
+{"level":30,"time":1763945611977,"pid":26900,"hostname":"Jose","reqId":"req-2","res":{"statusCode":200},"responseTime":0.7730000019073486,"msg":"request completed"}
+{"level":30,"time":1763945611985,"pid":26900,"hostname":"Jose","reqId":"req-3","req":{"method":"PUT","url":"/api/proyecto/P1","host":"127.0.0.1:57192","remoteAddress":"::ffff:127.0.0.1","remotePort":57193},"msg":"incoming request"}
+{"level":30,"time":1763945611986,"pid":26900,"hostname":"Jose","reqId":"req-3","res":{"statusCode":200},"responseTime":1.722000002861023,"msg":"request completed"}
+{"level":30,"time":1763945611991,"pid":26900,"hostname":"Jose","reqId":"req-4","req":{"method":"DELETE","url":"/api/proyecto/eliminar/P1","host":"127.0.0.1:57194","remoteAddress":"::ffff:127.0.0.1","remotePort":57195},"msg":"incoming request"}
+{"level":30,"time":1763945611991,"pid":26900,"hostname":"Jose","reqId":"req-4","res":{"statusCode":200},"responseTime":0.42500001192092896,"msg":"request completed"}
+PASS tests/integracion/proyectos/proyecto
+.test.ts
+  Integraci├│n - Proyectos
+    ÔêÜ POST /api/proyecto ÔåÆ crear 
+proyecto (35 ms)
+    ÔêÜ GET /api/proyecto/:id ÔåÆ 
+obtener (28 ms)
+    ÔêÜ PUT /api/proyecto/:id ÔåÆ 
+actualizar (7 ms)
+    ÔêÜ DELETE 
+/api/proyecto/eliminar/:id (4 ms)
+
+  console.log
+    [dotenv@17.2.3] injecting env (6) from .env -- tip: Ô£à audit secrets and track compliance: https://dotenvx.com/ops
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+{"level":30,"time":1763945612896,"pid":26900,"hostname":"Jose","reqId":"req-1","req":{"method":"POST","url":"/api/equipo-proyecto","host":"127.0.0.1:57196","remoteAddress":"::ffff:127.0.0.1","remotePort":57197},"msg":"incoming request"}
+{"level":30,"time":1763945612901,"pid":26900,"hostname":"Jose","reqId":"req-1","res":{"statusCode":201},"responseTime":4.844500005245209,"msg":"request completed"}
+{"level":30,"time":1763945612908,"pid":26900,"hostname":"Jose","reqId":"req-2","req":{"method":"GET","url":"/api/equipo-proyecto/E1","host":"127.0.0.1:57198","remoteAddress":"::ffff:127.0.0.1","remotePort":57199},"msg":"incoming request"}
+{"level":30,"time":1763945612908,"pid":26900,"hostname":"Jose","reqId":"req-2","res":{"statusCode":200},"responseTime":0.5590999722480774,"msg":"request completed"}
+{"level":30,"time":1763945612912,"pid":26900,"hostname":"Jose","reqId":"req-3","req":{"method":"PUT","url":"/api/equipo-proyecto/E1","host":"127.0.0.1:57200","remoteAddress":"::ffff:127.0.0.1","remotePort":57201},"msg":"incoming request"}
+{"level":30,"time":1763945612914,"pid":26900,"hostname":"Jose","reqId":"req-3","res":{"statusCode":200},"responseTime":1.3630000352859497,"msg":"request completed"}
+{"level":30,"time":1763945612917,"pid":26900,"hostname":"Jose","reqId":"req-4","req":{"method":"DELETE","url":"/api/equipo-proyecto/eliminar/E1","host":"127.0.0.1:57202","remoteAddress":"::ffff:127.0.0.1","remotePort":57203},"msg":"incoming request"}
+{"level":30,"time":1763945612917,"pid":26900,"hostname":"Jose","reqId":"req-4","res":{"statusCode":200},"responseTime":0.3636999726295471,"msg":"request completed"}
+PASS tests/integracion/equipos-proyectos/
+equipo-proyecto.test.ts
+  Integraci├│n ÔÇô Equipo Proyecto
+    ÔêÜ POST /api/equipo-proyecto (23 ms)
+    ÔêÜ GET /api/equipo-proyecto/:id (4 
+ms)
+    ÔêÜ PUT /api/equipo-proyecto/:id (4 
+ms)
+    ÔêÜ DELETE 
+/api/equipo-proyecto/eliminar/:id (3 ms)
+
+  console.log
+    [dotenv@17.2.3] injecting env (6) from .env -- tip: ÔÜÖ´©Å  specify custom .env file path with { path: '/custom/path/.env' }
+
+      at _log (node_modules/dotenv/lib/main.js:142:11)
+
+{"level":30,"time":1763945613851,"pid":26900,"hostname":"Jose","reqId":"req-1","req":{"method":"GET","url":"/api/cliente","host":"127.0.0.1:57204","remoteAddress":"::ffff:127.0.0.1","remotePort":57205},"msg":"incoming request"}
+{"level":30,"time":1763945613853,"pid":26900,"hostname":"Jose","reqId":"req-1","res":{"statusCode":200},"responseTime":2.0616000294685364,"msg":"request completed"}
+{"level":30,"time":1763945613860,"pid":26900,"hostname":"Jose","reqId":"req-2","req":{"method":"GET","url":"/api/cliente/mock-1","host":"127.0.0.1:57206","remoteAddress":"::ffff:127.0.0.1","remotePort":57207},"msg":"incoming request"}
+{"level":30,"time":1763945613861,"pid":26900,"hostname":"Jose","reqId":"req-2","res":{"statusCode":200},"responseTime":0.426099956035614,"msg":"request completed"}
+{"level":30,"time":1763945613864,"pid":26900,"hostname":"Jose","reqId":"req-3","req":{"method":"GET","url":"/api/cliente/999","host":"127.0.0.1:57208","remoteAddress":"::ffff:127.0.0.1","remotePort":57209},"msg":"incoming request"}
+{"level":30,"time":1763945613865,"pid":26900,"hostname":"Jose","reqId":"req-3","res":{"statusCode":200},"responseTime":0.22189998626708984,"msg":"request completed"}
+{"level":30,"time":1763945613868,"pid":26900,"hostname":"Jose","reqId":"req-4","req":{"method":"PUT","url":"/api/cliente/mock-1","host":"127.0.0.1:57210","remoteAddress":"::ffff:127.0.0.1","remotePort":57211},"msg":"incoming request"}
+{"level":30,"time":1763945613870,"pid":26900,"hostname":"Jose","reqId":"req-4","res":{"statusCode":200},"responseTime":1.8776999711990356,"msg":"request completed"}
+{"level":30,"time":1763945613874,"pid":26900,"hostname":"Jose","reqId":"req-5","req":{"method":"PUT","url":"/api/cliente/mock-1","host":"127.0.0.1:57212","remoteAddress":"::ffff:127.0.0.1","remotePort":57213},"msg":"incoming request"}
+{"level":30,"time":1763945613875,"pid":26900,"hostname":"Jose","reqId":"req-5","res":{"statusCode":200},"responseTime":0.5985000133514404,"msg":"request completed"}
+{"level":30,"time":1763945613878,"pid":26900,"hostname":"Jose","reqId":"req-6","req":{"method":"DELETE","url":"/api/cliente/eliminar/mock-1","host":"127.0.0.1:57214","remoteAddress":"::ffff:127.0.0.1","remotePort":57215},"msg":"incoming request"}
+{"level":30,"time":1763945613878,"pid":26900,"hostname":"Jose","reqId":"req-6","res":{"statusCode":200},"responseTime":0.34630000591278076,"msg":"request completed"}
+PASS 
+tests/integracion/clientes.int.test.ts
+  Pruebas de integraci├│n - API Clientes
+    GET /api/cliente
+      ÔêÜ deber├¡a retornar lista de 
+clientes (12 ms)
+    GET /api/cliente/:idCliente
+      ÔêÜ deber├¡a retornar cliente 
+cuando existe (4 ms)
+      ÔêÜ deber├¡a retornar null cuando 
+el cliente no existe (4 ms)
+    PUT /api/cliente/:idCliente
+      ÔêÜ deber├¡a actualizar un cliente 
+exitosamente (6 ms)
+      ÔêÜ deber├¡a actualizar solo el 
+email del cliente (4 ms)
+    DELETE 
+/api/cliente/eliminar/:idCliente
+      ÔêÜ deber├¡a eliminar un cliente 
+exitosamente (3 ms)
+
+PASS tests/unit/equipos-proyectos/EquipoP
+royectoCasosUso.test.ts
+  EquipoProyectoCasosUso
+    ÔêÜ Debe lanzar error si el proyecto 
+no existe (25 ms)
+    ÔêÜ Debe lanzar error si el proyecto 
+ya tiene equipo (1 ms)
+    ÔêÜ Debe crear un equipo 
+correctamente (3 ms)
+    ÔêÜ Debe lanzar error si el equipo 
+no existe por ID (1 ms)
+    ÔêÜ Debe obtener equipo por ID (1 ms)
+    ÔêÜ Debe lanzar error si no hay 
+equipo en el proyecto (2 ms)
+    ÔêÜ Debe obtener equipo por proyecto
+    ÔêÜ Debe obtener todos los equipos
+    ÔêÜ Debe lanzar error si el equipo 
+no existe al actualizar (1 ms)
+    ÔêÜ Debe actualizar correctamente
+    ÔêÜ Debe lanzar error si el equipo 
+no existe al eliminar (1 ms)
+    ÔêÜ Debe eliminar correctamente (1 
+ms)
+
+PASS tests/unit/consultores/consultorCaso
+sUso.test.ts
+  ConsultorCasosUso - Pruebas unitarias
+    ÔêÜ deber├¡a registrar un consultor 
+cuando no existe - ├®xito (3 ms)
+    ÔêÜ deber├¡a lanzar error si el 
+consultor ya existe - duplicado (11 ms)
+    ÔêÜ Obtener consultor - ├®xito (1 ms)
+    ÔêÜ Obtener consultor - error si no 
+existe (1 ms)
+    ÔêÜ Actualizar consultor - ├®xito
+    ÔêÜ Actualizar consultor - error si 
+no existe
+    ÔêÜ Eliminar consultor - ├®xito (1 
+ms)
+    ÔêÜ Eliminar consultor - error si ya 
+est├í eliminado
+    ÔêÜ Eliminar consultor - error si no 
+existe
+
+PASS 
+tests/unit/tarea/TareaCasosUso.test.ts
+  TareaCasosUso
+    registrarTarea
+      ÔêÜ debe registrar una tarea 
+exitosamente (4 ms)
+      ÔêÜ debe lanzar error si el 
+proyecto no existe (14 ms)
+    actualizarTarea
+      ÔêÜ debe actualizar una tarea 
+exitosamente (2 ms)
+      ÔêÜ debe lanzar error si la tarea 
+no existe (2 ms)
+    eliminarTarea
+      ÔêÜ debe eliminar una tarea 
+exitosamente (2 ms)
+      ÔêÜ debe lanzar error si la tarea 
+ya est├í eliminada (1 ms)
+    obtenerTareaPorId
+      ÔêÜ debe retornar la tarea si 
+existe (1 ms)
+    listarTodasTareas
+      ÔêÜ debe retornar lista de tareas 
+(2 ms)
+
+PASS tests/unit/proyectos/ProyectoCasosUs
+o.test.ts
+  ProyectoCasosUso
+    ÔêÜ Debe lanzar error si el cliente 
+no existe (17 ms)
+    ÔêÜ Debe crear proyecto 
+correctamente (4 ms)
+    ÔêÜ Debe lanzar error si no existe 
+el proyecto (2 ms)
+    ÔêÜ Debe obtener un proyecto por ID 
+(1 ms)
+    ÔêÜ Debe lanzar error al actualizar 
+si no existe (1 ms)
+    ÔêÜ Debe actualizar correctamente (1 
+ms)
+    ÔêÜ Debe lanzar error si el proyecto 
+no existe al eliminar (1 ms)
+    ÔêÜ Debe eliminar marcando estado = 
+Eliminado (1 ms)
+
+PASS tests/unit/equipos-consultores/Equip
+oConsultorCasosUso.test.ts
+  EquipoConsultorCasosUso
+    ÔêÜ Debe lanzar error si el 
+consultor no existe (16 ms)
+    ÔêÜ Debe lanzar error si el equipo 
+del proyecto no existe (1 ms)
+    ÔêÜ Debe lanzar error si el rol no 
+existe
+    ÔêÜ Debe crear una asignaci├│n 
+correctamente
+    ÔêÜ Debe lanzar error si la 
+asignaci├│n no existe (1 ms)
+    ÔêÜ Debe lanzar error si el 
+consultor asociado est├í eliminado (1 ms)
+    ÔêÜ Debe obtener asignaci├│n 
+correctamente (1 ms)
+    ÔêÜ Debe lanzar error si el equipo 
+no existe
+    ÔêÜ Debe obtener asignaciones por 
+equipo
+    ÔêÜ Debe lanzar error si el 
+consultor no existe (1 ms)
+    ÔêÜ Debe obtener asignaciones por 
+consultor
+    ÔêÜ Debe lanzar error si no existe 
+la asignaci├│n al actualizar
+    ÔêÜ Debe actualizar correctamente (1 
+ms)
+    ÔêÜ Debe lanzar error si la 
+asignaci├│n no existe al eliminar (1 ms)
+    ÔêÜ Debe eliminar asignaci├│n 
+correctamente
+
+PASS tests/unit/roles/RolCasosUso.test.ts
+  RolCasosUso
+    ÔêÜ Debe lanzar error si ya existe 
+rol activo con ese nombre (12 ms)
+    ÔêÜ Debe crear un rol correctamente 
+(2 ms)
+    ÔêÜ Debe listar roles
+    ÔêÜ Debe lanzar error si el rol no 
+existe (1 ms)
+    ÔêÜ Debe obtener un rol 
+correctamente (1 ms)
+    ÔêÜ Debe lanzar error si el rol a 
+actualizar no existe (1 ms)
+    ÔêÜ Debe lanzar error si el nuevo 
+nombre ya existe en otro rol activo
+    ÔêÜ Debe actualizar correctamente (1 
+ms)
+    ÔêÜ Debe lanzar error si el rol no 
+existe al eliminar (1 ms)
+    ÔêÜ Debe eliminar un rol 
+correctamente (1 ms)
+
+PASS tests/unit/clientes/clienteCasosUso.
+test.ts
+  ClienteCasosUso - Pruebas unitarias
+    registrarCliente
+      ÔêÜ deber├¡a registrar un cliente 
+cuando no existe - ├®xito (3 ms)
+      ÔêÜ deber├¡a lanzar error si el 
+cliente ya existe - duplicado por 
+identificaci├│n (13 ms)
+      ÔêÜ deber├¡a lanzar error si el 
+cliente ya existe - duplicado por email 
+(1 ms)
+    listarTodosClientes
+      ÔêÜ deber├¡a retornar lista de 
+clientes - ├®xito (1 ms)
+      ÔêÜ deber├¡a retornar lista vac├¡a 
+cuando no hay clientes (1 ms)
+    buscarPorIdCliente
+      ÔêÜ deber├¡a retornar cliente 
+cuando existe - ├®xito
+      ÔêÜ deber├¡a retornar null cuando 
+el cliente no existe (1 ms)
+    obtenerClientePorIdentificacion
+      ÔêÜ deber├¡a retornar cliente 
+cuando existe - ├®xito (1 ms)
+      ÔêÜ deber├¡a retornar null cuando 
+no existe cliente con esa identificaci├│n
+    actualizarCliente
+      ÔêÜ deber├¡a actualizar cliente - 
+├®xito (1 ms)
+      ÔêÜ deber├¡a lanzar error si la 
+actualizaci├│n falla (1 ms)
+      ÔêÜ deber├¡a actualizar solo los 
+campos proporcionados (1 ms)
+    eliminarCliente
+      ÔêÜ deber├¡a eliminar cliente - 
+├®xito
+      ÔêÜ deber├¡a lanzar error si el 
+cliente no existe (1 ms)
+
+PASS tests/unit/proyectos/consultarProyec
+tosPorClienteCasosUso.test.ts
+  ConsultarProyectosPorClienteCasosUso - 
+Pruebas unitarias
+    ÔêÜ deber├¡a retornar proyectos 
+cuando el cliente existe y tiene 
+proyectos (3 ms)
+    ÔêÜ deber├¡a retornar proyectos 
+filtrados cuando se proporcionan filtros 
+(1 ms)
+    ÔêÜ deber├¡a retornar mensaje cuando 
+el cliente no tiene proyectos (1 ms)
+    ÔêÜ deber├¡a retornar mensaje cuando 
+el cliente tiene proyectos pero ninguno 
+cumple los filtros (1 ms)
+    ÔêÜ deber├¡a lanzar error cuando el 
+cliente no existe (11 ms)
+    ÔêÜ deber├¡a manejar proyectos null 
+del repositorio como lista vac├¡a
+    ÔêÜ deber├¡a retornar solo proyectos 
+activos del cliente (1 ms)
+
+-------------------------------------------------|---------|----------|---------|---------|----------------------------------------------------------------------------
+File                                             | % Stmts | % Branch | % Funcs | % Lines | Uncovered Line #s                                                          
+-------------------------------------------------|---------|----------|---------|---------|----------------------------------------------------------------------------
+All files                                        |   63.93 |    83.05 |   66.95 |   63.93 |                                                                            
+ common                                          |   91.48 |       50 |     100 |   91.48 |                                                                            
+  codigosHttp.ts                                 |     100 |      100 |     100 |     100 |                                                                            
+  configuracion.ts                               |   88.23 |       50 |     100 |   88.23 | 7-8,17-18                                                                  
+ common/middlewares                              |   63.85 |    66.66 |   66.66 |   63.85 |                                                                            
+  AppError.ts                                    |   78.04 |       75 |      60 |   78.04 | 28-33,38-40                                                                
+  ManejadorErrores.ts                            |      50 |       50 |     100 |      50 | 22-42                                                                      
+ core/aplicacion/casos-uso/Cliente               |     100 |      100 |     100 |     100 |                                                                            
+  ClienteCasosUso.ts                             |     100 |      100 |     100 |     100 |                                                                            
+ core/aplicacion/casos-uso/Consultor             |     100 |      100 |     100 |     100 |                                                                            
+  ConsultorCasosUso.ts                           |     100 |      100 |     100 |     100 |                                                                            
+ core/aplicacion/casos-uso/Consultor/constantes  |     100 |      100 |       0 |     100 |                                                                            
+  ConsultorMensajes.ts                           |     100 |      100 |       0 |     100 |                                                                            
+ core/aplicacion/casos-uso/Consultor/validadores |   79.31 |       75 |   66.66 |   79.31 |                                                                            
+  ConsultorValidador.ts                          |   79.31 |       75 |   66.66 |   79.31 | 18-21,25-26                                                                
+ core/aplicacion/casos-uso/Equipo-Consultor      |    87.5 |    76.66 |     100 |    87.5 |                                                                            
+  EquipoConsultorCasosUso.ts                     |    87.5 |    76.66 |     100 |    87.5 | 29-31,46-47,57-59,66-67,97-98,148-149,152-153,156-157,167-169,179-182      
+ core/aplicacion/casos-uso/Equipo-Proyecto       |   82.81 |    82.85 |     100 |   82.81 |                                                                            
+  EquipoProyectoCasosUso.ts                      |   82.81 |    82.85 |     100 |   82.81 | 32-33,89-93,96-110                                                         
+ core/aplicacion/casos-uso/Proyecto              |   90.05 |    70.45 |    90.9 |   90.05 |                                                                            
+  ConsultarProyectosPorClienteCasosUso.ts        |     100 |      100 |     100 |     100 |                                                                            
+  ProyectoCasosUso.ts                            |   86.95 |    66.66 |    87.5 |   86.95 | 24-25,27-28,30-31,33-34,44-45,49-50,68-69,115-116,132-133                  
+ core/aplicacion/casos-uso/Proyecto/Constantes   |     100 |      100 |     100 |     100 |                                                                            
+  mensajesProyecto.ts                            |     100 |      100 |     100 |     100 |                                                                            
+ core/aplicacion/casos-uso/Proyecto/Validaciones |   35.29 |      100 |       0 |   35.29 |                                                                            
+  ProyectoValidaciones.ts                        |   35.29 |      100 |       0 |   35.29 | 6-16                                                                       
+ core/aplicacion/casos-uso/Rol                   |   97.95 |       92 |     100 |   97.95 |                                                                            
+  RolCasosUso.ts                                 |   97.95 |       92 |     100 |   97.95 | 80-81                                                                      
+ core/aplicacion/casos-uso/Tarea                 |   96.31 |    74.35 |     100 |   96.31 |                                                                            
+  TareaCasosUso.ts                               |   96.31 |    74.35 |     100 |   96.31 | 29,101,140-141,151-152                                                     
+ core/aplicacion/casos-uso/Tarea/Constantes      |     100 |      100 |     100 |     100 |                                                                            
+  MensajesTarea.ts                               |     100 |      100 |     100 |     100 |                                                                            
+ core/aplicacion/casos-uso/Tarea/Validaciones    |   46.25 |    57.14 |   42.85 |   46.25 |                                                                            
+  TareaValidaciones.ts                           |   46.25 |    57.14 |   42.85 |   46.25 | 17-20,23-26,30-32,36-39,42-67,71-72                                        
+ core/dominio/cliente                            |     100 |      100 |     100 |     100 |                                                                            
+  Cliente.ts                                     |     100 |      100 |     100 |     100 |                                                                            
+ core/dominio/consultor                          |     100 |      100 |     100 |     100 |                                                                            
+  Consultor.ts                                   |     100 |      100 |     100 |     100 |                                                                            
+  ConsultorEstado.ts                             |     100 |      100 |     100 |     100 |                                                                            
+ core/dominio/equipo-proyecto                    |     100 |      100 |     100 |     100 |                                                                            
+  EquipoProyecto.ts                              |     100 |      100 |     100 |     100 |                                                                            
+ core/dominio/equipos-consultores                |     100 |      100 |     100 |     100 |                                                                            
+  EquipoConsultor.ts                             |     100 |      100 |     100 |     100 |                                                                            
+ core/dominio/proyecto                           |     100 |      100 |     100 |     100 |                                                                            
+  Proyecto.ts                                    |     100 |      100 |     100 |     100 |                                                                            
+ core/dominio/rol                                |     100 |      100 |     100 |     100 |                                                                            
+  Rol.ts                                         |     100 |      100 |     100 |     100 |                                                                            
+ core/dominio/tarea                              |     100 |      100 |     100 |     100 |                                                                            
+  Tarea.ts                                       |     100 |      100 |     100 |     100 |                                                                            
+ core/infraestructura/postgres                   |   16.36 |      100 |       0 |   16.36 |                                                                            
+  ClienteRepositorio.ts                          |   22.09 |      100 |       0 |   22.09 | 9-28,31-34,37-43,46-53,56-76,79-85                                         
+  ConsultorRepositorio.ts                        |   26.74 |      100 |       0 |   26.74 | 10-30,32-35,39-42,46-64,68-74,78-85                                        
+  EquipoConsultorRepositorio.ts                  |    9.72 |      100 |       0 |    9.72 | 10-18,21-78,81-106,109-134,137-163,166-192,195-258,261-269,272-278,281-287 
+  EquipoProyectoRepositorio.ts                   |   14.18 |      100 |       0 |   14.18 | 10-45,48-57,60-70,73-83,86-129,132-140                                     
+  ProyectoRepositorio.ts                         |      10 |      100 |       0 |      10 | 11-54,57-76,79-100,103-148,151-159,164-238                                 
+  RolRepositorio.ts                              |   25.55 |      100 |       0 |   25.55 | 11-26,30-38,42-51,55-76,80-89                                              
+  TareaRepositorio.ts                            |   18.32 |      100 |       0 |   18.32 | 12-22,28-62,68-87,93-104,110-126,132-176,182-201,207-229,235-298,304-310   
+  clientepostgres.ts                             |   70.58 |      100 |       0 |   70.58 | 13-17                                                                      
+ core/utils                                      |     3.5 |      100 |       0 |     3.5 |                                                                            
+  toCamelCase.ts                                 |    4.16 |      100 |       0 |    4.16 | 2-24                                                                       
+  toSnakeCase.ts                                 |    3.03 |      100 |       0 |    3.03 | 2-33                                                                       
+ presentacion                                    |   63.26 |      100 |      50 |   63.26 |                                                                            
+  app.ts                                         |   63.26 |      100 |      50 |   63.26 | 31-48                                                                      
+ presentacion/controladores                      |   78.92 |      100 |   79.24 |   78.92 |                                                                            
+  ClienteControlador.ts                          |   86.56 |      100 |   85.71 |   86.56 | 11-19                                                                      
+  ConsultorControlador.ts                        |   65.67 |      100 |   71.42 |   65.67 | 11-19,43-56                                                                
+  EquipoConsultorControlador.ts                  |   77.27 |      100 |      75 |   77.27 | 38-47,51-60                                                                
+  EquipoProyectoControlador.ts                   |   79.77 |      100 |      75 |   79.77 | 25-32,49-58                                                                
+  ProyectoControlador.ts                         |   71.17 |      100 |   77.77 |   71.17 | 26-33,86-109                                                               
+  RolControlador.ts                              |   90.66 |      100 |   85.71 |   90.66 | 28-34                                                                      
+  TareaControlador.ts                            |   85.71 |      100 |   85.71 |   85.71 | 10-18                                                                      
+ presentacion/esquemas                           |      55 |       40 |     100 |      55 |                                                                            
+  validarZod.ts                                  |      55 |       40 |     100 |      55 | 18-19,21-22,25-38                                                          
+ presentacion/esquemas/Consultores               |     100 |      100 |     100 |     100 |                                                                            
+  consultorActualizarEsquema.ts                  |     100 |      100 |     100 |     100 |                                                                            
+  consultorCrearEsquema.ts                       |     100 |      100 |     100 |     100 |                                                                            
+ presentacion/esquemas/EquipoConsultor           |     100 |      100 |     100 |     100 |                                                                            
+  EquipoConsultorActualizarEsquema.ts            |     100 |      100 |     100 |     100 |                                                                            
+  EquipoConsultorCrearEsquema.ts                 |     100 |      100 |     100 |     100 |                                                                            
+ presentacion/esquemas/EquipoProyecto            |     100 |       75 |   66.66 |     100 |                                                                            
+  EquipoProyectoActualizarEsquema.ts             |     100 |       50 |   33.33 |     100 | 27-28                                                                      
+  EquipoProyectoCrearEsquema.ts                  |     100 |      100 |     100 |     100 |                                                                            
+ presentacion/esquemas/Proyectos                 |     100 |       80 |     100 |     100 |                                                                            
+  proyectoActualizarEsquema.ts                   |     100 |    66.66 |     100 |     100 | 59-60                                                                      
+  proyectoCrearEsquema.ts                        |     100 |      100 |     100 |     100 |                                                                            
+ presentacion/esquemas/Roles                     |     100 |      100 |     100 |     100 |                                                                            
+  rolActualizarEsquema.ts                        |     100 |      100 |     100 |     100 |                                                                            
+  rolCrearEsquema.ts                             |     100 |      100 |     100 |     100 |                                                                            
+ presentacion/esquemas/Tarea                     |      85 |      100 |     100 |      85 |                                                                            
+  TareaActualizarEsquema.ts                      |   85.71 |      100 |     100 |   85.71 | 11-13                                                                      
+  TareaCrearEsquema.ts                           |   84.21 |      100 |     100 |   84.21 | 11-13                                                                      
+ presentacion/rutas                              |     100 |      100 |     100 |     100 |                                                                            
+  ClienteEnrutador.ts                            |     100 |      100 |     100 |     100 |                                                                            
+  EquipoConsultorEnrutador.ts                    |     100 |      100 |     100 |     100 |                                                                            
+  EquipoProyectoEnrutador.ts                     |     100 |      100 |     100 |     100 |                                                                            
+  ProyectoEnrutador.ts                           |     100 |      100 |     100 |     100 |                                                                            
+  RolEnrutador.ts                                |     100 |      100 |     100 |     100 |                                                                            
+  TareaEnrutador.ts                              |     100 |      100 |     100 |     100 |                                                                            
+  consultorEnrutador.ts                          |     100 |      100 |     100 |     100 |                                                                            
+-------------------------------------------------|---------|----------|---------|---------|----------------------------------------------------------------------------
+Test Suites: 16 passed, 16 total
+Tests:       122 passed, 122 total
+Snapshots:   0 total
+Time:        14.119 s
+Ran all test suites.
