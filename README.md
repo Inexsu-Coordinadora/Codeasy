@@ -31,6 +31,20 @@ npm run dev
 
 El servidor se iniciará en `http://localhost:3000` (o el puerto configurado en `.env`).
 
+### 📚 Documentación de la API (Swagger)
+
+Una vez que el servidor esté ejecutándose, puedes acceder a la documentación interactiva de la API en:
+
+```
+http://127.0.0.1:3000/docs
+```
+
+La documentación Swagger proporciona:
+- 📖 Descripción detallada de todos los endpoints
+- 🧪 Interfaz interactiva para probar las APIs
+- 📋 Esquemas de request/response
+- ✅ Validaciones y ejemplos de uso
+
 ### Ejecutar las Pruebas
 
 #### Ejecutar todas las pruebas con cobertura
