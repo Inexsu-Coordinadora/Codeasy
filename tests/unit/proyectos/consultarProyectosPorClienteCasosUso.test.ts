@@ -1,19 +1,32 @@
 // tests/unit/proyectos/consultarProyectosPorClienteCasosUso.test.ts
-
-import { ConsultarProyectosPorClienteCasosUso } from "../../../src/core/aplicacion/casos-uso/Proyecto/ConsultarProyectosPorClienteCasosUso";
+import { jest } from '@jest/globals';
 import { IProyectoRepositorio } from "../../../src/core/dominio/proyecto/repositorio/IProyectoRepositorio";
 import { IClienteRepositorio } from "../../../src/core/dominio/cliente/repositorio/IClienteRepositorio";
 import { Proyecto } from "../../../src/core/dominio/proyecto/Proyecto";
 import { ICliente } from "../../../src/core/dominio/cliente/ICliente";
-import { ProyectoValidaciones } from "../../../src/core/aplicacion/casos-uso/Proyecto/Validaciones/ProyectoValidaciones";
 import { NoEncontradoError } from "../../../src/common/middlewares/AppError";
 
-jest.mock("../../../src/core/aplicacion/casos-uso/Proyecto/Validaciones/ProyectoValidaciones");
+let ProyectoValidaciones: any;
+let ConsultarProyectosPorClienteCasosUso: any;
 
 describe("ConsultarProyectosPorClienteCasosUso - Pruebas unitarias", () => {
     let proyectoRepoMock: Partial<IProyectoRepositorio> & { obtenerPorCliente: jest.Mock };
     let clienteRepoMock: Partial<IClienteRepositorio> & { buscarPorIdCliente: jest.Mock };
-    let casosUso: ConsultarProyectosPorClienteCasosUso;
+    let casosUso: any;
+
+    beforeAll(async () => {
+        await jest.unstable_mockModule("../../../src/core/aplicacion/casos-uso/Proyecto/Validaciones/ProyectoValidaciones", () => ({
+            ProyectoValidaciones: {
+                validarClienteExiste: jest.fn(),
+            }
+        }));
+
+        const validacionesModule = await import("../../../src/core/aplicacion/casos-uso/Proyecto/Validaciones/ProyectoValidaciones");
+        ProyectoValidaciones = validacionesModule.ProyectoValidaciones;
+
+        const casosUsoModule = await import("../../../src/core/aplicacion/casos-uso/Proyecto/ConsultarProyectosPorClienteCasosUso");
+        ConsultarProyectosPorClienteCasosUso = casosUsoModule.ConsultarProyectosPorClienteCasosUso;
+    });
 
     beforeEach(() => {
         proyectoRepoMock = {

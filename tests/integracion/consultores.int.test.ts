@@ -1,68 +1,93 @@
-import request from "supertest";
-import { app } from "../../src/presentacion/app";
+import { jest } from '@jest/globals';
 import { IConsultor } from "../../src/core/dominio/consultor/IConsultor";
 
 type ConsultorUpdate = Partial<Omit<IConsultor, "idConsultor">>;
 
-jest.mock("../../src/core/infraestructura/postgres/ConsultorRepositorio", () => {
-  return {
-    ConsultorRepositorio: jest.fn().mockImplementation(() => {
-      return {
-        listarTodosConsultores: jest.fn().mockResolvedValue([
-          {
+let ConsultorRepositorio: any;
+let EquipoConsultorRepositorio: any;
+
+let consultorRepoInstance: any;
+let equipoConsultorRepoInstance: any;
+
+describe("Pruebas de integración - API Consultores", () => {
+  let app: any;
+  let request: any;
+
+  beforeAll(async () => {
+    consultorRepoInstance = {
+      listarTodosConsultores: jest.fn().mockResolvedValue([
+        {
+          idConsultor: "mock-1",
+          nombre: "Dina",
+          identificacion: "123",
+          correo: "dina@mail.com",
+          estado: "Activo"
+        },
+        {
+          idConsultor: "mock-2",
+          nombre: "Juan",
+          identificacion: "456",
+          correo: "juan@mail.com",
+          estado: "Activo"
+        }
+      ]),
+      obtenerConsultorPorId: jest.fn().mockImplementation(async (id: string) => {
+        if (id === "mock-1") {
+          return {
             idConsultor: "mock-1",
             nombre: "Dina",
             identificacion: "123",
             correo: "dina@mail.com",
             estado: "Activo"
-          },
-          {
-            idConsultor: "mock-2",
-            nombre: "Juan",
-            identificacion: "456",
-            correo: "juan@mail.com",
-            estado: "Activo"
+          };
+        }
+        return null;
+      }),
+      actualizarConsultor: jest.fn().mockImplementation(async (id: string, datos: ConsultorUpdate) => {
+        if (id === "mock-1") {
+          if (datos.estado === "Eliminado") {
+            return { idConsultor: "mock-1", estado: "Eliminado", nombre: "Dina", correo: "dina@mail.com", identificacion: "123" };
           }
-        ]),
-        obtenerConsultorPorId: jest.fn().mockImplementation(async (id: string): Promise<IConsultor | null> => {
-          if (id === "mock-1") {
-            return {
-              idConsultor: "mock-1",
-              nombre: "Dina",
-              identificacion: "123",
-              correo: "dina@mail.com",
-              estado: "Activo"
-            };
-          }
-          return null;
-        }),
-        actualizarConsultor: jest.fn().mockImplementation(async (id: string, datos: ConsultorUpdate): Promise<IConsultor | null> => {
-          if (id === "mock-1") {
-            if (datos.estado === "Eliminado") {
-              return { idConsultor: "mock-1", estado: "Eliminado", nombre: "Dina", correo: "dina@mail.com", identificacion: "123" };
-            }
-            return { idConsultor: "mock-1", nombre: datos.nombre ?? "Dina", correo: datos.correo ?? "dina@mail.com", identificacion: datos.identificacion ?? "123", estado: datos.estado ?? "Activo" };
-          }
-          return null;
-        }),
-        eliminarConsultor: jest.fn().mockImplementation(async (_id: string) => {
-          return;
-        }),
-        buscarPorCorreoOIdentificacion: jest.fn().mockResolvedValue(null),
-        registrarConsultor: jest.fn().mockImplementation(async (c: IConsultor) => c)
-      };
-    })
-  };
-});
+          return { idConsultor: "mock-1", nombre: datos.nombre ?? "Dina", correo: datos.correo ?? "dina@mail.com", identificacion: datos.identificacion ?? "123", estado: datos.estado ?? "Activo" };
+        }
+        return null;
+      }),
+      eliminarConsultor: jest.fn().mockResolvedValue(undefined),
+      buscarPorCorreoOIdentificacion: jest.fn().mockResolvedValue(null),
+      registrarConsultor: jest.fn().mockImplementation(async (c: IConsultor) => c)
+    };
 
-describe("Pruebas de integración - API Consultores", () => {
+    equipoConsultorRepoInstance = {
+      // Add methods if needed by ConsultorCasosUso, currently mostly used for validation in other places
+      // but ConsultorCasosUso might use it? 
+      // Checked ConsultorCasosUso.ts, it injects it but doesn't seem to use it in the methods tested here?
+      // Wait, constructor(private consultorRepositorio: IConsultorRepositorio, private equipoConsultorRepositorio: IEquipoConsultorRepositorio)
+      // It's injected, so we should mock it to be safe.
+    };
 
-  beforeAll(async () => {
+    await jest.unstable_mockModule(
+      "../../src/core/infraestructura/postgres/ConsultorRepositorio.js",
+      () => ({
+        ConsultorRepositorio: jest.fn(() => consultorRepoInstance)
+      })
+    );
+
+    await jest.unstable_mockModule(
+      "../../src/core/infraestructura/postgres/EquipoConsultorRepositorio.js",
+      () => ({
+        EquipoConsultorRepositorio: jest.fn(() => equipoConsultorRepoInstance)
+      })
+    );
+
+    const appModule = await import("../../src/presentacion/app.js");
+    app = appModule.app;
+    request = (await import("supertest")).default;
+
     await app.ready();
   });
 
   afterAll(async () => {
-    await app.close();
+    if (app) await app.close();
   });
 
   test("GET /api/consultor - retorna lista simulada", async () => {

@@ -3,11 +3,12 @@
   "version": "1.0.0",
   "description": "*Sistema de gestión de proyectos colaborativo desarrollado con Fastify, TypeScript y PostgreSQL.*",
   "main": "index.js",
+  "type": "module",
   "scripts": {
     "build": "tsc",
     "start": "node ./dist/index.js",
     "dev": "tsx src/index.ts",
-    "test": "jest --runInBand --coverage",
+    "test": "node --experimental-vm-modules ./node_modules/jest/bin/jest.js --runInBand --coverage",
     "unit-test": "jest --testPathPatterns=unit --coverage",
     "integration-test": "jest --testPathPatterns=integracion",
     "test:cov": "jest --coverage"

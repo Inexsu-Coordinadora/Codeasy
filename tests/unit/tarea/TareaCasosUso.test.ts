@@ -1,13 +1,13 @@
 import { TareaCasosUso } from "../../../src/core/aplicacion/casos-uso/Tarea/TareaCasosUso";
 import { TareaRepositorio } from "../../../src/core/infraestructura/postgres/TareaRepositorio";
-import { TareaValidaciones } from "../../../src/core/aplicacion/casos-uso/Tarea/TareaValidaciones";
+import { TareaValidaciones } from "../../../src/core/aplicacion/casos-uso/Tarea/Validaciones/TareaValidaciones";
 import { ITarea } from "../../../src/core/dominio/tarea/ITarea";
 import { AppError } from "../../../src/common/middlewares/AppError";
 import { describe, it, expect, beforeEach, jest } from '@jest/globals';
 
 // Mock dependencies
 jest.mock("../../../src/core/infraestructura/postgres/TareaRepositorio");
-jest.mock("../../../src/core/aplicacion/casos-uso/Tarea/TareaValidaciones");
+jest.mock("../../../src/core/aplicacion/casos-uso/Tarea/Validaciones/TareaValidaciones");
 
 describe("TareaCasosUso", () => {
     let tareaCasosUso: TareaCasosUso;

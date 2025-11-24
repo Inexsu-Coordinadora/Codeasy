@@ -1,16 +1,31 @@
 // tests/unit/consultores/consultorCasosUso.test.ts
-
-import { ConsultorCasosUso } from "../../../src/core/aplicacion/casos-uso/Consultor/ConsultorCasosUso";
+import { jest } from '@jest/globals';
 import { consultorEstado } from "../../../src/core/dominio/consultor/ConsultorEstado";
-import { ConsultorValidador } from "../../../src/core/aplicacion/casos-uso/Consultor/validadores/ConsultorValidador";
 import { IConsultorRepositorio } from "../../../src/core/dominio/consultor/repositorio/IConsultorRepositorio";
 import { IConsultor } from "../../../src/core/dominio/consultor/IConsultor";
 
-jest.mock("../../../src/core/aplicacion/casos-uso/Consultor/validadores/ConsultorValidador");
+let ConsultorValidador: any;
+let ConsultorCasosUso: any;
 
 describe("ConsultorCasosUso - Pruebas unitarias", () => {
   let repoMock: jest.Mocked<IConsultorRepositorio>;
-  let casosUso: ConsultorCasosUso;
+  let casosUso: any;
+
+  beforeAll(async () => {
+    await jest.unstable_mockModule("../../../src/core/aplicacion/casos-uso/Consultor/validadores/ConsultorValidador", () => ({
+      ConsultorValidador: {
+        validarDuplicado: jest.fn(),
+        validarExistencia: jest.fn(),
+        validarNoEliminado: jest.fn(),
+      }
+    }));
+
+    const validadorModule = await import("../../../src/core/aplicacion/casos-uso/Consultor/validadores/ConsultorValidador");
+    ConsultorValidador = validadorModule.ConsultorValidador;
+
+    const casosUsoModule = await import("../../../src/core/aplicacion/casos-uso/Consultor/ConsultorCasosUso");
+    ConsultorCasosUso = casosUsoModule.ConsultorCasosUso;
+  });
 
   beforeEach(() => {
     repoMock = {
@@ -22,65 +37,70 @@ describe("ConsultorCasosUso - Pruebas unitarias", () => {
       eliminarConsultor: jest.fn(),
     };
 
-    casosUso = new ConsultorCasosUso(repoMock);
+    // Mock EquipoConsultorRepositorio as well since it is required in constructor
+    const equipoRepoMock = {
+      crear: jest.fn(),
+    };
+
+    casosUso = new ConsultorCasosUso(repoMock, equipoRepoMock);
 
     jest.clearAllMocks();
 
-    (ConsultorValidador.validarDuplicado as jest.Mock).mockImplementation(() => {});
-    (ConsultorValidador.validarExistencia as jest.Mock).mockImplementation(() => {});
-    (ConsultorValidador.validarNoEliminado as jest.Mock).mockImplementation(() => {});
+    (ConsultorValidador.validarDuplicado as jest.Mock).mockImplementation(() => { });
+    (ConsultorValidador.validarExistencia as jest.Mock).mockImplementation(() => { });
+    (ConsultorValidador.validarNoEliminado as jest.Mock).mockImplementation(() => { });
   });
 
 
-test("debería registrar un consultor cuando no existe - éxito", async () => {
-  const datos = {
-    nombre: "Dina",
-    correo: "dina@example.com",
-    identificacion: "123",
-  };
+  test("debería registrar un consultor cuando no existe - éxito", async () => {
+    const datos = {
+      nombre: "Dina",
+      correo: "dina@example.com",
+      identificacion: "123",
+    };
 
 
-  repoMock.buscarPorCorreoOIdentificacion.mockResolvedValue(null);
+    repoMock.buscarPorCorreoOIdentificacion.mockResolvedValue(null);
 
-  const consultorCreado: IConsultor = {
-    idConsultor: "uuid-123",
-    ...datos,
-    estado: consultorEstado.ACTIVO,
-  };
+    const consultorCreado: IConsultor = {
+      idConsultor: "uuid-123",
+      ...datos,
+      estado: consultorEstado.ACTIVO,
+    };
 
-  repoMock.registrarConsultor.mockResolvedValue(consultorCreado);
+    repoMock.registrarConsultor.mockResolvedValue(consultorCreado);
 
-  const resultado = await casosUso.registrarConsultor(datos);
+    const resultado = await casosUso.registrarConsultor(datos);
 
-  expect(repoMock.buscarPorCorreoOIdentificacion).toHaveBeenCalled();
-  expect(repoMock.registrarConsultor).toHaveBeenCalled();
-  expect(resultado).toEqual(consultorCreado);
-});
-
-test("debería lanzar error si el consultor ya existe - duplicado", async () => {
-  const datos = {
-    nombre: "Dina",
-    correo: "dina@example.com",
-    identificacion: "123",
-  };
-
-
-  const consultorExistente: IConsultor = {
-    idConsultor: "uuid-existe",
-    nombre: "Dina",
-    correo: "dina@example.com",
-    identificacion: "123",
-    estado: consultorEstado.ACTIVO,
-  };
-
-  repoMock.buscarPorCorreoOIdentificacion.mockResolvedValue(consultorExistente);
-
-  (ConsultorValidador.validarDuplicado as jest.Mock).mockImplementation(() => {
-    throw new Error("Consultor ya existe");
+    expect(repoMock.buscarPorCorreoOIdentificacion).toHaveBeenCalled();
+    expect(repoMock.registrarConsultor).toHaveBeenCalled();
+    expect(resultado).toEqual(consultorCreado);
   });
 
-  await expect(casosUso.registrarConsultor(datos)).rejects.toThrow("Consultor ya existe");
-});
+  test("debería lanzar error si el consultor ya existe - duplicado", async () => {
+    const datos = {
+      nombre: "Dina",
+      correo: "dina@example.com",
+      identificacion: "123",
+    };
+
+
+    const consultorExistente: IConsultor = {
+      idConsultor: "uuid-existe",
+      nombre: "Dina",
+      correo: "dina@example.com",
+      identificacion: "123",
+      estado: consultorEstado.ACTIVO,
+    };
+
+    repoMock.buscarPorCorreoOIdentificacion.mockResolvedValue(consultorExistente);
+
+    (ConsultorValidador.validarDuplicado as jest.Mock).mockImplementation(() => {
+      throw new Error("Consultor ya existe");
+    });
+
+    await expect(casosUso.registrarConsultor(datos)).rejects.toThrow("Consultor ya existe");
+  });
 
 
   test("Obtener consultor - éxito", async () => {
@@ -117,7 +137,7 @@ test("debería lanzar error si el consultor ya existe - duplicado", async () => 
       nombre: "Pepe",
       correo: "old@mail.com",
       estado: consultorEstado.ACTIVO,
-       identificacion: "1233"
+      identificacion: "1233"
 
     };
 
@@ -171,20 +191,20 @@ test("debería lanzar error si el consultor ya existe - duplicado", async () => 
   });
 
 
-test("Eliminar consultor - error si ya está eliminado", async () => {
-  repoMock.obtenerConsultorPorId.mockResolvedValue({
-    idConsultor: "1",
-    estado: "Eliminado",
-  } as unknown as IConsultor);
+  test("Eliminar consultor - error si ya está eliminado", async () => {
+    repoMock.obtenerConsultorPorId.mockResolvedValue({
+      idConsultor: "1",
+      estado: "Eliminado",
+    } as unknown as IConsultor);
 
-  (ConsultorValidador.validarNoEliminado as jest.Mock).mockImplementation(() => {
-    throw new Error("El consultor ya está eliminado");
+    (ConsultorValidador.validarNoEliminado as jest.Mock).mockImplementation(() => {
+      throw new Error("El consultor ya está eliminado");
+    });
+
+    await expect(casosUso.eliminarConsultor("1")).rejects.toThrow(
+      "El consultor ya está eliminado"
+    );
   });
-
-  await expect(casosUso.eliminarConsultor("1")).rejects.toThrow(
-    "El consultor ya está eliminado"
-  );
-});
 
   test("Eliminar consultor - error si no existe", async () => {
     repoMock.obtenerConsultorPorId.mockResolvedValue(null);

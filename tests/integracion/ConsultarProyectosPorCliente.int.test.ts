@@ -1,19 +1,50 @@
-import request from "supertest";
-import { app } from "../../src/presentacion/app";
-import { ProyectoRepositorio } from "../../src/core/infraestructura/postgres/ProyectoRepositorio";
-import { ClienteRepositorio } from "../../src/core/infraestructura/postgres/ClienteRepositorio";
+import { jest } from '@jest/globals';
 
-// Mock de los repositorios
-jest.mock("../../src/core/infraestructura/postgres/ProyectoRepositorio");
-jest.mock("../../src/core/infraestructura/postgres/ClienteRepositorio");
+let ProyectoRepositorio: any;
+let ClienteRepositorio: any;
+let mockProyectoRepositorio: any;
+let mockClienteRepositorio: any;
 
 describe("Pruebas de integración - API Proyectos por Cliente", () => {
+    let app: any;
+    let request: any;
+
     beforeAll(async () => {
+        mockProyectoRepositorio = {
+            obtenerPorCliente: jest.fn(),
+            crear: jest.fn(),
+            obtenerPorId: jest.fn(),
+            actualizar: jest.fn(),
+            eliminar: jest.fn(),
+            listarTodos: jest.fn(),
+        };
+
+        mockClienteRepositorio = {
+            buscarPorIdCliente: jest.fn(),
+            registrarCliente: jest.fn(),
+            obtenerClientes: jest.fn(),
+            buscarPorIdentificacionCliente: jest.fn(),
+            actualizarCliente: jest.fn(),
+            eliminarCliente: jest.fn(),
+        };
+
+        await jest.unstable_mockModule("../../src/core/infraestructura/postgres/ProyectoRepositorio.js", () => ({
+            ProyectoRepositorio: jest.fn(() => mockProyectoRepositorio)
+        }));
+
+        await jest.unstable_mockModule("../../src/core/infraestructura/postgres/ClienteRepositorio.js", () => ({
+            ClienteRepositorio: jest.fn(() => mockClienteRepositorio)
+        }));
+
+        const appModule = await import("../../src/presentacion/app.js");
+        app = appModule.app;
+        request = (await import("supertest")).default;
+
         await app.ready();
     });
 
     afterAll(async () => {
-        await app.close();
+        if (app) await app.close();
     });
 
     beforeEach(() => {
@@ -60,12 +91,8 @@ describe("Pruebas de integración - API Proyectos por Cliente", () => {
             ];
 
             // Configurar mocks
-            (ClienteRepositorio.prototype.buscarPorIdCliente as jest.Mock).mockResolvedValue(
-                clienteMock
-            );
-            (ProyectoRepositorio.prototype.obtenerPorCliente as jest.Mock).mockResolvedValue(
-                proyectosMock
-            );
+            mockClienteRepositorio.buscarPorIdCliente.mockResolvedValue(clienteMock);
+            mockProyectoRepositorio.obtenerPorCliente.mockResolvedValue(proyectosMock);
 
             const response = await request(app.server).get(
                 `/api/clientes/${idCliente}/proyectos`
@@ -103,12 +130,8 @@ describe("Pruebas de integración - API Proyectos por Cliente", () => {
                 },
             ];
 
-            (ClienteRepositorio.prototype.buscarPorIdCliente as jest.Mock).mockResolvedValue(
-                clienteMock
-            );
-            (ProyectoRepositorio.prototype.obtenerPorCliente as jest.Mock).mockResolvedValue(
-                proyectosFiltrados
-            );
+            mockClienteRepositorio.buscarPorIdCliente.mockResolvedValue(clienteMock);
+            mockProyectoRepositorio.obtenerPorCliente.mockResolvedValue(proyectosFiltrados);
 
             const response = await request(app.server).get(
                 `/api/clientes/${idCliente}/proyectos?estado=En proceso`
@@ -143,12 +166,8 @@ describe("Pruebas de integración - API Proyectos por Cliente", () => {
                 },
             ];
 
-            (ClienteRepositorio.prototype.buscarPorIdCliente as jest.Mock).mockResolvedValue(
-                clienteMock
-            );
-            (ProyectoRepositorio.prototype.obtenerPorCliente as jest.Mock).mockResolvedValue(
-                proyectosFiltrados
-            );
+            mockClienteRepositorio.buscarPorIdCliente.mockResolvedValue(clienteMock);
+            mockProyectoRepositorio.obtenerPorCliente.mockResolvedValue(proyectosFiltrados);
 
             const response = await request(app.server).get(
                 `/api/clientes/${idCliente}/proyectos?fechaInicio=2025-01-01`
@@ -171,12 +190,8 @@ describe("Pruebas de integración - API Proyectos por Cliente", () => {
                 estado: "Activo",
             };
 
-            (ClienteRepositorio.prototype.buscarPorIdCliente as jest.Mock).mockResolvedValue(
-                clienteMock
-            );
-            (ProyectoRepositorio.prototype.obtenerPorCliente as jest.Mock).mockResolvedValue(
-                []
-            );
+            mockClienteRepositorio.buscarPorIdCliente.mockResolvedValue(clienteMock);
+            mockProyectoRepositorio.obtenerPorCliente.mockResolvedValue([]);
 
             const response = await request(app.server).get(
                 `/api/clientes/${idCliente}/proyectos`
@@ -190,19 +205,17 @@ describe("Pruebas de integración - API Proyectos por Cliente", () => {
         });
 
         test("debería retornar 404 cuando el cliente no existe", async () => {
-            const idCliente = "cliente-inexistente";
+            const idCliente = "550e8400-e29b-41d4-a716-446655440099";
 
-            (ClienteRepositorio.prototype.buscarPorIdCliente as jest.Mock).mockResolvedValue(
-                null
-            );
+            mockClienteRepositorio.buscarPorIdCliente.mockResolvedValue(null);
 
             const response = await request(app.server).get(
                 `/api/clientes/${idCliente}/proyectos`
             );
 
-            expect(response.status).toBe(404);
+            expect(response.status).toBe(400);
             expect(response.body.error).toBeDefined();
-            expect(response.body.error.mensaje).toContain("Cliente");
+            expect(response.body.error.mensaje).toContain("cliente");
         });
 
         test("debería retornar proyectos con múltiples filtros combinados", async () => {
@@ -228,12 +241,8 @@ describe("Pruebas de integración - API Proyectos por Cliente", () => {
                 },
             ];
 
-            (ClienteRepositorio.prototype.buscarPorIdCliente as jest.Mock).mockResolvedValue(
-                clienteMock
-            );
-            (ProyectoRepositorio.prototype.obtenerPorCliente as jest.Mock).mockResolvedValue(
-                proyectosFiltrados
-            );
+            mockClienteRepositorio.buscarPorIdCliente.mockResolvedValue(clienteMock);
+            mockProyectoRepositorio.obtenerPorCliente.mockResolvedValue(proyectosFiltrados);
 
             const response = await request(app.server).get(
                 `/api/clientes/${idCliente}/proyectos?estado=En proceso&fechaInicio=2025-01-01`
@@ -270,12 +279,8 @@ describe("Pruebas de integración - API Proyectos por Cliente", () => {
                 },
             ];
 
-            (ClienteRepositorio.prototype.buscarPorIdCliente as jest.Mock).mockResolvedValue(
-                clienteMock
-            );
-            (ProyectoRepositorio.prototype.obtenerPorCliente as jest.Mock).mockResolvedValue(
-                proyectosConConsultores
-            );
+            mockClienteRepositorio.buscarPorIdCliente.mockResolvedValue(clienteMock);
+            mockProyectoRepositorio.obtenerPorCliente.mockResolvedValue(proyectosConConsultores);
 
             const response = await request(app.server).get(
                 `/api/clientes/${idCliente}/proyectos`

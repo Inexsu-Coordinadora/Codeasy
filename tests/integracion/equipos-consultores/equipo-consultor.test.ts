@@ -40,7 +40,7 @@ describe("Integración – Equipo Consultor", () => {
     ));
 
     ({ ConsultorRepositorio } = await jest.unstable_mockModule(
-      "../../../src/core/infraestructura/postgres/ConsultorRepository.js",
+      "../../../src/core/infraestructura/postgres/ConsultorRepositorio.js",
       () => ({
         ConsultorRepositorio: jest.fn(() => consultorRepoInstance)
       })

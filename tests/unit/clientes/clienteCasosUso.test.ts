@@ -1,3 +1,4 @@
+import { jest } from '@jest/globals';
 // tests/unit/clientes/clienteCasosUso.test.ts
 
 import { ClienteCasosUso } from "../../../src/core/aplicacion/casos-uso/Cliente/ClienteCasosUso";

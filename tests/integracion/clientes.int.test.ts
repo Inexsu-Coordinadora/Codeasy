@@ -1,73 +1,80 @@
-import request from "supertest";
-import { app } from "../../src/presentacion/app";
+import { jest } from '@jest/globals';
 import { ICliente } from "../../src/core/dominio/cliente/ICliente";
 
-jest.mock("../../src/core/infraestructura/postgres/ClienteRepositorio", () => {
-    return {
-        ClienteRepositorio: jest.fn().mockImplementation(() => {
-            return {
-                registrarCliente: jest.fn().mockImplementation(async (cliente: ICliente) => ({
-                    idCliente: "mock-uuid-123",
-                    ...cliente,
-                })),
-                obtenerClientes: jest.fn().mockResolvedValue([
-                    {
+let ClienteRepositorio: any;
+let mockClienteRepositorio: any;
+
+describe("Pruebas de integración - API Clientes", () => {
+    let app: any;
+    let request: any;
+
+    beforeAll(async () => {
+        mockClienteRepositorio = {
+            registrarCliente: jest.fn().mockImplementation(async (cliente: ICliente) => ({
+                idCliente: "mock-uuid-123",
+                ...cliente,
+            })),
+            obtenerClientes: jest.fn().mockResolvedValue([
+                {
+                    idCliente: "mock-1",
+                    nombre: "Empresa ABC",
+                    identificacion: "123456789",
+                    email: "abc@mail.com",
+                    telefono: "3001234567",
+                    estado: "Activo",
+                },
+                {
+                    idCliente: "mock-2",
+                    nombre: "Empresa XYZ",
+                    identificacion: "987654321",
+                    email: "xyz@mail.com",
+                    telefono: "3009876543",
+                    estado: "Activo",
+                },
+            ]),
+            buscarPorIdCliente: jest.fn().mockImplementation(async (id: string): Promise<ICliente | null> => {
+                if (id === "mock-1") {
+                    return {
                         idCliente: "mock-1",
                         nombre: "Empresa ABC",
                         identificacion: "123456789",
                         email: "abc@mail.com",
                         telefono: "3001234567",
                         estado: "Activo",
-                    },
-                    {
-                        idCliente: "mock-2",
-                        nombre: "Empresa XYZ",
-                        identificacion: "987654321",
-                        email: "xyz@mail.com",
-                        telefono: "3009876543",
+                    };
+                }
+                return null;
+            }),
+            buscarPorIdentificacionCliente: jest.fn().mockResolvedValue(null),
+            actualizarCliente: jest.fn().mockImplementation(async (id: string, datos: Partial<ICliente>): Promise<ICliente | null> => {
+                if (id === "mock-1") {
+                    return {
+                        idCliente: "mock-1",
+                        nombre: datos.nombre ?? "Empresa ABC",
+                        identificacion: "123456789",
+                        email: datos.email ?? "abc@mail.com",
+                        telefono: datos.telefono ?? "3001234567",
                         estado: "Activo",
-                    },
-                ]),
-                buscarPorIdCliente: jest.fn().mockImplementation(async (id: string): Promise<ICliente | null> => {
-                    if (id === "mock-1") {
-                        return {
-                            idCliente: "mock-1",
-                            nombre: "Empresa ABC",
-                            identificacion: "123456789",
-                            email: "abc@mail.com",
-                            telefono: "3001234567",
-                            estado: "Activo",
-                        };
-                    }
-                    return null;
-                }),
-                buscarPorIdentificacionCliente: jest.fn().mockResolvedValue(null),
-                actualizarCliente: jest.fn().mockImplementation(async (id: string, datos: Partial<ICliente>): Promise<ICliente | null> => {
-                    if (id === "mock-1") {
-                        return {
-                            idCliente: "mock-1",
-                            nombre: datos.nombre ?? "Empresa ABC",
-                            identificacion: "123456789",
-                            email: datos.email ?? "abc@mail.com",
-                            telefono: datos.telefono ?? "3001234567",
-                            estado: "Activo",
-                        };
-                    }
-                    return null;
-                }),
-                eliminarCliente: jest.fn().mockResolvedValue(undefined),
-            };
-        }),
-    };
-});
+                    };
+                }
+                return null;
+            }),
+            eliminarCliente: jest.fn().mockResolvedValue(undefined),
+        };
 
-describe("Pruebas de integración - API Clientes", () => {
-    beforeAll(async () => {
+        await jest.unstable_mockModule("../../src/core/infraestructura/postgres/ClienteRepositorio.js", () => ({
+            ClienteRepositorio: jest.fn(() => mockClienteRepositorio)
+        }));
+
+        const appModule = await import("../../src/presentacion/app.js");
+        app = appModule.app;
+        request = (await import("supertest")).default;
+
         await app.ready();
     });
 
     afterAll(async () => {
-        await app.close();
+        if (app) await app.close();
     });
 
     describe("GET /api/cliente", () => {
