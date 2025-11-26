@@ -1,5 +1,5 @@
 <h1 align="center">
-# Codeasy - Sistema de Gestión de Proyectos
+Codeasy - Sistema de Gestión de Proyectos
 </h1>
 
 <p align="center">
