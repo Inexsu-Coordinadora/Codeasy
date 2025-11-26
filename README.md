@@ -1,6 +1,6 @@
-<p align="center">
+<h1 align="center">
 # Codeasy - Sistema de Gestión de Proyectos
-</p>
+</h1>
 
 <p align="center">
 <img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/c71e822d-7260-4e21-b890-04a725e23be0" />
