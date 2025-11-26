@@ -1,5 +1,7 @@
 # Codeasy - Sistema de Gestión de Proyectos
 
+<img width="1024" height="1024" alt="image" src="https://github.com/user-attachments/assets/c71e822d-7260-4e21-b890-04a725e23be0" />
+
 ## 📋 Descripción del Proyecto
 
 Sistema de gestión de proyectos desarrollado con **Node.js**, **TypeScript**, **Fastify** y **PostgreSQL**, implementando arquitectura hexagonal (Clean Architecture) con casos de uso, repositorios y validaciones.
