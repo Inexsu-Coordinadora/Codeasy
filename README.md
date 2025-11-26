@@ -1,8 +1,8 @@
-<p align="center">
 # Codeasy - Sistema de Gestión de Proyectos
 
+<p align="center">
 <img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/c71e822d-7260-4e21-b890-04a725e23be0" />
-
+</p>
 
 ## 📋 Descripción del Proyecto
 
@@ -374,4 +374,4 @@ El proyecto requiere una base de datos PostgreSQL. Asegúrate de tener PostgreSQ
 **Última Actualización:** Noviembre 2025  
 **Pruebas:** ✅ 122/122 Pasando  
 **Cobertura:** 63.93%
-</p>
+
