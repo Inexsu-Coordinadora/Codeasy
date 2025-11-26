@@ -1,6 +1,6 @@
 # Codeasy - Sistema de Gestión de Proyectos
 
-<img width="500" height="500" alt="image" src="https://github.com/user-attachments/assets/c71e822d-7260-4e21-b890-04a725e23be0" />
+<img width="200" height="200" alt="image" src="https://github.com/user-attachments/assets/c71e822d-7260-4e21-b890-04a725e23be0" />
 
 ## 📋 Descripción del Proyecto
 
