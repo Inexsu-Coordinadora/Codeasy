@@ -1,17 +1,15 @@
-import { IConsultor } from "./IConsultor";
+import { IConsultor } from "./IConsultor.js";
 
 export class Consultor implements IConsultor {
-  idConsultor?: number;
+  idConsultor?: string;
   nombre!: string;
   identificacion!: string;
   correo!: string;
   telefono!: string;
   especialidad?: string | null;
-  nivelexperiencia!: "Junior" | "Semi-Senior" | "Senior" | "Experto";
-  disponibilidad!: "Disponible" | "No disponible";
+  nivelExperiencia!: "Junior" | "Semi-Senior" | "Senior" | "Experto";
   estado?: "Activo" | "Eliminado";
  
-
   constructor(props: Partial<IConsultor>) {
     Object.assign(this, props);
   }

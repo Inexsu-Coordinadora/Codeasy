@@ -1,0 +1,28 @@
+meta {
+  name: Crear Equipo Consultor
+  type: http
+  seq: 1
+}
+
+post {
+  url: http://localhost:3000/api/equipo-consultor
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "id_consultor": "cd71414a-28b1-4a02-8494-8e207b83fd3b",
+    "id_equipo_proyecto": "b74598dd-d701-44ff-bace-8a633bf669b9",
+    "id_rol": "b3cc6c7f-6c45-45a9-8604-0f4c0f408f10",
+    "porcentaje_dedicacion": 40,
+    "fecha_inicio": "2026-03-01",
+    "fecha_fin": "2027-05-30"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

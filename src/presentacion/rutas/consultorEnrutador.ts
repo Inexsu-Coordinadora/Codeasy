@@ -1,11 +1,13 @@
 import { FastifyInstance } from "fastify";
-import { ConsultorControlador } from "../controladores/CunsultorControlador.js";
+import { ConsultorControlador } from "../controladores/ConsultorControlador.js";
 import { IConsultorRepositorio } from "../../core/dominio/consultor/repositorio/IConsultorRepositorio.js";
 import { ConsultorCasosUso } from "../../core/aplicacion/casos-uso/Consultor/ConsultorCasosUso.js";
-import { ConsultorRepositorio } from "../../core/infraestructura/postgres/ConsultorRepository.js";
-import { validarZod } from "../esquemas/middlewares/validarZod.js";
-import { ConsultorCrearEsquema } from "../esquemas/consultorCrearEsquema.js";
-import { ConsultorActualizarEsquema } from "../esquemas/consultorActualizarEsquema.js";
+import { EquipoConsultorRepositorio } from "../../core/infraestructura/postgres/EquipoConsultorRepositorio.js";
+import type { IEquipoConsultorRepositorio } from "../../../src/core/dominio/equipos-consultores/repositorio/IEquipoConsultorRepositorio.js";
+import { ConsultorRepositorio } from "../../core/infraestructura/postgres/ConsultorRepositorio.js";
+import { validarZod } from "../esquemas/validarZod.js";
+import { ConsultorCrearEsquema } from "../esquemas/Consultores/consultorCrearEsquema.js";
+import { ConsultorActualizarEsquema } from "../esquemas/Consultores/consultorActualizarEsquema.js";
 
 function consultorEnrutador(
   app: FastifyInstance,
@@ -17,12 +19,13 @@ function consultorEnrutador(
 
   app.post("/consultor", { preHandler: validarZod(ConsultorCrearEsquema, "body") },ConsultorController.registrarConsultor.bind(ConsultorController));
   app.put("/consultor/:idConsultor", { preHandler: validarZod(ConsultorActualizarEsquema, "body") },ConsultorController.actualizarConsultor.bind(ConsultorController));
-  app.put("/consultor/eliminar/:idConsultjor", ConsultorController.eliminarConsultor.bind(ConsultorController));
+  app.delete("/consultor/eliminar/:idConsultor", ConsultorController.eliminarConsultor.bind(ConsultorController));
 }
 
 export async function construirConsultorEnrutador(app: FastifyInstance) {
   const consultorRepositorio: IConsultorRepositorio = new ConsultorRepositorio();
-  const consultorCasosUso = new ConsultorCasosUso(consultorRepositorio);
+  const equipoConsultorRepositorio: IEquipoConsultorRepositorio = new EquipoConsultorRepositorio();
+  const consultorCasosUso = new ConsultorCasosUso(consultorRepositorio, equipoConsultorRepositorio);
   const consultorController = new ConsultorControlador(consultorCasosUso);
 
   consultorEnrutador(app, consultorController);

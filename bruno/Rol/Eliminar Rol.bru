@@ -1,0 +1,24 @@
+meta {
+  name: Eliminar Rol
+  type: http
+  seq: 6
+}
+
+delete {
+  url: http://localhost:3000/api/rol/eliminar/b8e34429-dcef-4808-bc1a-19a1c667cd0b
+  body: none
+  auth: inherit
+}
+
+body:json {
+  {
+    "nombre_rol": "Desarrollador Backend",
+    "descripcion": "Encargado del desarrollo backend"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

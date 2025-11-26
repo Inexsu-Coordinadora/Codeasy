@@ -1,0 +1,24 @@
+meta {
+  name: Actualizar Rol
+  type: http
+  seq: 5
+}
+
+put {
+  url: http://localhost:3000/api/rol/b8e34429-dcef-4808-bc1a-19a1c667cd0b
+  body: json
+  auth: inherit
+}
+
+body:json {
+  {
+    "nombre_rol": "Líder Técnico",
+    "descripcion": "Responsable técnico del equipo"
+  }
+  
+}
+
+settings {
+  encodeUrl: true
+  timeout: 0
+}

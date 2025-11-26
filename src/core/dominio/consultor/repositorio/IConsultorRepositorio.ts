@@ -1,11 +1,11 @@
-import  { Consultor } from "../Consultor";
-import  { IConsultor} from "../IConsultor";
+import  { Consultor } from "../Consultor.js";
+import  { IConsultor} from "../IConsultor.js";
 
 export interface IConsultorRepositorio {
   registrarConsultor(consultor: Consultor): Promise<IConsultor>; 
   listarTodosConsultores(): Promise<IConsultor[]>;
-  obtenerConsultorPorId(idConsultor: number): Promise<IConsultor | null>;
-  actualizarConsultor(idConsultor: number, datosConsultor: IConsultor): Promise<IConsultor>; 
-  eliminarConsultor(idConsultor: number): Promise<void>; 
+  obtenerConsultorPorId(idConsultor: string): Promise<IConsultor | null>;
+  actualizarConsultor(idConsultor: string, datosConsultor: Partial<IConsultor>): Promise<IConsultor>; 
+  eliminarConsultor(idConsultor: string): Promise<void>; 
  buscarPorCorreoOIdentificacion(correo: string, identificacion: string): Promise<IConsultor | null>;
 }

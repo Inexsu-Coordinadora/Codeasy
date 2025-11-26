@@ -1,11 +1,13 @@
 export interface ITarea {
-  idTarea?: number;
+  idTarea?: string;
   titulo: string;
   descripcion: string;
-  estadoTarea: 'Creada' | 'En Proceso' | 'Finalizada';
+  estadoTarea: 'pendiente' | 'en progreso' | 'bloqueada' | 'completada';
   fechaCreacion?: Date;
   fechaFinalizacion: Date;
   prioridad: 'Baja' | 'Media' | 'Alta';
   asignadoA: string;
-  estatus: 'Eliminado' | 'Activo';
+  estado: 'Eliminado' | 'Activo';
+  nombreConsultor?: string;
+  idConsultor?: string;
 }

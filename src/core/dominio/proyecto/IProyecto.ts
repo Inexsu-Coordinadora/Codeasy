@@ -1,11 +1,12 @@
 export interface IProyecto {
-  id?: number; 
+  idProyecto?: string;
   nombre: string;
   descripcion: string;
-  estado?: 'Creado' | 'En proceso' | 'Finalizado'; 
-  estatus?: 'Activo' | 'Eliminado';
-  id_cliente: number;
-  fecha_inicio: Date;
-  fecha_entrega: Date;
-  fecha_creacion?: Date; 
+  estadoProyecto?: 'Creado' | 'En proceso' | 'Finalizado';
+  estado?: 'Activo' | 'Eliminado';
+  idCliente: string;
+  nombreCliente?: string;
+  fechaInicio: Date;
+  fechaEntrega: Date;
+  fechaCreacion?: Date;
 }
